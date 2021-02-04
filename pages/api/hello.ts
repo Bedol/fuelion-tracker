@@ -2,10 +2,10 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 
-type Data = {
+type HelloData = {
   name: string;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse<Data>) => {
+export default (req: NextApiRequest, res: NextApiResponse<HelloData>) => {
   res.status(200).json({ name: "John Doe" });
 };
