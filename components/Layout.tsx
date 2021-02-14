@@ -1,16 +1,13 @@
-import Sidebar from "./Sidebar";
+import Navigation from "./Navigation";
 
-type LayoutProps = {
-  children: unknown;
-};
-
-const Layout = (props: LayoutProps) => {
+const Layout = ({ children }) => {
   return (
-    <div className="container">
-      <Sidebar />
-
-      {props.children}
-    </div>
+    <>
+      <Navigation />
+      <div className="p-4">
+        <main>{children}</main>
+      </div>
+    </>
   );
 };
 
