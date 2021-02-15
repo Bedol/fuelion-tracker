@@ -7,9 +7,9 @@ type SidebarLinkProps = {
 
 const SidebarLink = ({ path, name }: SidebarLinkProps) => {
   return (
-    <li>
+    <li className="sm:inline-block">
       <Link href={path}>
-        <a>
+        <a className="p-3 hover:text-white">
           <span>{name}</span>
         </a>
       </Link>
