@@ -4,7 +4,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Navigation />
-      <div className="container mx-auto">
+      <div className="container mx-auto py-4">
         <main>{children}</main>
       </div>
     </>

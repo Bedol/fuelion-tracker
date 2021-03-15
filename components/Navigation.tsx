@@ -1,27 +1,57 @@
-import NavigationItem from "./NavigationItem";
+import { Menubar } from "primereact/menubar";
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 
 const Navigation = () => {
+  const router = useRouter();
+
+  const items = [
+    {
+      label: "Add Refueling",
+      icon: "pi pi-fw pi-plus-circle",
+      command: (e) => {
+        e.preventDefault;
+        router.push("/fueling/new");
+      },
+    },
+    {
+      label: "Add Expense",
+      icon: "pi pi-fw pi-plus-circle",
+      command: (e) => {
+        e.preventDefault;
+        router.push("/expenses/new");
+      },
+    },
+    {
+      label: "Your Vehicles",
+      icon: "pi pi-fw pi-list",
+      command: (e) => {
+        e.preventDefault;
+        router.push("/vehicles");
+      },
+    },
+    {
+      label: "Profile",
+      icon: "pi pi-fw pi-user",
+      command: (e) => {
+        e.preventDefault;
+        router.push("/profiles");
+      },
+    },
+  ];
+
+  const logo = (
+    <div className="font-semibold px-4">
+      <Link href="/">Fuelion</Link>
+    </div>
+  );
+
   return (
-    <header>
-      <nav className="bg-gray-800 shadow-lg">
-        <div className="container mx-auto sm:py-2">
-          <div className="sm:flex items-center justify-between p-5">
-            <div className="text-white">
-              <Link href="/">
-                <a className="text-3xl font-bold">Fuelion</a>
-              </Link>
-            </div>
-            <ul className="text-gray-400 text-xl sm:flex sm:flex-wrap sm:self-center">
-              <NavigationItem name="Add Refueling" path="/fueling/new" />
-              <NavigationItem name="Add Expense" path="/expenses/new" />
-              <NavigationItem name="Your Vehicles" path="/vehicles" />
-              <NavigationItem name="Profile" path="/profiles" />
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+    <div>
+      <div className="card">
+        <Menubar model={items} start={logo} />
+      </div>
+    </div>
   );
 };
 
