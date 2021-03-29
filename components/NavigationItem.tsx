@@ -7,10 +7,10 @@ type SidebarLinkProps = {
 
 const SidebarLink = ({ path, name }: SidebarLinkProps) => {
   return (
-    <li className="sm:inline-block py-2 md:py-0 ">
+    <li className="md:ml-4">
       <Link href={path}>
-        <a className="p-3 hover:text-white">
-          <span>{name}</span>
+        <a className="block no-underline py-2 text-white hover:text-gray-200 md-border-none md:p-0">
+          {name}
         </a>
       </Link>
     </li>
