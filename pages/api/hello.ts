@@ -6,6 +6,8 @@ type HelloData = {
   name: string;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse<HelloData>) => {
+const handle = (req: NextApiRequest, res: NextApiResponse<HelloData>) => {
   res.status(200).json({ name: "John Doe" });
 };
+
+export default handle;

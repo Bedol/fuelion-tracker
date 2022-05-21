@@ -1,5 +1,3 @@
-import NewExpense from "../expenses/new";
-
 const NewVehicle = () => {
   return (
     <div>
@@ -8,4 +6,4 @@ const NewVehicle = () => {
   );
 };
 
-export default NewExpense;
+export default NewVehicle;
