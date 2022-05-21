@@ -1,7 +1,6 @@
-import { PrismaClient, PrismaPromise, Vehicles } from "@prisma/client";
+import { PrismaPromise, Vehicles } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../../lib/prisma";
 
 export default async (
   _req: NextApiRequest,
