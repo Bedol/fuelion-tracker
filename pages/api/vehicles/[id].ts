@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "../../../lib/prisma";
 
-export default async (
+const handle = async (
   { query: { id } }: NextApiRequest,
   res: NextApiResponse
 ) => {
@@ -10,3 +11,5 @@ export default async (
 
   res.json(vehicle);
 };
+
+export default handle;

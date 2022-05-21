@@ -7,8 +7,7 @@ import { PrismaClient } from "@prisma/client";
 // https://pris.ly/d/help/next-js-best-practices
 
 declare global {
-  // allow global `var` declarations
-  // eslint-disable-next-line no-var
+  // eslint-disable-next-line no-unused-vars
   var prisma: PrismaClient | undefined;
 }
 

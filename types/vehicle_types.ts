@@ -13,6 +13,8 @@ export type VehicleData = {
   registration_number?: string;
 };
 
+// Temporary disable those enums - no-unused-vars
+/* eslint-disable */
 export enum VehicleType {
   Passenger = "passenger",
   Truck = "truck",
@@ -42,3 +44,4 @@ export enum MilageType {
   Miles = "miles",
   Kilometers = "kilometers",
 }
+/* eslint-enable */
