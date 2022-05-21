@@ -1,31 +1,39 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
-export type VehicleData = {
-  id: string;
-  name: string;
-  model: string;
-  production_year: Number;
-  capacity: Number;
-  fuel_type: string;
-};
+import {
+  FuelType,
+  Gearbox,
+  MilageType,
+  PowerUnit,
+  VehicleData,
+} from "../../../types/vehicle_types";
 
 export default (req: NextApiRequest, resp: NextApiResponse<VehicleData[]>) => {
   resp.json([
     {
-      id: "1",
-      name: "Nissan",
+      id: 1,
+      type: "passenger",
+      brand: "Nissan",
       model: "Quashqai 2",
       production_year: 2019,
-      capacity: 1.3,
-      fuel_type: "Petrol",
+      engine_capacity: 1.3,
+      fuel_type: FuelType.Gasoline,
+      gearbox: Gearbox.Automatic,
+      power: 130,
+      power_unit: PowerUnit.HorsePower,
+      milage_in: MilageType.Kilometers,
     },
     {
-      id: "2",
-      name: "Renault",
+      id: 2,
+      type: "passenger",
+      brand: "Renault",
       model: "Koleos",
       production_year: 2020,
-      capacity: 2.0,
-      fuel_type: "Diesel",
+      engine_capacity: 2.0,
+      fuel_type: FuelType.Diesel,
+      gearbox: Gearbox.Manual,
+      power: 130,
+      power_unit: PowerUnit.HorsePower,
+      milage_in: MilageType.Kilometers,
     },
   ]);
 };
