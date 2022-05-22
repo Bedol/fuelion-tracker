@@ -1,5 +1,8 @@
 import { NextPageContext } from "next";
-import { BuiltInProviderType, CommonProviderOptions } from "next-auth/providers";
+import {
+  BuiltInProviderType,
+  CommonProviderOptions,
+} from "next-auth/providers";
 import {
   ClientSafeProvider,
   getProviders,
