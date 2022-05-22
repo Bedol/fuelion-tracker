@@ -1,9 +1,10 @@
+import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 import Layout from "../components/Layout";
 import "../styles/globals.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SWRConfig
       value={{
@@ -12,9 +13,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           fetch(resource, init).then((res) => res.json()),
       }}
     >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <SessionProvider session={session}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SessionProvider>
     </SWRConfig>
   );
 }
