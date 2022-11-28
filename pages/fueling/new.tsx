@@ -29,19 +29,6 @@ const NewFueling = () => {
       <h2 className="mb-6">Add your fuel cost</h2>
 
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        {/* date */}
-        {/* country */}
-        {/* region */}
-        {/* station */}
-        {/* type of fule */}
-        {/* amount per liter */}
-        {/* currency */}
-        {/* distance traveled */}
-        {/* mileage */}
-        {/* type of fueling - full or not */}
-        {/* tire type */}
-        {/* air conditioning */}
-
         <div className="mb-4">
           <label
             htmlFor="amount"
