@@ -25,8 +25,31 @@ model Vehicles {
 
 model Fueling {
   id Int @id @default(autoincrement())
-  amount Int
-  cost Int
+  amount Float @default(0.0)
+  cost Float @default(0.0)
+  date DateTime? @db.Date
+  country String? @db.VarChar(255)
+  region String? @db.VarChar(255)
+  station String? @db.VarChar(255)
+  type_of_fuel TypeOfFuel @default(GASOLINE)
+  currency String? @db.VarChar(3)
+  distance_traveled Float @default(0.0)
+  mileage Float @default(0.0)
+  type_of_fueling TypeOfFueling @default(FULL)
+  tire_type String? @db.VarChar(255)
+  air_conditioning Boolean @default(true)
+}
+
+enum TypeOfFuel {
+  GASOLINE
+  DIESEL
+  LPG
+  ELECTRIC
+}
+
+enum TypeOfFueling {
+  FULL
+  NOT_FULL
 }
 
 model Account {
