@@ -3,53 +3,61 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Vehicles {
-  id              String @id @default(auto()) @map("_id") @db.ObjectId
-  brand           String
+  id              Int @id @default(autoincrement())
+  brand           String @db.VarChar(255)
   engine_capacity Float
-  fuel_type       String
-  gearbox         String
-  milage_in       String
-  model           String
+  fuel_type       String @db.VarChar(255)
+  gearbox         String @db.VarChar(255)
+  milage_in       String @db.VarChar(255)
+  model           String @db.VarChar(255)
   power           Int
-  power_unit      String
+  power_unit      String @db.VarChar(255)
   production_year Int
-  type            String
+  type            String @db.VarChar(255)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+}
+
+model Fueling {
+  id Int @id @default(autoincrement())
+  amount Int
+  cost Int
 }
 
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.String
-  access_token       String?  @db.String
+  id                 Int  @id @default(autoincrement())
+  userId             Int
+  type               String @db.VarChar(255)
+  provider           String @db.VarChar(255)
+  providerAccountId  String @db.VarChar(255)
+  refresh_token      String?
+  access_token       String?
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String?  @db.String
+  id_token           String?
   session_state      String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
 }
 
 model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           Int   @id @default(autoincrement())
   sessionToken String   @unique
-  userId       String
+  userId       Int
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            Int    @id @default(autoincrement())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -59,7 +67,7 @@ model User {
 }
 
 model VerificationToken {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         Int   @id @default(autoincrement())
   identifier String
   token      String   @unique
   expires    DateTime
