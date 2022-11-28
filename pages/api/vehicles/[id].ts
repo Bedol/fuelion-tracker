@@ -6,7 +6,7 @@ const handle = async (
   res: NextApiResponse
 ) => {
   const vehicle = await prisma.vehicles.findUnique({
-    where: { id: id.toString() },
+    where: { id: id },
   });
 
   res.json(vehicle);
