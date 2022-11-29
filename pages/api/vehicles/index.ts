@@ -8,7 +8,7 @@ const handle = async (
 ) => {
   const vehicles = await prisma.vehicles.findMany();
 
-  resp.json({ vehicles });
+  resp.json(vehicles);
 };
 
 export default handle;

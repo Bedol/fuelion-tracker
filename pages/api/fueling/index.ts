@@ -1,6 +1,11 @@
+import { Fueling, PrismaPromise } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next/types";
 import prisma from "../../../lib/prisma";
 
-export default async function handle(req, res) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse<PrismaPromise<Fueling[]> | {}>
+) {
   const {
     cost,
     amount,

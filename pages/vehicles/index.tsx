@@ -13,7 +13,7 @@ const AllVehicles = () => {
     <div>
       <h1>Your Vehicles list</h1>
       <ul>
-        {data.vehicles.map((vehicle) => (
+        {data.map((vehicle) => (
           <li key={vehicle.id}>{vehicle.brand}</li>
         ))}
       </ul>

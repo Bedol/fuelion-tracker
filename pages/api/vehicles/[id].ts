@@ -1,10 +1,11 @@
+import { Vehicles } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../lib/prisma";
 
-const handle = async (req: NextApiRequest, res: NextApiResponse) => {
-  const id: number = req.body.id;
+const handle = async (req: NextApiRequest, res: NextApiResponse<Vehicles>) => {
+  const { id } = req.query;
   const vehicle = await prisma.vehicles.findUnique({
-    where: { id: id },
+    where: { id: parseInt(id as string) },
   });
 
   res.json(vehicle);
