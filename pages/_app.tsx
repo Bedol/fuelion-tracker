@@ -1,24 +1,19 @@
 import { SessionProvider } from "next-auth/react";
-import { AppProps } from "next/app";
-import { SWRConfig } from "swr";
+import { QueryClient, QueryClientProvider } from "react-query";
 import Layout from "../components/Layout";
 import "../styles/globals.css";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+const queryClient = new QueryClient();
+
+function MyApp({ Component, pageProps }) {
   return (
-    <SWRConfig
-      value={{
-        refreshInterval: 3000,
-        fetcher: (resource, init) =>
-          fetch(resource, init).then((res) => res.json()),
-      }}
-    >
-      <SessionProvider session={session}>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider session={pageProps.session}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
       </SessionProvider>
-    </SWRConfig>
+    </QueryClientProvider>
   );
 }
 
