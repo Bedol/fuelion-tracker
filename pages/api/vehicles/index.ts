@@ -6,9 +6,9 @@ const handle = async (
   _req: NextApiRequest,
   resp: NextApiResponse<PrismaPromise<Vehicles[]> | {}>
 ) => {
-  const allVehicles = await prisma.vehicles.findMany();
+  const vehicles = await prisma.vehicles.findMany();
 
-  resp.json(allVehicles);
+  resp.json({ vehicles });
 };
 
 export default handle;
