@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { Button, Box, Flex, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import React from "react";
 
 const NewFueling = () => {
@@ -42,156 +43,136 @@ const NewFueling = () => {
   };
 
   return (
-    <div className="px-2 py-4">
-      <h2 className="mb-6">Add your fuel cost</h2>
+    <Box>
+      <Flex flexDir="column" justifyContent="space-between">
+        <Box as="h2" fontSize="2xl" fontWeight="semibold" lineHeight="10" mb="6">Add your fuel cost</Box>
+        <Box as="form">
+          <FormControl>
+            <FormLabel
+              htmlFor="amount"
+            >
+              Amount of fuel
+            </FormLabel>
+            <Input
+              type="number"
+              name="amount"
+              id="amount"
+              onChange={(e) => handleChange(e)}
+              value={formData.amount}
+            />
+          </FormControl>
 
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div className="mb-4">
-          <label
-            htmlFor="amount"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Amount of fuel
-          </label>
-          <input
-            type="number"
-            name="amount"
-            id="amount"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => handleChange(e)}
-            value={formData.amount}
-          />
-        </div>
+          <FormControl>
+            <FormLabel
+              htmlFor="cost"
+            >
+              Cost of fuel
+            </FormLabel>
+            <Input
+              type="number"
+              name="cost"
+              id="cost"
+              onChange={(e) => handleChange(e)}
+              value={formData.cost}
+            />
+          </FormControl>
 
-        <div className="mb-4">
-          <label
-            htmlFor="cost"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Cost of fuel
-          </label>
-          <input
-            type="number"
-            name="cost"
-            id="cost"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => handleChange(e)}
-            value={formData.cost}
-          />
-        </div>
+          <FormControl>
+            <FormLabel
+              htmlFor="cost"
+            >
+              Country
+            </FormLabel>
+            <Input
+              type="text"
+              name="country"
+              id="country"
+              onChange={(e) => handleChange(e)}
+              value={formData.country}
+            />
+          </FormControl>
 
-        <div className="mb-4">
-          <label
-            htmlFor="cost"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Country
-          </label>
-          <input
-            type="text"
-            name="country"
-            id="country"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => handleChange(e)}
-            value={formData.country}
-          />
-        </div>
+          <FormControl>
+            <FormLabel
+              htmlFor="cost"
+            >
+              Region
+            </FormLabel>
+            <Input
+              type="text"
+              name="region"
+              id="region"
+              onChange={(e) => handleChange(e)}
+              value={formData.region}
+            />
+          </FormControl>
 
-        <div className="mb-4">
-          <label
-            htmlFor="cost"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Region
-          </label>
-          <input
-            type="text"
-            name="region"
-            id="region"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => handleChange(e)}
-            value={formData.region}
-          />
-        </div>
+          <FormControl>
+            <FormLabel
+              htmlFor="cost"
+            >
+              Station
+            </FormLabel>
+            <Input
+              type="text"
+              name="station"
+              id="station"
+              onChange={(e) => handleChange(e)}
+              value={formData.station}
+            />
+          </FormControl>
 
-        <div className="mb-4">
-          <label
-            htmlFor="cost"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Station
-          </label>
-          <input
-            type="text"
-            name="station"
-            id="station"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => handleChange(e)}
-            value={formData.station}
-          />
-        </div>
+          <FormControl>
+            <FormLabel
+              htmlFor="cost"
+            >
+              Currency
+            </FormLabel>
+            <Input
+              type="text"
+              name="currency"
+              id="currency"
+              max={3}
+              min={3}
+              onChange={(e) => handleChange(e)}
+              value={formData.currency}
+            />
+          </FormControl>
 
-        <div className="mb-4">
-          <label
-            htmlFor="cost"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Currency
-          </label>
-          <input
-            type="text"
-            name="currency"
-            id="currency"
-            max={3}
-            min={3}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => handleChange(e)}
-            value={formData.currency}
-          />
-        </div>
+          <FormControl>
+            <FormLabel
+              htmlFor="cost"
+            >
+              Distance traveled
+            </FormLabel>
+            <Input
+              type="number"
+              name="distance_traveled"
+              id="distance_traveled"
+              onChange={(e) => handleChange(e)}
+              value={formData.distance_traveled}
+            />
+          </FormControl>
 
-        <div className="mb-4">
-          <label
-            htmlFor="cost"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Distance traveled
-          </label>
-          <input
-            type="number"
-            name="distance_traveled"
-            id="distance_traveled"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => handleChange(e)}
-            value={formData.distance_traveled}
-          />
-        </div>
+          <FormControl>
+            <FormLabel
+              htmlFor="cost"
+            >
+              Mileage
+            </FormLabel>
+            <Input
+              type="number"
+              name="mileage"
+              id="mileage"
+              onChange={(e) => handleChange(e)}
+              value={formData.mileage}
+            />
+          </FormControl>
 
-        <div className="mb-4">
-          <label
-            htmlFor="cost"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Mileage
-          </label>
-          <input
-            type="number"
-            name="mileage"
-            id="mileage"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            onChange={(e) => handleChange(e)}
-            value={formData.mileage}
-          />
-        </div>
-
-        <input
-          type="submit"
-          value="Add"
-          className="input-submit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          onClick={handleSubmit}
-        />
-      </form>
-    </div>
+          <Button onClick={handleSubmit} colorScheme="telegram" variant="outline" my="4">Add</Button>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 
