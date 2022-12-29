@@ -13,7 +13,7 @@ model Vehicles {
   engine_capacity Float
   fuel_type       String @db.VarChar(255)
   gearbox         String @db.VarChar(255)
-  milage_in       String @db.VarChar(255)
+  mileage         Int @default(0)
   model           String @db.VarChar(255)
   power           Int
   power_unit      String @db.VarChar(255)
