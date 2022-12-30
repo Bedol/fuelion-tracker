@@ -32,14 +32,10 @@ const AllVehicles = () => {
             <Tr>
               <Th>Brand</Th>
               <Th align="right">Model</Th>
-              <Th align="right">Fuel Type</Th>
-              <Th align="right">Gearbox</Th>
-              <Th align="right">Power</Th>
-              <Th align="right">Power Unit</Th>
-              <Th align="right">Type</Th>
-              <Th align="right">Production Year</Th>
-              <Th align="right">Engine Capacity</Th>
               <Th align="right">Mileage</Th>
+              <Th align="right">Fuel Type</Th>
+              <Th align="right">Production Year</Th>
+              <Th align="right">Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -47,14 +43,21 @@ const AllVehicles = () => {
               <Tr key={row.id}>
                 <Td scope="row">{row.brand}</Td>
                 <Td align="right">{row.model}</Td>
-                <Td align="right">{row.fuel_type}</Td>
-                <Td align="right">{row.gearbox}</Td>
-                <Td align="right">{row.power}</Td>
-                <Td align="right">{row.power_unit}</Td>
-                <Td align="right">{row.type}</Td>
-                <Td align="right">{row.production_year}</Td>
-                <Td align="right">{row.engine_capacity}</Td>
                 <Td align="right">{row.mileage}</Td>
+                <Td align="right">{row.fuel_type}</Td>
+                <Td align="right">{row.production_year}</Td>
+                <Td align="right">
+                  <Link href={`/vehicles/${row.id}`} passHref>
+                    <Button as="a" colorScheme="facebook" variant="ghost">
+                      Edit
+                    </Button>
+                  </Link>
+                  <Link href={`/vehicles/${row.id}/fueling/new`} passHref>
+                    <Button as="a" colorScheme="facebook" variant="ghost">
+                      Add fueling
+                    </Button>
+                  </Link>
+                </Td>
               </Tr>
             ))}
           </Tbody>
