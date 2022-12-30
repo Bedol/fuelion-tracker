@@ -6,31 +6,25 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse<PrismaPromise<Fueling[]> | {}>
 ) {
-  const {
-    cost,
-    amount,
-    country,
-    date,
-    region,
-    station,
-    currency,
-    distance_traveled,
-    mileage,
-  } = req.body;
+  const { method, body } = req;
 
-  const result = await prisma.fueling.create({
-    data: {
-      cost,
-      amount,
-      country,
-      date,
-      region,
-      station,
-      currency,
-      distance_traveled,
-      mileage,
-    },
-  });
-
-  res.json(result);
+  switch (method) {
+    case "POST":
+      {
+        const result = await prisma.fueling.create({
+          data: body,
+        });
+        res.json(result);
+      }
+      break;
+    case "GET":
+      {
+        const fueling = await prisma.fueling.findMany();
+        res.json(fueling);
+      }
+      break;
+    default:
+      res.setHeader("Allow", ["POST", "GET"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
+  }
 }

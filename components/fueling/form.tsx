@@ -13,7 +13,7 @@ const Form = ({ vehicleId }: { vehicleId: number }) => {
     currency: "",
     distance_traveled: 0.0,
     mileage: 0.0,
-    vehicle_id: vehicleId,
+    vehicleId,
   });
   const router = useRouter();
 
@@ -28,6 +28,7 @@ const Form = ({ vehicleId }: { vehicleId: number }) => {
   };
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
+    // TODO: Use a formik and react query to handle form submit
     e.preventDefault();
 
     try {
@@ -37,7 +38,7 @@ const Form = ({ vehicleId }: { vehicleId: number }) => {
         body: JSON.stringify(formData),
       });
 
-      await router.push("/fueling/new");
+      await router.push(`/vehicles/${vehicleId}/fueling/new`);
     } catch (e) {
       console.error(e);
     }
