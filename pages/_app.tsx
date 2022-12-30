@@ -1,7 +1,7 @@
 import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Layout from "../components/Layout";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from "@chakra-ui/react";
 import "../styles/globals.css";
 
 const queryClient = new QueryClient();
