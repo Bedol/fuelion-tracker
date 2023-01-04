@@ -1,21 +1,14 @@
-import { Box, Flex } from "@chakra-ui/react";
-import Form from "../../../../components/fueling/form";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import NewFuelingForm from "../../../../components/fueling/NewFuelingForm";
 
 const NewFuelingPage = ({ vehicleId }: { vehicleId: number }) => {
   return (
     <Box>
       <Flex flexDir="column" justifyContent="space-between">
-        <Box
-          as="h2"
-          fontSize="2xl"
-          fontWeight="semibold"
-          lineHeight="10"
-          mb="6"
-        >
-          Add your fuel cost
+        <Heading>Add your refueling data for this vehicle</Heading>
+        <Box my="4" width="600px" maxWidth="900px" mx="auto">
+          <NewFuelingForm vehicleId={vehicleId} />
         </Box>
-
-        <Form vehicleId={vehicleId} />
       </Flex>
     </Box>
   );
