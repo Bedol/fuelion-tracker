@@ -1,26 +1,47 @@
-import NavigationItem from "./NavigationItem";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Flex,
+  HStack,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import Link from "next/link";
 
 const Navigation = () => {
   return (
-    <header className="border-b md:flex md:items-center justify-around p-4 bg-gray-800">
-      <div className="flex items-center justify-between mb-4 md:mb-0">
-        <h1 className="leading-none text-3xl text-white hover:text-gray-200">
-          <Link href="/">
-            <a className="no-underline">Fuelion</a>
-          </Link>
-        </h1>
-      </div>
-
-      <nav className="">
-        <ul className="list-reset md:flex md:items-center">
-          <NavigationItem name="Add Refueling" path="/fueling/new" />
-          <NavigationItem name="Add Expense" path="/expenses/new" />
-          <NavigationItem name="Your Vehicles" path="/vehicles" />
-          <NavigationItem name="Profile" path="/profiles" />
-        </ul>
-      </nav>
-    </header>
+    <Box as="section" pb="12">
+      <Box
+        as="nav"
+        bg="bg-surface"
+        boxShadow={useColorModeValue("sm", "sm-dark")}
+      >
+        <Container py="4">
+          <HStack spacing="10" justify="space-between">
+            <Flex justify="space-between" flex="1">
+              <ButtonGroup variant="link" spacing="8">
+                <Link href="/" passHref>
+                  <Button as="a" colorScheme="teal" variant="ghost">
+                    Home
+                  </Button>
+                </Link>
+                <Link href="/vehicles" passHref>
+                  <Button as="a" colorScheme="teal" variant="ghost">
+                    Your Vehicles
+                  </Button>
+                </Link>
+                <Link href="/auth/signin" passHref>
+                  <Button as="a" colorScheme="teal" variant="ghost">
+                    Sign In
+                  </Button>
+                </Link>
+              </ButtonGroup>
+            </Flex>
+          </HStack>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 

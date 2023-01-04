@@ -1,19 +1,117 @@
-import useSWR from "swr";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
+import {
+  Button,
+  ButtonGroup,
+  Flex,
+  Heading,
+  IconButton,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useToast,
+} from "@chakra-ui/react";
+import Link from "next/link";
+import { FaChartBar, FaGasPump } from "react-icons/fa";
+import { useQuery } from "react-query";
+import FetchDataErrorAlert from "../../components/errors/FetchDataErrorAlert";
+import Loading from "../../components/Loading";
 
 const AllVehicles = () => {
-  const { data, error } = useSWR("/api/vehicles");
-  if (error) return <div>An error occured.</div>;
-  if (!data) return <div>Loading ...</div>;
+  const { isLoading, isError, data } = useQuery("vehicles", async () => {
+    const result = await fetch("/api/vehicles");
+    return result.json();
+  });
+  const toast = useToast({
+    duration: 3000,
+    isClosable: true,
+    containerStyle: {
+      zIndex: 999,
+    },
+  });
+
+  if (isLoading) return <Loading />;
+
+  if (isError)
+    return (
+      <FetchDataErrorAlert errorMessage="An error occurred while fetching vehicles." />
+    );
 
   return (
-    <div>
-      <h1>Your Vehicles list</h1>
-      <ul>
-        {data.map((vehicle) => (
-          <li key={vehicle.id}>{vehicle.brand}</li>
-        ))}
-      </ul>
-    </div>
+    <Flex direction="column" justifyContent="center">
+      <Flex justifyContent="space-between" alignItems="baseline" mb="3">
+        <Heading>Your Vehicles list</Heading>
+        <Link href="/vehicles/new" passHref>
+          <Button
+            colorScheme="facebook"
+            variant="outline"
+            leftIcon={<AddIcon />}
+          >
+            Add vehicle
+          </Button>
+        </Link>
+      </Flex>
+      <TableContainer>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Thead>
+            <Tr>
+              <Th>Brand</Th>
+              <Th align="right">Model</Th>
+              <Th align="right">Mileage</Th>
+              <Th align="right">Fuel Type</Th>
+              <Th align="right">Production Year</Th>
+              <Th align="right">Actions</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {data.map((row) => (
+              <Tr key={row.id}>
+                <Td scope="row">{row.brand}</Td>
+                <Td align="right">{row.model}</Td>
+                <Td align="right">{row.mileage}</Td>
+                <Td align="right">{row.fuel_type}</Td>
+                <Td align="right">{row.production_year}</Td>
+                <Td align="right">
+                  <ButtonGroup variant="outline">
+                    <Link href={`/vehicles/${row.id}/edit`} passHref>
+                      <IconButton
+                        as="a"
+                        aria-label="Edit vehicle"
+                        colorScheme="yellow"
+                        icon={<EditIcon />}
+                      />
+                    </Link>
+                    <Link href={`/vehicles/${row.id}/fueling/new`} passHref>
+                      <IconButton
+                        as="a"
+                        aria-label="Add fueling"
+                        colorScheme="green"
+                        icon={<FaGasPump />}
+                      />
+                    </Link>
+                    <IconButton
+                      aria-label="Statistics"
+                      colorScheme="blue"
+                      icon={<FaChartBar />}
+                      onClick={() => {
+                        toast({
+                          title: "Not implemented yet.",
+                          position: "bottom-left",
+                          status: "warning",
+                        });
+                      }}
+                    />
+                  </ButtonGroup>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Flex>
   );
 };
 
