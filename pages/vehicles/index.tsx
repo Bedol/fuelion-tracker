@@ -1,7 +1,10 @@
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Button,
+  ButtonGroup,
   Flex,
   Heading,
+  IconButton,
   Table,
   TableContainer,
   Tbody,
@@ -11,7 +14,10 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { FaGasPump } from "react-icons/fa";
 import { useQuery } from "react-query";
+import FetchDataErrorAlert from "../../components/errors/FetchDataErrorAlert";
+import Loading from "../../components/Loading";
 
 const AllVehicles = () => {
   const { isLoading, isError, data } = useQuery("vehicles", async () => {
@@ -19,13 +25,27 @@ const AllVehicles = () => {
     return result.json();
   });
 
-  if (isLoading) return <div>Loading ...</div>;
-  if (isError) return <div>An error occurred.</div>;
+  if (isLoading) return <Loading />;
+
+  if (isError)
+    return (
+      <FetchDataErrorAlert errorMessage="An error occurred while fetching vehicles." />
+    );
 
   return (
     <Flex direction="column" justifyContent="center">
-      <Heading>Your Vehicles list</Heading>
-
+      <Flex justifyContent="space-between" alignItems="baseline" mb="3">
+        <Heading>Your Vehicles list</Heading>
+        <Link href="/vehicles/new" passHref>
+          <Button
+            colorScheme="facebook"
+            variant="outline"
+            leftIcon={<AddIcon />}
+          >
+            Add vehicle
+          </Button>
+        </Link>
+      </Flex>
       <TableContainer>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <Thead>
@@ -47,28 +67,30 @@ const AllVehicles = () => {
                 <Td align="right">{row.fuel_type}</Td>
                 <Td align="right">{row.production_year}</Td>
                 <Td align="right">
-                  <Link href={`/vehicles/${row.id}`} passHref>
-                    <Button as="a" colorScheme="facebook" variant="ghost">
-                      Edit
-                    </Button>
-                  </Link>
-                  <Link href={`/vehicles/${row.id}/fueling/new`} passHref>
-                    <Button as="a" colorScheme="facebook" variant="ghost">
-                      Add fueling
-                    </Button>
-                  </Link>
+                  <ButtonGroup variant="outline">
+                    <Link href={`/vehicles/${row.id}/edit`} passHref>
+                      <IconButton
+                        as="a"
+                        aria-label="Edit vehicle"
+                        colorScheme="yellow"
+                        icon={<EditIcon />}
+                      />
+                    </Link>
+                    <Link href={`/vehicles/${row.id}/fueling/new`} passHref>
+                      <IconButton
+                        as="a"
+                        aria-label="Add fueling"
+                        colorScheme="green"
+                        icon={<FaGasPump />}
+                      />
+                    </Link>
+                  </ButtonGroup>
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
       </TableContainer>
-
-      <Link href="/vehicles/new" passHref>
-        <Button as="a" colorScheme="facebook" variant="ghost">
-          Add new vehicle
-        </Button>
-      </Link>
     </Flex>
   );
 };
