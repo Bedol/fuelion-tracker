@@ -21,9 +21,19 @@ const Navigation = () => {
           <HStack spacing="10" justify="space-between">
             <Flex justify="space-between" flex="1">
               <ButtonGroup variant="link" spacing="8">
+                <Link href="/" passHref>
+                  <Button as="a" colorScheme="teal" variant="ghost">
+                    Home
+                  </Button>
+                </Link>
                 <Link href="/vehicles" passHref>
                   <Button as="a" colorScheme="teal" variant="ghost">
                     Your Vehicles
+                  </Button>
+                </Link>
+                <Link href="/auth/signin" passHref>
+                  <Button as="a" colorScheme="teal" variant="ghost">
+                    Sign In
                   </Button>
                 </Link>
               </ButtonGroup>
