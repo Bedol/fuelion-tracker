@@ -1,22 +1,61 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   FormControl,
   FormLabel,
-  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { Fueling } from "@prisma/client";
+import { Country, State } from "country-state-city";
 import { Field, Form, Formik } from "formik";
+import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import Card from "../Card";
 
-const NewFuelingForm = ({ vehicleId }: { vehicleId: number }) => {
+// TODO - use json https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bstates.json
+
+const getCountries = () => {
+  // TODO - cache countries
+  // TODO - export to utils
+  return Country.getAllCountries().map((country) => ({
+    label: country.name,
+    value: country.isoCode,
+  }));
+};
+
+const getStates = (countryCode: string) => {
+  // TODO - cache states
+  // TODO - export to utils
+  return State.getStatesOfCountry(countryCode).map((state) => ({
+    label: state.name,
+    value: state.isoCode,
+  }));
+};
+
+type NewFuelingFormProps = {
+  vehicleId: number;
+};
+
+const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
+  const router = useRouter();
+  const backToVehicles = () => {
+    router.push("/vehicles");
+  };
+  const toast = useToast({
+    duration: 5000,
+    isClosable: true,
+    containerStyle: {
+      zIndex: 999,
+      marginTop: "5rem",
+    },
+  });
   const refuelMutation = useMutation(
     (
       values: Omit<
@@ -34,7 +73,23 @@ const NewFuelingForm = ({ vehicleId }: { vehicleId: number }) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
-      })
+      }),
+    {
+      onSuccess: () => {
+        toast({
+          title: "Fueling added.",
+          position: "top-right",
+          status: "success",
+        });
+      },
+      onError: () => {
+        toast({
+          title: "An error occurred.",
+          position: "top-right",
+          status: "error",
+        });
+      },
+    }
   );
 
   return (
@@ -52,10 +107,9 @@ const NewFuelingForm = ({ vehicleId }: { vehicleId: number }) => {
           mileage: 0.0,
           vehicleId,
         }}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           await refuelMutation.mutate(values);
           setSubmitting(false);
-          resetForm();
         }}
       >
         {({ isSubmitting }) => (
@@ -103,7 +157,7 @@ const NewFuelingForm = ({ vehicleId }: { vehicleId: number }) => {
                 )}
               </Field>
 
-              <FormControl mb="2">
+              <FormControl mb="2" isRequired>
                 <FormLabel htmlFor="country">Country</FormLabel>
                 <Field
                   as={Select}
@@ -111,54 +165,33 @@ const NewFuelingForm = ({ vehicleId }: { vehicleId: number }) => {
                   name="country"
                   id="country"
                 >
-                  <option value="Germany">Germany</option>
-                  <option value="France">France</option>
-                  <option value="Spain">Spain</option>
-                  <option value="Italy">Italy</option>
-                  <option value="Portugal">Portugal</option>
-                  <option value="Austria">Austria</option>
-                  <option value="Switzerland">Switzerland</option>
-                  <option value="Netherlands">Netherlands</option>
-                  <option value="Belgium">Belgium</option>
-                  <option value="Luxembourg">Luxembourg</option>
-                  <option value="Denmark">Denmark</option>
-                  <option value="Sweden">Sweden</option>
-                  <option value="Norway">Norway</option>
-                  <option value="Finland">Finland</option>
-                  <option value="Iceland">Iceland</option>
-                  <option value="Poland">Poland</option>
-                  <option value="Czech Republic">Czech Republic</option>
-                  <option value="Slovakia">Slovakia</option>
-                  <option value="Hungary">Hungary</option>
-                  <option value="Slovenia">Slovenia</option>
-                  <option value="Croatia">Croatia</option>
-                  <option value="Bosnia and Herzegovina">
-                    Bosnia and Herzegovina
-                  </option>
-                  <option value="Serbia">Serbia</option>
-                  <option value="Montenegro">Montenegro</option>
-                  <option value="Albania">Albania</option>
-                  <option value="Macedonia">Macedonia</option>
-                  <option value="Greece">Greece</option>
-                  <option value="Turkey">Turkey</option>
-                  <option value="Bulgaria">Bulgaria</option>
-                  <option value="Romania">Romania</option>
-                  <option value="Moldova">Moldova</option>
-                  <option value="Ukraine">Ukraine</option>
-                  <option value="Belarus">Belarus</option>
-                  <option value="Lithuania">Lithuania</option>
-                  <option value="Latvia">Latvia</option>
-                  <option value="Estonia">Estonia</option>
-                  <option value="Russia">Russia</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Ireland">Ireland</option>
+                  {getCountries().map((country) => (
+                    <option key={country.value} value={country.value}>
+                      {country.label}
+                    </option>
+                  ))}
                 </Field>
               </FormControl>
 
-              <FormControl mb="2">
-                <FormLabel htmlFor="region">Region</FormLabel>
-                <Field as={Input} type="text" name="region" id="region" />
-              </FormControl>
+              <Field name="region">
+                {({ form }) => (
+                  <FormControl id="region" isRequired mb="2">
+                    <FormLabel htmlFor="region">Region</FormLabel>
+                    <Select
+                      id="region"
+                      name="region"
+                      placeholder="Choose region"
+                      disabled={!form.values.country}
+                    >
+                      {getStates(form.values.country).map((state) => (
+                        <option key={state.value} value={state.value}>
+                          {state.label}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                )}
+              </Field>
 
               <FormControl mb="2">
                 <FormLabel htmlFor="station">Station</FormLabel>
@@ -250,15 +283,17 @@ const NewFuelingForm = ({ vehicleId }: { vehicleId: number }) => {
                 )}
               </Field>
 
-              <Button
-                type="submit"
-                colorScheme="telegram"
-                variant="outline"
-                my="4"
-                disabled={isSubmitting}
-              >
-                Add
-              </Button>
+              <ButtonGroup mt="2" variant="outline">
+                <Button
+                  type="submit"
+                  colorScheme="telegram"
+                  isLoading={refuelMutation.isLoading}
+                  loadingText="Submitting"
+                >
+                  Submit
+                </Button>
+                <Button onClick={backToVehicles}>Back</Button>
+              </ButtonGroup>
             </Form>
           </Box>
         )}
