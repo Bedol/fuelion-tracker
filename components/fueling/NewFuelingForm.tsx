@@ -13,27 +13,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { Fueling } from "@prisma/client";
-import { Country, State } from "country-state-city";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
+import { getCountries } from "../../hooks/getCountries";
+import { getStates } from "../../hooks/getStates";
 import Card from "../Card";
 
-// TODO - use json https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bstates.json
-
-const getCountries = () => {
-  // TODO - cache countries
-  // TODO - export to utils
-  return Country.getAllCountries().map((country) => ({
-    label: country.name,
-    value: country.isoCode,
-  }));
-};
-
-const getStates = (countryCode: string) => {
-  // TODO - cache states
-  // TODO - export to utils
-  return State.getStatesOfCountry(countryCode).map((state) => ({
+const getStatesForCountry = (countryCode: string) => {
+  return getStates(countryCode).map((state) => ({
     label: state.name,
     value: state.isoCode,
   }));
@@ -91,6 +79,13 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
       },
     }
   );
+  const { data: countries } = useQuery("countries", async () => {
+    const result = await getCountries();
+    return result.map((country) => ({
+      label: country.name,
+      value: country.iso2,
+    }));
+  });
 
   return (
     <Card>
@@ -107,12 +102,11 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
           mileage: 0.0,
           vehicleId,
         }}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values) => {
           await refuelMutation.mutate(values);
-          setSubmitting(false);
         }}
       >
-        {({ isSubmitting }) => (
+        {() => (
           <Box py="12px" px="32px">
             <Form>
               <Field name="amount">
@@ -165,7 +159,7 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
                   name="country"
                   id="country"
                 >
-                  {getCountries().map((country) => (
+                  {countries.map((country) => (
                     <option key={country.value} value={country.value}>
                       {country.label}
                     </option>
@@ -183,7 +177,7 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
                       placeholder="Choose region"
                       disabled={!form.values.country}
                     >
-                      {getStates(form.values.country).map((state) => (
+                      {getStatesForCountry(form.values.country).map((state) => (
                         <option key={state.value} value={state.value}>
                           {state.label}
                         </option>

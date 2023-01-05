@@ -16,9 +16,10 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { FaChartBar, FaGasPump } from "react-icons/fa";
-import { useQuery } from "react-query";
+import { dehydrate, QueryClient, useQuery } from "react-query";
 import FetchDataErrorAlert from "../../components/errors/FetchDataErrorAlert";
 import Loading from "../../components/Loading";
+import { getCountries } from "../../hooks/getCountries";
 
 const AllVehicles = () => {
   const { isLoading, isError, data } = useQuery("vehicles", async () => {
@@ -116,3 +117,20 @@ const AllVehicles = () => {
 };
 
 export default AllVehicles;
+
+export async function getServerSideProps(_context) {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery("countries", async () => {
+    const result = await getCountries();
+    return result;
+  });
+  await queryClient.prefetchQuery("vehicles", async () => {
+    const result = await fetch("/api/vehicles");
+    return result.json();
+  });
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
