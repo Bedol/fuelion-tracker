@@ -5,7 +5,7 @@
 - Remove [@next-auth/mongodb-adapter](https://github.com/Bedol/fuelion-tracker/pull/17)
 - Remove [postcss](<[postcss](https://github.com/Bedol/fuelion-tracker/pull/14)>)
 - Remove autoprefixer
-- add package to handle charts - [recharts](https://recharts.org/en-US/) ?
+- add package to handle charts - [recharts](https://recharts.org/en-US/) or [React Charts](https://react-charts.tanstack.com/)
 - add package to handle tables - [React Table](https://react-table-v7.tanstack.com/)
 
 ## project
@@ -22,3 +22,4 @@
 - add better validation for inserting or updating the data
 - add utils to calculate data
 - cache countries and states
+- create utils for fetching functions
