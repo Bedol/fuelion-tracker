@@ -14,7 +14,7 @@
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@next-auth/mongodb-adapter": "^1.0.3",
+    "@next-auth/mongodb-adapter": "^1.1.1",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.8.0",
     "country-state-city": "^3.1.2",
