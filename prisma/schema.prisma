@@ -13,7 +13,6 @@ model Vehicles {
   engine_capacity Float
   fuel_type       String    @db.VarChar(255)
   gearbox         String    @db.VarChar(255)
-  mileage         Int       @default(0)
   model           String    @db.VarChar(255)
   power           Int
   power_unit      String    @db.VarChar(255)
@@ -21,38 +20,27 @@ model Vehicles {
   type            String    @db.VarChar(255)
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
+  mileage         Int       @default(0)
   Fueling         Fueling[]
 }
 
 model Fueling {
   id                Int           @id @default(autoincrement())
-  vehicleId         Int
-  vehicle           Vehicles      @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
   amount            Float         @default(0.0)
   cost              Float         @default(0.0)
-  date              DateTime?     @db.Date
+  air_conditioning  Boolean       @default(true)
   country           String?       @db.VarChar(255)
-  region            String?       @db.VarChar(255)
-  station           String?       @db.VarChar(255)
-  type_of_fuel      TypeOfFuel    @default(GASOLINE)
   currency          String?       @db.VarChar(3)
+  date              DateTime?     @db.Date
   distance_traveled Float         @default(0.0)
   mileage           Float         @default(0.0)
-  type_of_fueling   TypeOfFueling @default(FULL)
+  region            String?       @db.VarChar(255)
+  station           String?       @db.VarChar(255)
   tire_type         String?       @db.VarChar(255)
-  air_conditioning  Boolean       @default(true)
-}
-
-enum TypeOfFuel {
-  GASOLINE
-  DIESEL
-  LPG
-  ELECTRIC
-}
-
-enum TypeOfFueling {
-  FULL
-  NOT_FULL
+  type_of_fuel      TypeOfFuel    @default(GASOLINE)
+  type_of_fueling   TypeOfFueling @default(FULL)
+  vehicleId         Int
+  vehicle           Vehicles      @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -68,8 +56,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id])
+  user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
 }
@@ -99,4 +86,16 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum TypeOfFuel {
+  GASOLINE
+  DIESEL
+  LPG
+  ELECTRIC
+}
+
+enum TypeOfFueling {
+  FULL
+  NOT_FULL
 }
