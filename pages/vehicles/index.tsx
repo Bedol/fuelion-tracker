@@ -119,13 +119,14 @@ const AllVehicles = () => {
 export default AllVehicles;
 
 export async function getServerSideProps(_context) {
+  const { DOMAIN_URL } = process.env;
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery("countries", async () => {
     const result = await getCountries();
     return result;
   });
   await queryClient.prefetchQuery("vehicles", async () => {
-    const result = await fetch("/api/vehicles");
+    const result = await fetch(`${DOMAIN_URL}/api/vehicles`);
     return result.json();
   });
   return {
