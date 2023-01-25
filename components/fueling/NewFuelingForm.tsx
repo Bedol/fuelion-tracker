@@ -4,11 +4,6 @@ import {
   ButtonGroup,
   FormControl,
   FormLabel,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
   useToast,
 } from "@chakra-ui/react";
@@ -19,6 +14,7 @@ import { useMutation, useQuery } from "react-query";
 import { getCountries } from "../../hooks/getCountries";
 import { getStates } from "../../hooks/getStates";
 import Card from "../Card";
+import { NumberInput } from "../Form/NumberInput";
 
 const getStatesForCountry = (countryCode: string) => {
   return getStates(countryCode).map((state) => ({
@@ -111,43 +107,31 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
             <Form>
               <Field name="amount">
                 {({ field, form }) => (
-                  <FormControl id="amount" isRequired mb="2">
-                    <FormLabel htmlFor="amount">Amount of fuel</FormLabel>
-                    <NumberInput
-                      onChange={(val) =>
-                        form.setFieldValue(field.name, parseFloat(val))
-                      }
-                      min={0}
-                      precision={2}
-                    >
-                      <NumberInputField id="amount" name="amount" />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  </FormControl>
+                  <NumberInput
+                    isRequired
+                    name="amount"
+                    label="Amount of fuel"
+                    onChange={(val) =>
+                      form.setFieldValue(field.name, parseFloat(val))
+                    }
+                    min={0}
+                    precision={2}
+                  />
                 )}
               </Field>
 
               <Field name="cost">
                 {({ field, form }) => (
-                  <FormControl id="cost" isRequired mb="2">
-                    <FormLabel htmlFor="cost">Cost of fuel</FormLabel>
-                    <NumberInput
-                      onChange={(val) =>
-                        form.setFieldValue(field.name, parseFloat(val))
-                      }
-                      min={0}
-                      precision={2}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  </FormControl>
+                  <NumberInput
+                    isRequired
+                    name="cost"
+                    label="Cost of fuel"
+                    onChange={(val) =>
+                      form.setFieldValue(field.name, parseFloat(val))
+                    }
+                    min={0}
+                    precision={2}
+                  />
                 )}
               </Field>
 
@@ -232,48 +216,30 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
 
               <Field name="distance_traveled">
                 {({ field, form }) => (
-                  <FormControl id="distance_traveled" isRequired mb="2">
-                    <FormLabel htmlFor="distance_traveled">
-                      Distance traveled
-                    </FormLabel>
-                    <NumberInput
-                      onChange={(val) =>
-                        form.setFieldValue(field.name, parseFloat(val))
-                      }
-                      min={0}
-                      precision={2}
-                    >
-                      <NumberInputField
-                        id="distance_traveled"
-                        name="distance_traveled"
-                      />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  </FormControl>
+                  <NumberInput
+                    name="distance_traveled"
+                    label="Distance traveled"
+                    onChange={(val) =>
+                      form.setFieldValue(field.name, parseFloat(val))
+                    }
+                    min={0}
+                    precision={2}
+                  />
                 )}
               </Field>
 
               <Field name="mileage">
                 {({ field, form }) => (
-                  <FormControl id="mileage" isRequired mb="2">
-                    <FormLabel htmlFor="distance_traveled">Mileage</FormLabel>
-                    <NumberInput
-                      onChange={(val) =>
-                        form.setFieldValue(field.name, parseFloat(val))
-                      }
-                      min={0}
-                      precision={2}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  </FormControl>
+                  <NumberInput
+                    isRequired
+                    name="mileage"
+                    label="Mileage"
+                    onChange={(val) =>
+                      form.setFieldValue(field.name, parseFloat(val))
+                    }
+                    min={0}
+                    precision={2}
+                  />
                 )}
               </Field>
 
