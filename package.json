@@ -9,6 +9,12 @@
     "lint": "eslint --ext .ts,.tsx,.js --fix",
     "prettier": "prettier --write ."
   },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "npx prettier --write",
+      "npx eslint --fix"
+    ]
+  },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.9",
@@ -37,6 +43,7 @@
     "autoprefixer": "^10.4.13",
     "eslint": "^8.32.0",
     "eslint-config-next": "^13.1.5",
+    "lint-staged": "^13.1.0",
     "postcss": "^8.4.19",
     "prettier": "^2.8.3",
     "prisma": "^4.9.0",
