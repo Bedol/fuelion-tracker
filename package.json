@@ -16,7 +16,7 @@
     "@emotion/styled": "^11.10.5",
     "@next-auth/mongodb-adapter": "^1.0.3",
     "@next-auth/prisma-adapter": "^1.0.5",
-    "@prisma/client": "^4.9.0",
+    "@prisma/client": "^4.10.0",
     "country-state-city": "^3.1.2",
     "dotenv": "^16.0.3",
     "formik": "^2.2.9",
