@@ -1,10 +1,10 @@
-import { Fueling, PrismaPromise } from "@prisma/client";
+import { Fueling, Prisma } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next/types";
 import prisma from "../../../lib/prisma";
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse<PrismaPromise<Fueling[]> | {}>
+  res: NextApiResponse<Prisma.PrismaPromise<Fueling[]> | {}>
 ) {
   const { method, body } = req;
 
