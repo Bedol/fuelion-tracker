@@ -25,7 +25,7 @@ const getStatesForCountry = (countryCode: string) => {
 };
 
 export type NewFuelingFormProps = {
-  vehicle?: Vehicles;
+  vehicle: Vehicles;
 };
 
 const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
@@ -99,8 +99,8 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
           region: "",
           station: "",
           currency: "",
-          distance_traveled: 0.0,
-          mileage: 0.0,
+          distance_traveled: 0,
+          mileage: vehicle.mileage,
           vehicleId: vehicle.id,
         }}
         onSubmit={async (values) => {
@@ -231,11 +231,15 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
                   <NumberInput
                     name="distance_traveled"
                     label="Distance traveled"
-                    onChange={(val) =>
-                      form.setFieldValue(field.name, parseFloat(val))
-                    }
+                    onChange={(val) => {
+                      form.setFieldValue(field.name, parseInt(val));
+                      form.setFieldValue(
+                        "mileage",
+                        vehicle.mileage + form.values.distance_traveled
+                      );
+                    }}
                     min={0}
-                    precision={2}
+                    value={form.values.distance_traveled}
                   />
                 )}
               </Field>
@@ -246,11 +250,15 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
                     isRequired
                     name="mileage"
                     label="Mileage"
-                    onChange={(val) =>
-                      form.setFieldValue(field.name, parseFloat(val))
-                    }
-                    min={0}
-                    precision={2}
+                    onChange={(val) => {
+                      form.setFieldValue(field.name, parseInt(val));
+                      form.setFieldValue(
+                        "distance_traveled",
+                        form.values.mileage - vehicle.mileage
+                      );
+                    }}
+                    value={form.values.mileage}
+                    min={vehicle.mileage}
                   />
                 )}
               </Field>

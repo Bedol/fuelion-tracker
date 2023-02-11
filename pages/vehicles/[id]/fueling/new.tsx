@@ -29,10 +29,11 @@ export async function getServerSideProps(context) {
       id: vehicleId,
     },
   });
+  const vehicleData = JSON.parse(JSON.stringify(vehicle));
 
   return {
     props: {
-      vehicle,
+      vehicle: vehicleData,
     },
   };
 }
