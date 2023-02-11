@@ -1,11 +1,11 @@
-import { PrismaPromise, Vehicles } from "@prisma/client";
+import { Prisma, Vehicles } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../lib/prisma";
 
 const handle = async (
   req: NextApiRequest,
   res: NextApiResponse<
-    | PrismaPromise<Vehicles[]>
+    | Prisma.PrismaPromise<Vehicles[]>
     | Omit<Vehicles, "id" | "created_at" | "updated_at">
     | {}
   >
