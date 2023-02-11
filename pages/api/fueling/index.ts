@@ -11,10 +11,28 @@ export default async function handle(
   switch (method) {
     case "POST":
       {
-        const result = await prisma.fueling.create({
+        const fueling = await prisma.fueling.create({
           data: body,
         });
-        res.json(result);
+
+        // Find vehicle and update mileage if needed
+        const vehicle = await prisma.vehicles.findUnique({
+          where: {
+            id: body.vehicleId,
+          },
+        });
+
+        if (vehicle.mileage < body.mileage) {
+          await prisma.vehicles.update({
+            where: {
+              id: body.vehicleId,
+            },
+            data: {
+              mileage: body.mileage,
+            },
+          });
+        }
+        res.json(fueling);
       }
       break;
     case "GET":
