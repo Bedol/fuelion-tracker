@@ -7,7 +7,7 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
-import { Fueling } from "@prisma/client";
+import { Fueling, Vehicles } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
@@ -24,11 +24,11 @@ const getStatesForCountry = (countryCode: string) => {
   }));
 };
 
-type NewFuelingFormProps = {
-  vehicleId: number;
+export type NewFuelingFormProps = {
+  vehicle?: Vehicles;
 };
 
-const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
+const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
   const router = useRouter();
   const backToVehicles = () => {
     router.push("/vehicles");
@@ -101,7 +101,7 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
           currency: "",
           distance_traveled: 0.0,
           mileage: 0.0,
-          vehicleId,
+          vehicleId: vehicle.id,
         }}
         onSubmit={async (values) => {
           await refuelMutation.mutate(values);
