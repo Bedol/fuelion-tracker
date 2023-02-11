@@ -10,7 +10,8 @@ import {
 import { Fueling } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "react-query";
+import React from "react";
+import { useMutation } from "react-query";
 import { getCountries } from "../../hooks/getCountries";
 import { getStates } from "../../hooks/getStates";
 import Card from "../Card";
@@ -75,13 +76,17 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
       },
     }
   );
-  const { data: countries } = useQuery("countries", async () => {
-    const result = await getCountries();
-    return result.map((country) => ({
+
+  const countries = React.useMemo(() => {
+    return getCountries().map((country) => ({
       label: country.name,
       value: country.iso2,
     }));
-  });
+  }, []);
+
+  const [states, setStates] = React.useState<
+    { label: string; value: string }[]
+  >([]);
 
   return (
     <Card>
@@ -135,21 +140,28 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
                 )}
               </Field>
 
-              <FormControl mb="2" isRequired>
-                <FormLabel htmlFor="country">Country</FormLabel>
-                <Field
-                  as={Select}
-                  placeholder="Select country"
-                  name="country"
-                  id="country"
-                >
-                  {countries.map((country) => (
-                    <option key={country.value} value={country.value}>
-                      {country.label}
-                    </option>
-                  ))}
-                </Field>
-              </FormControl>
+              <Field name="country">
+                {({ form }) => (
+                  <FormControl id="country" isRequired mb="2">
+                    <FormLabel htmlFor="country">Country</FormLabel>
+                    <Select
+                      id="country"
+                      name="country"
+                      placeholder="Select country"
+                      onChange={(e) => {
+                        form.setFieldValue("country", e.target.value);
+                        setStates(getStatesForCountry(e.target.value));
+                      }}
+                    >
+                      {countries.map((country) => (
+                        <option key={country.value} value={country.value}>
+                          {country.label}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                )}
+              </Field>
 
               <Field name="region">
                 {({ form }) => (
@@ -161,7 +173,7 @@ const NewFuelingForm = ({ vehicleId }: NewFuelingFormProps) => {
                       placeholder="Choose region"
                       disabled={!form.values.country}
                     >
-                      {getStatesForCountry(form.values.country).map((state) => (
+                      {states.map((state) => (
                         <option key={state.value} value={state.value}>
                           {state.label}
                         </option>
