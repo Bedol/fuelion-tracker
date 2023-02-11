@@ -12,7 +12,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 14.18
+          node-version: 18.14
       - name: Install dependencies
         run: npx ci
       - name: Install semantic-release extra plugins
