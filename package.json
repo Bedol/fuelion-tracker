@@ -1,6 +1,6 @@
 {
-  "name": "fuelion-tracker",
-  "version": "0.1.0",
+  "name": "refuel-tracker",
+  "version": "0.0.0-semantic-release",
   "private": true,
   "scripts": {
     "dev": "next dev",
