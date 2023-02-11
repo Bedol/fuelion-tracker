@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.14
+      - name: Install dependencies
+        run: npx ci
+      - name: Install semantic-release extra plugins
+        run: npm install --save-dev @semantic-release/changelog @semantic-release/git
+      - name: Lint Action
+        uses: wearerequired/lint-action@v2.0.0
+        with:
+          eslint: true
+          prettier: false
+      - name: Build app
+        run: npm run build --if-present
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+        run: npx semantic-release
