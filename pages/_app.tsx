@@ -7,6 +7,8 @@ import "../styles/globals.css";
 
 const queryClient = new QueryClient();
 
+const isProduction = process.env.NODE_ENV === "production";
+
 function MyApp({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
@@ -19,7 +21,7 @@ function MyApp({ Component, pageProps }) {
           </Layout>
         </ChakraProvider>
       </SessionProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {!isProduction && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 }
