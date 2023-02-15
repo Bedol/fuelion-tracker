@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"@chakra-ui/icons": "^2.0.17",
-		"@chakra-ui/react": "^1.8.9",
+		"@chakra-ui/react": "^2.5.0",
 		"@emotion/react": "^11.10.5",
 		"@emotion/styled": "^11.10.5",
 		"@next-auth/mongodb-adapter": "^1.0.3",
