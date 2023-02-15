@@ -12,7 +12,6 @@ import {
 	Th,
 	Thead,
 	Tr,
-	useToast,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { FaChartBar, FaGasPump } from 'react-icons/fa';
@@ -25,13 +24,6 @@ const AllVehicles = () => {
 	const { isLoading, isError, data } = useQuery('vehicles', async () => {
 		const result = await fetch('/api/vehicles');
 		return result.json();
-	});
-	const toast = useToast({
-		duration: 3000,
-		isClosable: true,
-		containerStyle: {
-			zIndex: 999,
-		},
 	});
 
 	if (isLoading) return <Loading />;
@@ -93,18 +85,14 @@ const AllVehicles = () => {
 												icon={<FaGasPump />}
 											/>
 										</Link>
-										<IconButton
-											aria-label='Statistics'
-											colorScheme='blue'
-											icon={<FaChartBar />}
-											onClick={() => {
-												toast({
-													title: 'Not implemented yet.',
-													position: 'bottom-left',
-													status: 'warning',
-												});
-											}}
-										/>
+										<Link href={`/vehicles/${row.id}/statistics`} passHref>
+											<IconButton
+												as='a'
+												aria-label='Statistics'
+												colorScheme='blue'
+												icon={<FaChartBar />}
+											/>
+										</Link>
 									</ButtonGroup>
 								</Td>
 							</Tr>
