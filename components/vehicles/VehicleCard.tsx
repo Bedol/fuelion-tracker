@@ -12,7 +12,7 @@ import {
 	StatLabel,
 	StatNumber,
 } from '@chakra-ui/react';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { FaGasPump } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 
@@ -77,16 +77,15 @@ const VehicleCard = ({ vehicleId }) => {
 				</CardBody>
 
 				<CardFooter>
-					<Link href={`/vehicles/${vehicleId}/fueling/new`} passHref>
-						<Button
-							as='a'
-							aria-label='Add fueling'
-							colorScheme='green'
-							rightIcon={<FaGasPump />}
-						>
-							Add fueling
-						</Button>
-					</Link>
+					<Button
+						as={NextLink}
+						href={`/vehicles/${vehicleId}/fueling/new`}
+						aria-label='Add fueling'
+						colorScheme='green'
+						rightIcon={<FaGasPump />}
+					>
+						Add fueling
+					</Button>
 				</CardFooter>
 			</Stack>
 		</Card>

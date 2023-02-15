@@ -84,16 +84,11 @@ const AllVehicles = () => {
 											icon={<FaGasPump />}
 										/>
 										<IconButton
+											as={NextLink}
+											href={`/vehicles/${row.id}/statistics`}
 											aria-label='Statistics'
 											colorScheme='blue'
 											icon={<FaChartBar />}
-											onClick={() => {
-												toast({
-													title: 'Not implemented yet.',
-													position: 'bottom-left',
-													status: 'warning',
-												});
-											}}
 										/>
 									</ButtonGroup>
 								</Td>
