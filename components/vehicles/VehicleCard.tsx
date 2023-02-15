@@ -6,13 +6,11 @@ import {
 	CardFooter,
 	Heading,
 	Image,
-	ListItem,
+	SimpleGrid,
 	Stack,
 	Stat,
-	StatGroup,
 	StatLabel,
 	StatNumber,
-	UnorderedList,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { FaGasPump } from 'react-icons/fa';
@@ -44,11 +42,11 @@ const VehicleCard = ({ vehicleId }) => {
 
 			<Stack>
 				<CardBody width={{ base: '200px', lg: '900px', md: '640px' }}>
-					<Heading size='md'>
+					<Heading size='md' mb='3'>
 						{data.brand} {data.model}
 					</Heading>
 
-					<StatGroup>
+					<SimpleGrid columns={{ sm: 1, md: 4, lg: 6 }} spacing={6}>
 						<Stat>
 							<StatLabel>Production Year</StatLabel>
 							<StatNumber>{data.production_year}</StatNumber>
@@ -58,15 +56,24 @@ const VehicleCard = ({ vehicleId }) => {
 							<StatLabel>Mileage</StatLabel>
 							<StatNumber>{data.mileage}</StatNumber>
 						</Stat>
-					</StatGroup>
-					<UnorderedList>
-						<ListItem>{data.fuel_type || 'benzine'}</ListItem>
-						<ListItem>{data.engine_capacity}</ListItem>
-						<ListItem>{data.gearbox || 'unknown'}</ListItem>
-						<ListItem>
-							{data.power} {data.power_unit || 'hp'}
-						</ListItem>
-					</UnorderedList>
+
+						<Stat>
+							<StatLabel>Fuel Type</StatLabel>
+							<StatNumber>{data.fuel_type || 'benzine'}</StatNumber>
+						</Stat>
+
+						<Stat>
+							<StatLabel>Gearbox</StatLabel>
+							<StatNumber>{data.gearbox || 'unknown'}</StatNumber>
+						</Stat>
+
+						<Stat>
+							<StatLabel>Power</StatLabel>
+							<StatNumber>
+								{data.power} {data.power_unit || 'hp'}
+							</StatNumber>
+						</Stat>
+					</SimpleGrid>
 				</CardBody>
 
 				<CardFooter>
