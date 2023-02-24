@@ -1,3 +1,11 @@
+## [1.0.1-develop.1](https://github.com/Bedol/fuelion-tracker/compare/v1.0.0...v1.0.1-develop.1) (2023-02-24)
+
+
+### Bug Fixes
+
+* hydration error in Navigation component ([0931b67](https://github.com/Bedol/fuelion-tracker/commit/0931b6770ff8e29c231d6b9f8a2828b8ad9e61f6))
+* hydration error in vehicles page ([d69813c](https://github.com/Bedol/fuelion-tracker/commit/d69813cb9e5717bba3a01d3b52bfc54ebd9483df))
+
 # 1.0.0 (2023-02-11)
 
 
