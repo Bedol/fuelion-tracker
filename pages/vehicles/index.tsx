@@ -14,7 +14,7 @@ import {
 	Tr,
 	useToast,
 } from '@chakra-ui/react';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { FaChartBar, FaGasPump } from 'react-icons/fa';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
@@ -45,15 +45,15 @@ const AllVehicles = () => {
 		<Flex direction='column' justifyContent='center'>
 			<Flex justifyContent='space-between' alignItems='baseline' mb='3'>
 				<Heading>Your Vehicles list</Heading>
-				<Link href='/vehicles/new' passHref>
-					<Button
-						colorScheme='facebook'
-						variant='outline'
-						leftIcon={<AddIcon />}
-					>
-						Add vehicle
-					</Button>
-				</Link>
+				<Button
+					as={NextLink}
+					href='/vehicles/new'
+					colorScheme='facebook'
+					variant='outline'
+					leftIcon={<AddIcon />}
+				>
+					Add vehicle
+				</Button>
 			</Flex>
 			<TableContainer>
 				<Table sx={{ minWidth: 650 }} aria-label='simple table'>
@@ -77,22 +77,20 @@ const AllVehicles = () => {
 								<Td align='right'>{row.production_year}</Td>
 								<Td align='right'>
 									<ButtonGroup variant='outline'>
-										<Link href={`/vehicles/${row.id}/edit`} passHref>
-											<IconButton
-												as='a'
-												aria-label='Edit vehicle'
-												colorScheme='yellow'
-												icon={<EditIcon />}
-											/>
-										</Link>
-										<Link href={`/vehicles/${row.id}/fueling/new`} passHref>
-											<IconButton
-												as='a'
-												aria-label='Add fueling'
-												colorScheme='green'
-												icon={<FaGasPump />}
-											/>
-										</Link>
+										<IconButton
+											as={NextLink}
+											href={`/vehicles/${row.id}/edit`}
+											aria-label='Edit vehicle'
+											colorScheme='yellow'
+											icon={<EditIcon />}
+										/>
+										<IconButton
+											as={NextLink}
+											href={`/vehicles/${row.id}/fueling/new`}
+											aria-label='Add fueling'
+											colorScheme='green'
+											icon={<FaGasPump />}
+										/>
 										<IconButton
 											aria-label='Statistics'
 											colorScheme='blue'
