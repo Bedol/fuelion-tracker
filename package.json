@@ -1,7 +1,7 @@
 {
 	"name": "refuel-tracker",
 	"description": "Refuel Tracker is a web application that allows you to track your vehicle's fuel consumption and maintenance.",
-	"version": "0.0.0-semantic-release",
+	"version": "1.0.1",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
