@@ -5,6 +5,7 @@ import {
 	FormControl,
 	FormLabel,
 	Select,
+	Switch,
 	useToast,
 } from '@chakra-ui/react';
 import { Fueling, Vehicles } from '@prisma/client';
@@ -51,7 +52,6 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
 				| 'type_of_fueling'
 				| 'type_of_fuel'
 				| 'tire_type'
-				| 'air_conditioning'
 			>
 		) =>
 			fetch('/api/fueling', {
@@ -101,6 +101,7 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
 					currency: '',
 					distance_traveled: 0,
 					mileage: vehicle.mileage,
+					air_conditioning: true,
 					vehicleId: vehicle.id,
 				}}
 				onSubmit={async (values) => {
@@ -262,6 +263,13 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
 									/>
 								)}
 							</Field>
+
+							<FormControl mb='2'>
+								<FormLabel htmlFor='air_conditioning'>
+									Air conditioning ?
+								</FormLabel>
+								<Switch name='air_conditioning' id='air_conditioning' />
+							</FormControl>
 
 							<ButtonGroup mt='2' variant='outline'>
 								<Button
