@@ -25,22 +25,22 @@ model Vehicles {
 }
 
 model Fueling {
-  id                Int           @id @default(autoincrement())
-  amount            Float         @default(0.0)
-  cost              Float         @default(0.0)
-  air_conditioning  Boolean       @default(true)
-  country           String?       @db.VarChar(255)
-  currency          String?       @db.VarChar(3)
-  date              DateTime?     @db.Date
-  distance_traveled Float         @default(0.0)
-  mileage           Float         @default(0.0)
-  region            String?       @db.VarChar(255)
-  station           String?       @db.VarChar(255)
-  tire_type         String?       @db.VarChar(255)
-  type_of_fuel      TypeOfFuel    @default(GASOLINE)
-  type_of_fueling   TypeOfFueling @default(FULL)
+  id                Int        @id @default(autoincrement())
+  amount            Float      @default(0.0)
+  cost              Float      @default(0.0)
+  air_conditioning  Boolean    @default(true)
+  country           String?    @db.VarChar(255)
+  currency          String?    @db.VarChar(3)
+  date              DateTime?  @db.Date
+  distance_traveled Float      @default(0.0)
+  mileage           Float      @default(0.0)
+  region            String?    @db.VarChar(255)
+  station           String?    @db.VarChar(255)
+  tire_type         String?    @db.VarChar(255)
+  type_of_fuel      String?    @db.VarChar(255)
+  filled_tank       String?    @db.VarChar(255)
   vehicleId         Int
-  vehicle           Vehicles      @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  vehicle           Vehicles   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -86,16 +86,4 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-enum TypeOfFuel {
-  GASOLINE
-  DIESEL
-  LPG
-  ELECTRIC
-}
-
-enum TypeOfFueling {
-  FULL
-  NOT_FULL
 }
