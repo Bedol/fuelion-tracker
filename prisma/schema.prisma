@@ -17,7 +17,7 @@ model Vehicle {
   production_year Int
   fuel_type_id    Int
   transmission_id Int
-  engine_power    Int
+  engine_power_id Int
   power_unit_id   Int
   type_id         Int
   mileage         Float     @default(0.0)
