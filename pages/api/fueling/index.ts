@@ -16,14 +16,14 @@ export default async function handle(
 				});
 
 				// Find vehicle and update mileage if needed
-				const vehicle = await prisma.vehicles.findUnique({
+				const vehicle = await prisma.vehicle.findUnique({
 					where: {
 						id: body.vehicleId,
 					},
 				});
 
 				if (vehicle.mileage < body.mileage) {
-					await prisma.vehicles.update({
+					await prisma.vehicle.update({
 						where: {
 							id: body.vehicleId,
 						},

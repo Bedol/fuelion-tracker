@@ -1,5 +1,6 @@
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import { PrismaClient } from '@prisma/client';
+import { GetServerSideProps } from 'next';
 import NewFuelingForm, {
 	NewFuelingFormProps,
 } from '../../../../components/fueling/NewFuelingForm';
@@ -19,12 +20,12 @@ const NewFuelingPage = ({ vehicle }: NewFuelingFormProps) => {
 
 export default NewFuelingPage;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { id } = context.params;
-	const vehicleId = parseInt(id);
+	const vehicleId = Number(id);
 
 	const prisma = new PrismaClient();
-	const vehicle = await prisma.vehicles.findUnique({
+	const vehicle = await prisma.vehicle.findUnique({
 		where: {
 			id: vehicleId,
 		},

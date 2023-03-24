@@ -1,15 +1,15 @@
-import { Vehicles } from '@prisma/client';
+import { Vehicle } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
-const handle = async (req: NextApiRequest, res: NextApiResponse<Vehicles>) => {
+const handle = async (req: NextApiRequest, res: NextApiResponse<Vehicle>) => {
 	const { id } = req.query;
 	const { method, body } = req;
 
 	switch (method) {
 		case 'GET':
 			{
-				const result = await prisma.vehicles.findUnique({
+				const result = await prisma.vehicle.findUnique({
 					where: { id: parseInt(id as string) },
 				});
 				res.json(result);
@@ -17,7 +17,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse<Vehicles>) => {
 			break;
 		case 'PUT':
 			{
-				const result = await prisma.vehicles.update({
+				const result = await prisma.vehicle.update({
 					where: { id: parseInt(id as string) },
 					data: body,
 				});
@@ -26,7 +26,7 @@ const handle = async (req: NextApiRequest, res: NextApiResponse<Vehicles>) => {
 			break;
 		case 'DELETE':
 			{
-				const result = await prisma.vehicles.delete({
+				const result = await prisma.vehicle.delete({
 					where: { id: parseInt(id as string) },
 				});
 				res.json(result);
