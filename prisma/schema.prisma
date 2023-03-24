@@ -64,7 +64,7 @@ model Expense {
 
 model Account {
   id                Int     @id @default(autoincrement())
-  user_id           Int
+  userId           Int
   type              String  @db.VarChar(255)
   provider          String  @db.VarChar(255)
   providerAccountId String  @db.VarChar(255)
@@ -75,7 +75,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User    @relation(fields: [user_id], references: [id])
+  user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
 }
@@ -94,12 +94,12 @@ model User {
   email               String?   @unique
   emailVerified       DateTime?
   image               String?
-  default_currency_id Int
+  default_currency_id Int?
   default_country     String?   @db.VarChar(2)
   default_region      String?   @db.VarChar(255)
   favorite_station    String?   @db.VarChar(255)
   profile_completed   Boolean   @default(false)
-  fuel_unit_id        Int
+  fuel_unit_id        Int?
   accounts            Account[]
   sessions            Session[]
   vehicles            Vehicle[]
