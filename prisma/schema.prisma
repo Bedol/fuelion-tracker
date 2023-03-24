@@ -7,45 +7,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Vehicles {
+model Vehicle {
   id              Int       @id @default(autoincrement())
-  brand           String    @db.VarChar(255)
-  engine_capacity Float
-  fuel_type       String    @db.VarChar(255)
-  gearbox         String    @db.VarChar(255)
-  model           String    @db.VarChar(255)
-  power           Int
-  power_unit      String    @db.VarChar(255)
+  user_id         Int
+  user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  brand_name      String    @db.VarChar(255)
+  model_name      String    @db.VarChar(255)
+  engine_capacity Int
   production_year Int
-  type            String    @db.VarChar(255)
+  fuel_type_id    Int
+  transmission    Int
+  engine_power    Int
+  power_unit_id   Int
+  type_id         Int
+  mileage         Float     @default(0.0)
+  mileage_in_id   Int
+  value           Int
+  currency_id     Int
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
-  mileage         Int       @default(0)
-  Fueling         Fueling[]
+  fuelings        Fueling[]
+  expenses        Expense[]
 }
 
 model Fueling {
-  id                Int        @id @default(autoincrement())
-  amount            Float      @default(0.0)
-  cost              Float      @default(0.0)
-  air_conditioning  Boolean    @default(true)
-  country           String?    @db.VarChar(255)
-  currency          String?    @db.VarChar(3)
-  date              DateTime?  @db.Date
-  distance_traveled Float      @default(0.0)
-  mileage           Float      @default(0.0)
-  region            String?    @db.VarChar(255)
-  station           String?    @db.VarChar(255)
-  tire_type         String?    @db.VarChar(255)
-  type_of_fuel      String?    @db.VarChar(255)
-  filled_tank       String?    @db.VarChar(255)
-  vehicleId         Int
-  vehicle           Vehicles   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  id                     Int       @id @default(autoincrement())
+  quantity               Float     @default(0.0)
+  cost                   Float     @default(0.0)
+  cost_per_unit          Float     @default(0.0)
+  air_conditioning       Boolean   @default(false)
+  air_conditioning_value Int       @default(100)
+  country                String?   @db.VarChar(2)
+  region                 String?   @db.VarChar(255)
+  station                String?   @db.VarChar(255)
+  currency_id            Int
+  date                   DateTime? @db.Date
+  distance_traveled      Float     @default(0.0)
+  mileage                Float     @default(0.0)
+  fuel_type_id           Int
+  full_tank              Boolean   @default(true)
+  vehicle_id             Int
+  vehicle                Vehicle   @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  vehicle_id  Int
+  vehicle     Vehicle  @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+  mileage     Float    @default(0.0)
+  type_id     Int      @default(1)
+  cost        Float    @default(0.0)
+  currency_id Int
+  comment     String
 }
 
 model Account {
   id                Int     @id @default(autoincrement())
-  userId            Int
+  user_id           Int
   type              String  @db.VarChar(255)
   provider          String  @db.VarChar(255)
   providerAccountId String  @db.VarChar(255)
@@ -56,7 +75,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id])
+  user              User    @relation(fields: [user_id], references: [id])
 
   @@unique([provider, providerAccountId])
 }
@@ -70,13 +89,20 @@ model Session {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                  Int       @id @default(autoincrement())
+  name                String?
+  email               String?   @unique
+  emailVerified       DateTime?
+  image               String?
+  default_currency_id Int
+  default_country     String?   @db.VarChar(2)
+  default_region      String?   @db.VarChar(255)
+  favorite_station    String?   @db.VarChar(255)
+  profile_completed   Boolean   @default(false)
+  fuel_unit_id        Int
+  accounts            Account[]
+  sessions            Session[]
+  vehicles            Vehicle[]
 }
 
 model VerificationToken {
