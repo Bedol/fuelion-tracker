@@ -16,7 +16,7 @@ model Vehicle {
   engine_capacity Int
   production_year Int
   fuel_type_id    Int
-  transmission    Int
+  transmission_id Int
   engine_power    Int
   power_unit_id   Int
   type_id         Int
