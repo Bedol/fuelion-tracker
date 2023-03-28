@@ -1,12 +1,12 @@
-import { Prisma, Vehicles } from '@prisma/client';
+import { Prisma, Vehicle } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
 const handle = async (
 	req: NextApiRequest,
 	res: NextApiResponse<
-		| Prisma.PrismaPromise<Vehicles[]>
-		| Omit<Vehicles, 'id' | 'created_at' | 'updated_at'>
+		| Prisma.PrismaPromise<Vehicle[]>
+		| Omit<Vehicle, 'id' | 'created_at' | 'updated_at'>
 		| {}
 	>
 ) => {
@@ -15,7 +15,7 @@ const handle = async (
 	switch (method) {
 		case 'POST':
 			{
-				const result = await prisma.vehicles.create({
+				const result = await prisma.vehicle.create({
 					data: body,
 				});
 				res.json(result);
@@ -23,7 +23,7 @@ const handle = async (
 			break;
 		case 'GET':
 			{
-				const vehicles = await prisma.vehicles.findMany();
+				const vehicles = await prisma.vehicle.findMany();
 				res.json(vehicles);
 			}
 			break;
