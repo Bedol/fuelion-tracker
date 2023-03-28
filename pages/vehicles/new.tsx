@@ -12,29 +12,11 @@ import { Vehicle } from '@prisma/client';
 import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
 import { useMutation } from 'react-query';
-
-type SelectOptionType = {
-  id: number
-  name: string
-  value: string
-}
-
-type CurrencyType = {
-  id: number
-  name: string
-  code: string
-}
+import { CurrencyType, SelectOptionType, fuelTypes } from '../../types/vehicle_types';
 
 const powerUnits: SelectOptionType[] = [
   { id: 1, name: 'Horese Power', value: 'HP' },
   { id: 2, name: 'Kilo Wats', value: 'kW' }
-]
-
-const fuelTypes: SelectOptionType[] = [
-  { id: 1, name: 'Benzine', value: 'BENZINE' },
-  { id: 2, name: 'Diesel', value: 'DIESEL' },
-  { id: 3, name: 'LPG', value: 'LPG' },
-  { id: 4, name: 'Electric', value: 'EV' }
 ]
 
 const vehicleTypes: SelectOptionType[] = [
@@ -51,8 +33,8 @@ const currencies: CurrencyType[] = [
 ]
 
 const mileageUnits: SelectOptionType[] = [
-  {id: 1, name: 'Kilometers', value: 'KM'},
-  {id: 2, name: 'Miles', value: 'MIL'}
+  { id: 1, name: 'Kilometers', value: 'KM' },
+  { id: 2, name: 'Miles', value: 'MIL' }
 ]
 
 
@@ -67,9 +49,9 @@ const NewVehicleForm = () => {
       })
   );
 
-  const {status} = useSession();
+  const { status } = useSession();
 
-  if(status === "unauthenticated") {
+  if (status === "unauthenticated") {
     return <p>You need to signin first</p>
   }
 
