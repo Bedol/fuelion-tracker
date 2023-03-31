@@ -10,16 +10,18 @@ import {
   Switch,
   useToast,
 } from "@chakra-ui/react";
-import { Fueling, Vehicles } from "@prisma/client";
+import { Fueling, Vehicle } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
 import { useMutation } from "react-query";
 import { getCountries } from "../../hooks/getCountries";
 import { getStates } from "../../hooks/getStates";
+import { fuelTypes, currencies } from "../../types/vehicle_types";
 import Card from "../Card";
 import { NumberInput } from "../Form/NumberInput";
-import { currencies, gasStations, typeOfFuel, typeOfFuelings } from "./data/dictionary";
+import { SliderThumbWithTooltip } from "../Form/SliderThumbWithTooltip";
+import { gasStations, typeOfFuelings } from "./data/dictionary";
 
 const getStatesForCountry = (countryCode: string) => {
   return getStates(countryCode).map((state) => ({
@@ -29,7 +31,7 @@ const getStatesForCountry = (countryCode: string) => {
 };
 
 export type NewFuelingFormProps = {
-  vehicle: Vehicles;
+  vehicle: Vehicle;
 };
 
 
@@ -94,19 +96,21 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
     <Card>
       <Formik
         initialValues={{
-          amount: 0.0,
+          quantity: 0.0,
           cost: 0.0,
+          cost_per_unit: 0.0,
           date: new Date(Date.now()),
           country: "",
           region: "",
           station: "",
-          currency: "",
-          type_of_fuel: "",
-          filled_tank: "",
-          distance_traveled: 0,
+          currency_id: null,
+          fuel_type_id: null,
+          full_tank: true,
+          distance_traveled: 0.0,
           mileage: vehicle.mileage,
           air_conditioning: true,
-          vehicleId: vehicle.id,
+          air_conditioning_value: 100,
+          vehicle_id: vehicle.id,
         }}
         onSubmit={(values) => {
           // TODO: Add validation
@@ -116,17 +120,17 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
         {() => (
           <Box py="12px" px="32px">
             <Form>
-              <SimpleGrid columns={2} spacing={4}>
+              <SimpleGrid columns={2} spacing={2}>
                 <FormControl mb="2">
                   <FormLabel htmlFor="date">Date</FormLabel>
                   <Input placeholder="Select Date" type="date" name="date" />
                 </FormControl>
 
-                <Field name="amount">
+                <Field name="quantity">
                   {({ field, form }) => (
                     <NumberInput
                       isRequired
-                      name="amount"
+                      name="quantity"
                       label="Amount of fuel"
                       onChange={(val) =>
                         form.setFieldValue(field.name, parseFloat(val))
@@ -152,37 +156,38 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
                   )}
                 </Field>
 
-                <FormControl mb="2">
-                  <FormLabel htmlFor="type_of_fuel">Fuel type</FormLabel>
-                  <Field
-                    as={Select}
-                    placeholder="Choose option"
-                    name="type_of_fuel"
-                    id="type_of_fuel"
-                  >
-                    {typeOfFuel.map((type) => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
-                      </option>
-                    ))}
-                  </Field>
+                <Field name="cost_per_unit">
+                  {({ field, form }) => (
+                    <NumberInput
+                      isRequired
+                      name="cost_per_unit"
+                      label="Cost per unit"
+                      onChange={(val) =>
+                        form.setFieldValue(field.name, parseFloat(val))
+                      }
+                      min={0}
+                      precision={2}
+                    />
+                  )}
+                </Field>
+
+                <FormControl isRequired>
+                  <FormLabel htmlFor='fuel_type_id'>Fuel type</FormLabel>
+                  <Select name='fuel_type_id' id='fuel_type_id' placeholder='Choose option'>
+                    {fuelTypes.map((fuel_type) =>
+                      <option key={fuel_type.id} value={fuel_type.id}>{fuel_type.name}</option>
+                    )}
+                  </Select>
                 </FormControl>
 
-                <FormControl mb="2">
-                  <FormLabel htmlFor="filled_tank">How full is the tank?</FormLabel>
-                  <Field
-                    as={Select}
-                    placeholder="Choose option"
-                    name="filled_tank"
-                    id="filled_tank"
-                  >
-                    {typeOfFuelings.map((type) => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
-                      </option>
-                    ))}
-                  </Field>
-                </FormControl>
+                <Field>
+                  {({ form }) => (
+                    <FormControl mb="2">
+                      <FormLabel htmlFor="full_tank">Full tank?</FormLabel>
+                      <Switch name="full_tank" id="full_tank" isChecked={form.values.full_tank} />
+                    </FormControl>
+                  )}
+                </Field>
 
                 <Field name="country">
                   {({ form }) => (
@@ -243,20 +248,13 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
                   </Field>
                 </FormControl>
 
-                <FormControl isRequired mb="2">
-                  <FormLabel htmlFor="currency">Currency</FormLabel>
-                  <Field
-                    as={Select}
-                    placeholder="Select currency"
-                    name="currency"
-                    id="currency"
-                  >
-                    {currencies.map((currency) => (
-                      <option key={currency.value} value={currency.value}>
-                        {currency.label}
-                      </option>
-                    ))}
-                  </Field>
+                <FormControl>
+                  <FormLabel htmlFor='currency_id'>Currency</FormLabel>
+                  <Select name='currency_id' id='currency_id' placeholder='Choose option'>
+                    {currencies.map((currency) =>
+                      <option key={currency.id} value={currency.id}>{currency.name}</option>
+                    )}
+                  </Select>
                 </FormControl>
 
                 <Field name="distance_traveled">
@@ -297,11 +295,17 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
                 </Field>
               </SimpleGrid>
 
+              <Field>
+                {({ form }) => (
+                  <FormControl mb="2">
+                    <FormLabel htmlFor="air_conditioning">Air Conditioning</FormLabel>
+                    <Switch name="air_conditioning" id="air_conditioning" isChecked={form.values.air_conditioning} />
+                  </FormControl>
+                )}
+              </Field>
+
               <FormControl mb="2">
-                <FormLabel htmlFor="air_conditioning">
-                  Air conditioning ?
-                </FormLabel>
-                <Switch name="air_conditioning" id="air_conditioning" />
+                <SliderThumbWithTooltip defaultValue={100} name='air_conditioning_value' />
               </FormControl>
 
               <ButtonGroup mt="2" variant="outline">
