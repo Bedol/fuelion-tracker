@@ -12,7 +12,7 @@ import { Vehicle } from '@prisma/client';
 import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
 import { useMutation } from 'react-query';
-import { CurrencyType, SelectOptionType, fuelTypes } from '../../types/vehicle_types';
+import { CurrencyType, SelectOptionType, fuelTypes, currencies } from '../../types/vehicle_types';
 
 const powerUnits: SelectOptionType[] = [
   { id: 1, name: 'Horese Power', value: 'HP' },
@@ -26,12 +26,6 @@ const vehicleTypes: SelectOptionType[] = [
 ]
 
 // TODO: move this type to global types
-const currencies: CurrencyType[] = [
-  { id: 1, name: 'Polish Złoty', code: 'PLN' },
-  { id: 2, name: 'Euro', code: 'EUR' },
-  { id: 3, name: 'US Dollars', code: 'USD' }
-]
-
 const mileageUnits: SelectOptionType[] = [
   { id: 1, name: 'Kilometers', value: 'KM' },
   { id: 2, name: 'Miles', value: 'MIL' }
@@ -49,7 +43,7 @@ const NewVehicleForm = () => {
       })
   );
 
-  const { status } = useSession();
+  const { data: session, status } = useSession();
 
   if (status === "unauthenticated") {
     return <p>You need to signin first</p>
@@ -57,7 +51,7 @@ const NewVehicleForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      user_id: 2, // TODO: Take user id from session
+      user_id: session.user.id,
       brand_name: '',
       model_name: '',
       fuel_type_id: 1,
