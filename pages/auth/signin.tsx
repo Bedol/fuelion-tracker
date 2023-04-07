@@ -1,3 +1,4 @@
+import { Box, Button } from '@chakra-ui/react';
 import { NextPageContext } from 'next';
 import {
 	BuiltInProviderType,
@@ -12,15 +13,15 @@ import {
 
 export default function SignIn({ providers }) {
 	return (
-		<>
+		<Box>
 			{Object.values(providers).map((provider: CommonProviderOptions) => (
-				<div key={provider.name}>
-					<button onClick={() => signIn(provider.id)}>
+				<Box key={provider.name}>
+					<Button variant='solid' onClick={() => signIn(provider.id)}>
 						Sign in with {provider.name}
-					</button>
-				</div>
+					</Button>
+				</Box>
 			))}
-		</>
+		</Box>
 	);
 }
 
