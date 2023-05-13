@@ -1,4 +1,5 @@
 import { Vehicle } from '@prisma/client';
+import Link from 'next/link';
 import { useQuery } from 'react-query';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
 import Loading from '../../components/Loading';
@@ -17,13 +18,16 @@ const AllVehicles = () => {
 			<FetchDataErrorAlert errorMessage='An error occurred while fetching vehicles.' />
 		);
 
-	console.log(data);
-
 	return (
-		<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-			{data.map((vehicle: Vehicle) => (
-				<VehicleCard key={vehicle.id} vehicle={vehicle} />
-			))}
+		<div>
+			<button className='px-4 py-2 my-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
+				<Link href='/vehicles/new'>Add vehicle</Link>
+			</button>
+			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+				{data.map((vehicle: Vehicle) => (
+					<VehicleCard key={vehicle.id} vehicle={vehicle} />
+				))}
+			</div>
 		</div>
 	);
 };
