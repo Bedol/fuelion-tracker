@@ -1,4 +1,3 @@
-import { Box, Flex, Heading } from '@chakra-ui/react';
 import { PrismaClient } from '@prisma/client';
 import { GetServerSideProps } from 'next';
 import NewFuelingForm, {
@@ -7,14 +6,12 @@ import NewFuelingForm, {
 
 const NewFuelingPage = ({ vehicle }: NewFuelingFormProps) => {
 	return (
-		<Box>
-			<Flex flexDir='column' justifyContent='space-between'>
-				<Heading>Add your refueling data for this vehicle</Heading>
-				<Box my='4' width='600px' maxWidth='900px' mx='auto'>
-					<NewFuelingForm vehicle={vehicle} />
-				</Box>
-			</Flex>
-		</Box>
+		<div>
+			<h2 className='text-2xl'>Add your refueling data for this vehicle</h2>
+			<div className='space-y-12'>
+				<NewFuelingForm vehicle={vehicle} />
+			</div>
+		</div>
 	);
 };
 
@@ -37,4 +34,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			vehicle: vehicleData,
 		},
 	};
-}
+};
