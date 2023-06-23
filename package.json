@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"@chakra-ui/icons": "^2.0.19",
-		"@chakra-ui/react": "^2.7.0",
+		"@chakra-ui/react": "^2.7.1",
 		"@emotion/react": "^11.11.1",
 		"@emotion/styled": "^11.11.0",
 		"@next-auth/mongodb-adapter": "^1.0.3",
@@ -40,7 +40,7 @@
 		"@commitlint/cli": "^17.6.5",
 		"@commitlint/config-conventional": "^17.6.5",
 		"@types/node": "^20.3.1",
-		"@types/react": "^18.2.12",
+		"@types/react": "^18.2.13",
 		"autoprefixer": "^10.4.14",
 		"eslint": "^8.42.0",
 		"eslint-config-next": "^13.4.6",
