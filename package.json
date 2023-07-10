@@ -39,7 +39,7 @@
 	"devDependencies": {
 		"@commitlint/cli": "^17.6.6",
 		"@commitlint/config-conventional": "^17.6.6",
-		"@types/node": "^20.3.3",
+		"@types/node": "^20.4.0",
 		"@types/react": "^18.2.14",
 		"autoprefixer": "^10.4.14",
 		"eslint": "^8.44.0",
@@ -48,7 +48,7 @@
 		"postcss": "^8.4.19",
 		"prettier": "^2.8.8",
 		"prisma": "^4.16.2",
-		"semantic-release": "^21.0.6",
+		"semantic-release": "^21.0.7",
 		"typescript": "^5.1.6"
 	}
 }
