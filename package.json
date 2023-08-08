@@ -42,7 +42,7 @@
 		"@types/node": "^20.4.5",
 		"@types/react": "^18.2.18",
 		"autoprefixer": "^10.4.14",
-		"eslint": "^8.45.0",
+		"eslint": "^8.46.0",
 		"eslint-config-next": "^13.4.12",
 		"lint-staged": "^13.2.3",
 		"postcss": "^8.4.19",
