@@ -41,7 +41,7 @@
 		"@commitlint/config-conventional": "^17.6.7",
 		"@types/node": "^20.5.0",
 		"@types/react": "^18.2.20",
-		"autoprefixer": "^10.4.14",
+		"autoprefixer": "^10.4.15",
 		"eslint": "^8.46.0",
 		"eslint-config-next": "^13.4.12",
 		"lint-staged": "^14.0.1",
