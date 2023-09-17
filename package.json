@@ -43,7 +43,7 @@
 		"@types/react": "^18.2.20",
 		"autoprefixer": "^10.4.15",
 		"eslint": "^8.46.0",
-		"eslint-config-next": "^13.4.12",
+		"eslint-config-next": "^13.4.19",
 		"lint-staged": "^14.0.1",
 		"postcss": "^8.4.19",
 		"prettier": "^3.0.2",
