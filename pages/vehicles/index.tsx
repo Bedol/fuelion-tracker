@@ -1,24 +1,9 @@
-import { AddIcon, EditIcon } from '@chakra-ui/icons';
-import {
-	Button,
-	ButtonGroup,
-	Flex,
-	Heading,
-	IconButton,
-	Table,
-	TableContainer,
-	Tbody,
-	Td,
-	Th,
-	Thead,
-	Tr,
-} from '@chakra-ui/react';
-import NextLink from 'next/link';
-import { FaChartBar, FaGasPump } from 'react-icons/fa';
-import { dehydrate, QueryClient, useQuery } from 'react-query';
+import { Vehicle } from '@prisma/client';
+import Link from 'next/link';
+import { useQuery } from 'react-query';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
 import Loading from '../../components/Loading';
-import { getCountries } from '../../hooks/getCountries';
+import VehicleCard from '../../components/VehicleCard';
 
 const AllVehicles = () => {
 	const { isLoading, isError, data } = useQuery('vehicles', async () => {
@@ -34,89 +19,17 @@ const AllVehicles = () => {
 		);
 
 	return (
-		<Flex direction='column' justifyContent='center'>
-			<Flex justifyContent='space-between' alignItems='baseline' mb='3'>
-				<Heading>Your Vehicles list</Heading>
-				<Button
-					as={NextLink}
-					href='/vehicles/new'
-					colorScheme='facebook'
-					variant='outline'
-					leftIcon={<AddIcon />}
-				>
-					Add vehicle
-				</Button>
-			</Flex>
-			<TableContainer>
-				<Table sx={{ minWidth: 650 }} aria-label='simple table'>
-					<Thead>
-						<Tr>
-							<Th>Brand</Th>
-							<Th align='right'>Model</Th>
-							<Th align='right'>Mileage</Th>
-							<Th align='right'>Fuel Type</Th>
-							<Th align='right'>Production Year</Th>
-							<Th align='right'>Actions</Th>
-						</Tr>
-					</Thead>
-					<Tbody>
-						{data.map((row) => (
-							<Tr key={row.id}>
-								<Td scope='row'>{row.brand}</Td>
-								<Td align='right'>{row.model}</Td>
-								<Td align='right'>{row.mileage}</Td>
-								<Td align='right'>{row.fuel_type}</Td>
-								<Td align='right'>{row.production_year}</Td>
-								<Td align='right'>
-									<ButtonGroup variant='outline'>
-										<IconButton
-											as={NextLink}
-											href={`/vehicles/${row.id}/edit`}
-											aria-label='Edit vehicle'
-											colorScheme='yellow'
-											icon={<EditIcon />}
-										/>
-										<IconButton
-											as={NextLink}
-											href={`/vehicles/${row.id}/fueling/new`}
-											aria-label='Add fueling'
-											colorScheme='green'
-											icon={<FaGasPump />}
-										/>
-										<IconButton
-											as={NextLink}
-											href={`/vehicles/${row.id}/statistics`}
-											aria-label='Statistics'
-											colorScheme='blue'
-											icon={<FaChartBar />}
-										/>
-									</ButtonGroup>
-								</Td>
-							</Tr>
-						))}
-					</Tbody>
-				</Table>
-			</TableContainer>
-		</Flex>
+		<div>
+			<button className='px-4 py-2 my-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
+				<Link href='/vehicles/new'>Add vehicle</Link>
+			</button>
+			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+				{data.map((vehicle: Vehicle) => (
+					<VehicleCard key={vehicle.id} vehicle={vehicle} />
+				))}
+			</div>
+		</div>
 	);
 };
 
 export default AllVehicles;
-
-export async function getServerSideProps(_context) {
-	const { DOMAIN_URL } = process.env;
-	const queryClient = new QueryClient();
-	await queryClient.prefetchQuery('countries', async () => {
-		const result = await getCountries();
-		return result;
-	});
-	await queryClient.prefetchQuery('vehicles', async () => {
-		const result = await fetch(`${DOMAIN_URL}/api/vehicles`);
-		return result.json();
-	});
-	return {
-		props: {
-			dehydratedState: dehydrate(queryClient),
-		},
-	};
-}

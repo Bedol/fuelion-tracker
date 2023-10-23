@@ -1,4 +1,3 @@
-import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -13,13 +12,11 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<SessionProvider session={pageProps.session}>
-				<ChakraProvider>
-					<Layout>
-						<Hydrate state={pageProps.dehydratedState}>
-							<Component {...pageProps} />
-						</Hydrate>
-					</Layout>
-				</ChakraProvider>
+				<Layout>
+					<Hydrate state={pageProps.dehydratedState}>
+						<Component {...pageProps} />
+					</Hydrate>
+				</Layout>
 			</SessionProvider>
 			{!isProduction && <ReactQueryDevtools initialIsOpen={false} />}
 		</QueryClientProvider>

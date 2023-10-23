@@ -13,6 +13,32 @@ export type VehicleData = {
 	registration_number?: string;
 };
 
+export type SelectOptionType = {
+  id: number
+  name: string
+  value: string
+}
+
+export type CurrencyType = {
+  id: number
+  name: string
+  code: string
+}
+
+export const fuelTypes: SelectOptionType[] = [
+  { id: 1, name: 'Benzine', value: 'BENZINE' },
+  { id: 2, name: 'Diesel', value: 'DIESEL' },
+  { id: 3, name: 'LPG', value: 'LPG' },
+  { id: 4, name: 'Electric', value: 'EV' }
+]
+
+export const currencies: CurrencyType[] = [
+  { id: 1, name: 'Polish Złoty', code: 'PLN' },
+  { id: 2, name: 'Euro', code: 'EUR' },
+  { id: 3, name: 'US Dollars', code: 'USD' }
+]
+
+
 // Temporary disable those enums - no-unused-vars
 /* eslint-disable */
 export enum VehicleType {

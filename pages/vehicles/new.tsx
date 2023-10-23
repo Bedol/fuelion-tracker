@@ -1,19 +1,33 @@
-import {
-	Box,
-	Button,
-	Flex,
-	FormControl,
-	FormLabel,
-	Input,
-	Text,
-} from '@chakra-ui/react';
-import { Vehicles } from '@prisma/client';
-import { useFormik } from 'formik';
+import { Vehicle } from '@prisma/client';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
+import { fuelTypes, SelectOptionType } from '../../types/vehicle_types';
 
-const NewVehicle = () => {
+const powerUnits: SelectOptionType[] = [
+	{ id: 1, name: 'Horese Power', value: 'HP' },
+	{ id: 2, name: 'Kilo Wats', value: 'kW' },
+];
+
+const vehicleTypes: SelectOptionType[] = [
+	{ id: 1, name: 'Car', value: 'CAR' },
+	{ id: 2, name: 'Truck', value: 'TRUCK' },
+	{ id: 3, name: 'Motorcycle', value: 'MOTORCYCLE' },
+];
+
+// TODO: move this type to global types
+const mileageUnits: SelectOptionType[] = [
+	{ id: 1, name: 'Kilometers', value: 'KM' },
+	{ id: 2, name: 'Miles', value: 'MIL' },
+];
+
+// TODO: Convert whole form to new component
+const NewVehicleForm = () => {
+	const router = useRouter();
 	const vehicleMutation = useMutation(
-		(values: Omit<Vehicles, 'id' | 'created_at' | 'updated_at'>) =>
+		(values: Omit<Vehicle, 'id' | 'created_at' | 'updated_at'>) =>
 			fetch('/api/vehicles', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -21,97 +35,172 @@ const NewVehicle = () => {
 			})
 	);
 
-	const formik = useFormik({
-		initialValues: {
-			brand: '',
-			model: '',
-			fuel_type: '',
-			gearbox: '',
-			power: 0,
-			power_unit: '',
-			type: '',
-			production_year: 1900,
-			engine_capacity: 0.0,
-			mileage: 0,
-		},
-		onSubmit: async (values, actions) => {
-			await vehicleMutation.mutate(values);
-			actions.setSubmitting(false);
-			actions.resetForm();
-		},
-	});
+	const { data: session, status } = useSession();
+
+	if (status == 'loading') {
+		return <p>Loading...</p>;
+	}
+
+	if (status === 'unauthenticated') {
+		return <p>You need to signin first</p>;
+	}
+
+	const initialFormValues = {
+		user_id: session.user.id,
+		brand_name: '',
+		model_name: '',
+		fuel_type_id: 1,
+		transmission_id: 1,
+		engine_power: 0,
+		power_unit_id: 1,
+		type_id: 1,
+		production_year: new Date().getFullYear(),
+		engine_capacity: 0.0,
+		mileage: 0.0,
+		mileage_in_id: 1,
+		value: 0,
+		currency_id: 1,
+	};
+
+	const handleSubmit = async (
+		values: typeof initialFormValues,
+		{ resetForm }
+	) => {
+		try {
+			await vehicleMutation.mutateAsync(values);
+			resetForm();
+			router.push('/vehicles');
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
-		<Box>
-			<Text fontSize='2xl' mb='2'>
-				Add New Vehicle
-			</Text>
-			<Flex flexDir='column' justifyContent='space-between'>
-				<form onSubmit={formik.handleSubmit}>
-					<FormControl>
-						<FormLabel htmlFor='brand'>Brand</FormLabel>
-						<Input
+		<div className='max-w-md mx-auto'>
+			<h2 className='text-2xl font-bold mb-4'>Add a new vehicle</h2>
+			<Formik initialValues={initialFormValues} onSubmit={handleSubmit}>
+				<Form>
+					<div className='mb-4'>
+						<label
+							htmlFor='refuelDate'
+							className='block text-gray-700 font-medium mb-2'
+						>
+							Fueling date
+						</label>
+						<Field
+							type='date'
+							id='refuelDate'
+							name='refuelDate'
+							className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+						/>
+						<ErrorMessage
+							name='refuelDate'
+							component='div'
+							className='text-red-500 mt-2'
+						/>
+					</div>
+					<div className='mb-4'>
+						<label
+							htmlFor='brand_name'
+							className='block text-gray-700 font-medium mb-2'
+						>
+							Brand
+						</label>
+						<Field
 							type='text'
-							name='brand'
-							id='brand'
-							onChange={formik.handleChange}
-							value={formik.values.brand}
+							id='brand_name'
+							name='brand_name'
+							className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
 						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor='model'>Model</FormLabel>
-						<Input
-							type='text'
-							name='model'
-							id='model'
-							onChange={formik.handleChange}
-							value={formik.values.model}
+						<ErrorMessage
+							name='brand_name'
+							component='div'
+							className='text-red-500 mt-2'
 						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor='production_year'>Production Year</FormLabel>
-						<Input
-							type='number'
-							name='production_year'
-							id='production_year'
-							onChange={formik.handleChange}
-							value={formik.values.production_year}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor='engine_capacity'>Engine Capacity</FormLabel>
-						<Input
-							type='number'
-							name='engine_capacity'
-							id='engine_capacity'
-							onChange={formik.handleChange}
-							value={formik.values.engine_capacity}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor='mileage'>Mileage</FormLabel>
-						<Input
-							type='number'
-							name='mileage'
-							id='mileage'
-							onChange={formik.handleChange}
-							value={formik.values.mileage}
-						/>
-					</FormControl>
+					</div>
 
-					<Button
+					<div className='mb-4'>
+						<label
+							htmlFor='model_name'
+							className='block text-gray-700 font-medium mb-2'
+						>
+							Model
+						</label>
+						<Field
+							type='text'
+							id='model_name'
+							name='model_name'
+							className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+						/>
+						<ErrorMessage
+							name='model_name'
+							component='div'
+							className='text-red-500 mt-2'
+						/>
+					</div>
+
+					<div className='mb-4'>
+						<label
+							htmlFor='fuelType'
+							className='block text-gray-700 font-medium mb-2'
+						>
+							Typ paliwa
+						</label>
+						<Field
+							as='select'
+							id='fuelType'
+							name='fuelType'
+							className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+						>
+							<option value='' disabled>
+								Select fuel type
+							</option>
+							{fuelTypes.map((option) => (
+								<option key={option.value} value={option.id}>
+									{option.name}
+								</option>
+							))}
+						</Field>
+						<ErrorMessage
+							name='fuelType'
+							component='div'
+							className='text-red-500 mt-2'
+						/>
+					</div>
+
+					<div className='mb-4'>
+						<label
+							htmlFor='mileage'
+							className='block text-gray-700 font-medium mb-2'
+						>
+							Current mileage
+						</label>
+						<Field
+							type='number'
+							id='mileage'
+							name='mileage'
+							className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+						/>
+						<ErrorMessage
+							name='mileage'
+							component='div'
+							className='text-red-500 mt-2'
+						/>
+					</div>
+
+					<button
 						type='submit'
-						colorScheme='telegram'
-						variant='outline'
-						my='4'
-						disabled={formik.isSubmitting}
+						className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600'
 					>
-						{formik.isSubmitting ? 'Submitting...' : 'Submit'}
-					</Button>
-				</form>
-			</Flex>
-		</Box>
+						Create
+					</button>
+					<button className='px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600'>
+						<Link href='/vehicles'>Cancel</Link>
+					</button>
+				</Form>
+			</Formik>
+		</div>
 	);
 };
 
-export default NewVehicle;
+export default NewVehicleForm;

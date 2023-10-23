@@ -7,9 +7,12 @@ import {
 	HStack,
 	useColorModeValue,
 } from '@chakra-ui/react';
+import { signOut, useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 
 const Navigation = () => {
+  const {status} = useSession()
+
 	return (
 		<Box as='section' pb='12'>
 			<Box
@@ -38,6 +41,7 @@ const Navigation = () => {
 								>
 									Your Vehicles
 								</Button>
+                {status === "unauthenticated" ? ( 
 								<Button
 									as={NextLink}
 									href='/auth/signin'
@@ -45,7 +49,9 @@ const Navigation = () => {
 									variant='ghost'
 								>
 									Login
-								</Button>
+								</Button>):(
+                <Button variant='solid' colorScheme='red' onClick={() => signOut()}>Sign Out</Button>
+                )}
 							</ButtonGroup>
 						</Flex>
 					</HStack>

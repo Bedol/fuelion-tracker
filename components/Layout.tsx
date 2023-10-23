@@ -1,16 +1,20 @@
-import { Box, Flex } from '@chakra-ui/react';
-import Navigation from './Navigation';
+import React, { ReactNode } from 'react';
+import Header from './Header';
+import Sidebar from './Sidebar';
 
-const Layout = ({ children }) => {
+type LayoutProps = {
+	children: ReactNode;
+};
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
 	return (
-		<Flex flexDirection='column' flex='1'>
-			<Navigation />
-			<Flex as='main' role='main' direction='column' flex='1' py='sm'>
-				<Box flex='1' px='12'>
-					{children}
-				</Box>
-			</Flex>
-		</Flex>
+		<div className='flex'>
+			<Sidebar />
+			<div className='flex flex-col w-full'>
+				<Header />
+				<main className='p-4'>{children}</main>
+			</div>
+		</div>
 	);
 };
 
