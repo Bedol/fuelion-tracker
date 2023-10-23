@@ -1,3 +1,17 @@
+# [1.2.0-develop.1](https://github.com/Bedol/fuelion-tracker/compare/v1.1.0...v1.2.0-develop.1) (2023-10-23)
+
+
+### Features
+
+* add air_conditioning switch ([df1fa78](https://github.com/Bedol/fuelion-tracker/commit/df1fa78b99fedf4dab1d1cc53a66f400b54ffe0b))
+* add new components for layout ([ed53342](https://github.com/Bedol/fuelion-tracker/commit/ed53342bcc0394a79848185eaf380f82f9e97389))
+* add slider with tooltip component ([bb96203](https://github.com/Bedol/fuelion-tracker/commit/bb962035daa0db9ae7490cf014a2aacbe17172c8))
+
+
+### Reverts
+
+* Revert "refacotr: rename column name from engine_power to engine_power_id" ([616d0cc](https://github.com/Bedol/fuelion-tracker/commit/616d0cc81005a3970662560c044c7dbd2a281427))
+
 # [1.1.0](https://github.com/Bedol/fuelion-tracker/compare/v1.0.0...v1.1.0) (2023-03-06)
 
 
