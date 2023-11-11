@@ -1,17 +1,20 @@
 import { Vehicle } from '@prisma/client';
 import Link from 'next/link';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
 import Loading from '../../components/Loading';
 import VehicleCard from '../../components/VehicleCard';
 
 const AllVehicles = () => {
-	const { isLoading, isError, data } = useQuery('vehicles', async () => {
-		const result = await fetch('/api/vehicles');
-		return result.json();
+	const { isPending, isError, data } = useQuery({
+		queryKey: ['vehicles'],
+		queryFn: async () => {
+			const result = await fetch('/api/vehicles');
+			return result.json();
+		}
 	});
 
-	if (isLoading) return <Loading />;
+	if (isPending) return <Loading />;
 
 	if (isError)
 		return (

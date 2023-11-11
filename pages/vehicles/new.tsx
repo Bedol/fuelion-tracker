@@ -3,7 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { fuelTypes, SelectOptionType } from '../../types/vehicle_types';
 
 const powerUnits: SelectOptionType[] = [
@@ -26,14 +26,14 @@ const mileageUnits: SelectOptionType[] = [
 // TODO: Convert whole form to new component
 const NewVehicleForm = () => {
 	const router = useRouter();
-	const vehicleMutation = useMutation(
-		(values: Omit<Vehicle, 'id' | 'created_at' | 'updated_at'>) =>
+	const vehicleMutation = useMutation({
+		mutationFn: (values: Omit<Vehicle, 'id' | 'created_at' | 'updated_at'>) =>
 			fetch('/api/vehicles', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(values),
 			})
-	);
+	});
 
 	const { data: session, status } = useSession();
 

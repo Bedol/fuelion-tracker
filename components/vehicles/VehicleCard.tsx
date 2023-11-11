@@ -13,15 +13,18 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FaGasPump } from 'react-icons/fa';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 const VehicleCard = ({ vehicleId }) => {
-	const { data, isLoading, isError } = useQuery('vehicle', async () => {
-		const result = await fetch(`/api/vehicles/${vehicleId}`);
-		return result.json();
+	const { data, isPending, isError } = useQuery({
+		queryKey: ['vehicle', vehicleId],
+		queryFn: async () => {
+			const result = await fetch(`/api/vehicles/${vehicleId}`);
+			return result.json();
+		}
 	});
 
-	if (isLoading) return <Box>Loading...</Box>;
+	if (isPending) return <Box>Loading...</Box>;
 
 	if (isError) return <Box>Error</Box>;
 
