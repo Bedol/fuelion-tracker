@@ -47,7 +47,7 @@
 		"lint-staged": "^15.2.0",
 		"postcss": "^8.4.19",
 		"prettier": "^3.2.4",
-		"prisma": "^5.8.1",
+		"prisma": "^5.9.1",
 		"semantic-release": "^23.0.0",
 		"typescript": "^5.3.3"
 	}
