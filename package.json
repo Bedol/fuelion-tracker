@@ -32,13 +32,13 @@
 		"next-auth": "^4.24.7",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-icons": "^5.0.1",
+		"react-icons": "^5.1.0",
 		"react-query": "^3.39.3",
 		"tailwindcss": "^3.4.3"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^19.2.1",
-		"@commitlint/config-conventional": "^19.1.0",
+		"@commitlint/cli": "^19.2.2",
+		"@commitlint/config-conventional": "^19.2.2",
 		"@types/node": "^20.12.7",
 		"@types/react": "^18.2.75",
 		"autoprefixer": "^10.4.19",
