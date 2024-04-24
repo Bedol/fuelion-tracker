@@ -40,7 +40,7 @@
 		"@commitlint/cli": "^19.2.2",
 		"@commitlint/config-conventional": "^19.2.2",
 		"@types/node": "^20.12.7",
-		"@types/react": "^18.2.75",
+		"@types/react": "^18.2.79",
 		"autoprefixer": "^10.4.19",
 		"eslint": "^9.0.0",
 		"eslint-config-next": "^14.2.2",
