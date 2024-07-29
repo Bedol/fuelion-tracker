@@ -39,7 +39,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@types/node": "^20.14.12",
+    "@types/node": "^22.0.0",
     "@types/react": "^18.3.3",
     "autoprefixer": "^10.4.19",
     "eslint": "^9.7.0",
