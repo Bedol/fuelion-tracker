@@ -48,7 +48,7 @@
     "postcss": "^8.4.19",
     "prettier": "^3.3.3",
     "prisma": "^5.18.0",
-    "semantic-release": "^24.0.0",
+    "semantic-release": "^24.1.0",
     "typescript": "^5.5.4"
   }
 }
