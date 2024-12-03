@@ -3,8 +3,8 @@ export type VehicleData = {
 	type: string;
 	brand: string;
 	model: string;
-	production_year: Number;
-	engine_capacity: Number;
+	production_year: number;
+	engine_capacity: number;
 	fuel_type: string;
 	gearbox: string;
 	power: number;
@@ -40,7 +40,7 @@ export const currencies: CurrencyType[] = [
 
 
 // Temporary disable those enums - no-unused-vars
-/* eslint-disable */
+ 
 export enum VehicleType {
 	Passenger = 'passenger',
 	Truck = 'truck',
@@ -70,4 +70,4 @@ export enum MilageType {
 	Miles = 'miles',
 	Kilometers = 'kilometers',
 }
-/* eslint-enable */
+ 
