@@ -1,36 +1,75 @@
 import React from 'react';
-import Link from 'next/link';
+import {
+	Box,
+	Flex,
+	Heading,
+	Spacer,
+	Button,
+	Text,
+	HStack,
+} from '@chakra-ui/react';
+import { FaGasPump } from 'react-icons/fa';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 const Header: React.FC = () => {
 	const { data: session } = useSession();
+
 	return (
-		<header className='bg-gray-100 p-4'>
-			<nav className='container mx-auto flex items-center justify-between'>
-				<div>
-					<Link href='/'>
-						<div className='text-xl font-bold'>Fuelion Tracker</div>
-					</Link>
-				</div>
-				<div>
+		<Box
+			as="header"
+			bg="white"
+			borderBottom="1px"
+			borderBottomColor="gray.200"
+			px={6}
+			py={4}
+			shadow="sm"
+		>
+			<Flex alignItems="center">
+				{/* Logo and App Name */}
+				<Link href="/" style={{ textDecoration: 'none' }}>
+					<HStack gap={2} cursor="pointer">
+						<Box color="blue.500">
+							<FaGasPump size={24} />
+						</Box>
+						<Heading size="md" color="blue.600">
+							Fuelion Tracker
+						</Heading>
+					</HStack>
+				</Link>
+
+				<Spacer />
+
+				{/* Right side actions */}
+				<HStack gap={4}>
+					{/* User info and actions */}
 					{session ? (
-						<div
-							className='bg-red-500 text-white px-4 py-2 rounded-md cursor-pointer'
-							onClick={() => signOut()}
-						>
-							Logout
-						</div>
+						<HStack gap={4}>
+							<Text fontSize="sm" fontWeight="medium">
+								Welcome, {session.user?.name || 'User'}!
+							</Text>
+							<Button
+								colorScheme="red"
+								variant="outline"
+								size="sm"
+								onClick={() => signOut()}
+							>
+								Sign Out
+							</Button>
+						</HStack>
 					) : (
-						<div
-							className='bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer'
+						<Button
+							colorScheme="blue"
+							variant="solid"
+							size="sm"
 							onClick={() => signIn()}
 						>
-							Signin
-						</div>
+							Sign In
+						</Button>
 					)}
-				</div>
-			</nav>
-		</header>
+				</HStack>
+			</Flex>
+		</Box>
 	);
 };
 
