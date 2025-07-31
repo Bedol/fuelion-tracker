@@ -1,15 +1,18 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 const VehicleStatisticsPage = ({ id }) => {
 	const router = useRouter();
-	const { data, isLoading, isError } = useQuery('vehicle', async () => {
-		const result = await fetch(`/api/vehicles/${id}`);
-		return result.json();
+	const { data, isPending, isError } = useQuery({
+		queryKey: ['vehicle', id],
+		queryFn: async () => {
+			const result = await fetch(`/api/vehicles/${id}`);
+			return result.json();
+		}
 	});
 
-	if (isLoading) return <div>Loading...</div>;
+	if (isPending) return <div>Loading...</div>;
 
 	if (isError) return <div>Error</div>;
 

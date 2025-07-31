@@ -1,5 +1,5 @@
 import { Box, Heading, useToast } from '@chakra-ui/react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../components/Loading';
 import VehicleForm from '../../../components/vehicles/VehicleForm';
@@ -7,17 +7,17 @@ import VehicleForm from '../../../components/vehicles/VehicleForm';
 const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 	const queryClient = useQueryClient();
 	const toast = useToast();
-	const { isLoading, isError, data } = useQuery(
-		['vehicle', vehicleId],
-		async () => {
+	const { isPending, isError, data } = useQuery({
+		queryKey: ['vehicle', vehicleId],
+		queryFn: async () => {
 			const resp = await fetch(`/api/vehicles/${vehicleId}`);
 			if (!resp.ok) throw new Error('An error occurred.');
 			return resp.json();
 		}
-	);
+	});
 
-	const vehicleMutation = useMutation(
-		async (values) => {
+	const vehicleMutation = useMutation({
+		mutationFn: async (values) => {
 			await new Promise((resolve) => setTimeout(resolve, 3000));
 
 			const resp = await fetch(`/api/vehicles/${vehicleId}`, {
@@ -30,25 +30,23 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 			if (!resp.ok) throw new Error('An error occurred.');
 			return resp.json();
 		},
-		{
-			onSuccess: () => {
-				queryClient.invalidateQueries(['vehicle', vehicleId]);
-				toast({
-					title: 'Vehicle updated.',
-					position: 'top-right',
-					status: 'success',
-					duration: 5000,
-					isClosable: true,
-					containerStyle: {
-						zIndex: 999,
-						marginTop: '5rem',
-					},
-				});
-			},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['vehicle', vehicleId] });
+			toast({
+				title: 'Vehicle updated.',
+				position: 'top-right',
+				status: 'success',
+				duration: 5000,
+				isClosable: true,
+				containerStyle: {
+					zIndex: 999,
+					marginTop: '5rem',
+				},
+			});
 		}
-	);
+	});
 
-	if (isLoading) return <Loading />;
+	if (isPending) return <Loading />;
 	if (isError)
 		return (
 			<FetchDataErrorAlert errorMessage='An error occurred while fetching data' />

@@ -14,7 +14,7 @@ import { Fueling, Vehicle } from '@prisma/client';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { getCountries } from '../../hooks/getCountries';
 import { getStates } from '../../hooks/getStates';
 import { fuelTypes, currencies } from '../../types/vehicle_types';
@@ -47,30 +47,28 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
 			marginTop: '5rem',
 		},
 	});
-	const refuelMutation = useMutation(
-		(values: Omit<Fueling, 'id' | 'created_at' | 'updated_at' | 'tire_type'>) =>
+	const refuelMutation = useMutation({
+		mutationFn: (values: Omit<Fueling, 'id' | 'created_at' | 'updated_at' | 'tire_type'>) =>
 			fetch('/api/fueling', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(values),
 			}),
-		{
-			onSuccess: () => {
-				toast({
-					title: 'Fueling added.',
-					position: 'top-right',
-					status: 'success',
-				});
-			},
-			onError: () => {
-				toast({
-					title: 'An error occurred.',
-					position: 'top-right',
-					status: 'error',
-				});
-			},
+		onSuccess: () => {
+			toast({
+				title: 'Fueling added.',
+				position: 'top-right',
+				status: 'success',
+			});
+		},
+		onError: () => {
+			toast({
+				title: 'An error occurred.',
+				position: 'top-right',
+				status: 'error',
+			});
 		}
-	);
+	});
 
 	const countries = React.useMemo(() => {
 		return getCountries().map((country) => ({
@@ -326,7 +324,7 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
 								<Button
 									type='submit'
 									colorScheme='telegram'
-									isLoading={refuelMutation.isLoading}
+									isLoading={refuelMutation.isPending}
 									loadingText='Submitting'
 								>
 									Submit
