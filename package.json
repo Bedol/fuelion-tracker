@@ -26,7 +26,7 @@
     "@prisma/client": "^7.2.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@tanstack/react-query": "^5.90.5",
-    "@tanstack/react-query-devtools": "^5.91.1",
+    "@tanstack/react-query-devtools": "^5.91.2",
     "country-state-city": "^3.2.1",
     "dotenv": "^17.2.3",
     "formik": "^2.4.9",
