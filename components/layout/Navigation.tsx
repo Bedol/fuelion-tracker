@@ -50,9 +50,9 @@ const Navigation: React.FC = () => {
 								href='/vehicles'
 								variant={isActive('/vehicles') ? 'solid' : 'ghost'}
 								colorScheme={isActive('/vehicles') ? 'blue' : 'gray'}
-								leftIcon={<FaCar />}
 								size='sm'
 							>
+								<FaCar />
 								{t('nav.vehicles')}
 							</Button>
 
@@ -61,9 +61,9 @@ const Navigation: React.FC = () => {
 								href='/statistics'
 								variant={isActive('/statistics') ? 'solid' : 'ghost'}
 								colorScheme={isActive('/statistics') ? 'blue' : 'gray'}
-								leftIcon={<FaChartBar />}
 								size='sm'
 							>
+								<FaChartBar />
 								{t('nav.statistics')}
 							</Button>
 						</HStack>
