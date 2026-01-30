@@ -80,12 +80,13 @@ const Navigation: React.FC = () => {
 						{session && (
 							<Menu.Root>
 								<Menu.Trigger asChild>
-									<Avatar
-										name={session.user?.name || 'User'}
-										src={session.user?.image || undefined}
-										size='sm'
-										cursor='pointer'
-									/>
+									<Button variant='ghost' size='sm' p='0' minW='auto'>
+										<Avatar
+											name={session.user?.name || 'User'}
+											src={session.user?.image || undefined}
+											size='sm'
+										/>
+									</Button>
 								</Menu.Trigger>
 								<Menu.Content>
 									<Menu.Item
