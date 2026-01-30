@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Flex, Heading, Button, HStack, Avatar } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button, HStack } from '@chakra-ui/react';
+import { Avatar } from '@chakra-ui/react';
 import { Menu } from '@chakra-ui/react';
 import { FaCar, FaChartBar } from 'react-icons/fa';
 import { useSession, signOut } from 'next-auth/react';
@@ -81,11 +82,15 @@ const Navigation: React.FC = () => {
 							<Menu.Root>
 								<Menu.Trigger asChild>
 									<Button variant='ghost' size='sm' p='0' minW='auto'>
-										<Avatar
-											name={session.user?.name || 'User'}
-											src={session.user?.image || undefined}
-											size='sm'
-										/>
+										<Avatar.Root size='sm'>
+											<Avatar.Image
+												src={session.user?.image || undefined}
+												alt={session.user?.name || 'User'}
+											/>
+											<Avatar.Fallback>
+												{(session.user?.name || 'U').charAt(0).toUpperCase()}
+											</Avatar.Fallback>
+										</Avatar.Root>
 									</Button>
 								</Menu.Trigger>
 								<Menu.Content>
