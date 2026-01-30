@@ -102,40 +102,40 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status  |
 | ----------- | ----- | ------- |
-| AUTH-01     | —     | Pending |
-| AUTH-02     | —     | Pending |
-| AUTH-03     | —     | Pending |
-| AUTH-04     | —     | Pending |
-| VEHI-01     | —     | Pending |
-| VEHI-02     | —     | Pending |
-| VEHI-03     | —     | Pending |
-| VEHI-04     | —     | Pending |
-| VEHI-05     | —     | Pending |
-| VEHI-06     | —     | Pending |
-| FUEL-01     | —     | Pending |
-| FUEL-02     | —     | Pending |
-| FUEL-03     | —     | Pending |
-| FUEL-04     | —     | Pending |
-| FUEL-05     | —     | Pending |
-| FUEL-06     | —     | Pending |
-| STAT-01     | —     | Pending |
-| STAT-02     | —     | Pending |
-| STAT-03     | —     | Pending |
-| STAT-04     | —     | Pending |
-| UIUX-01     | —     | Pending |
-| UIUX-02     | —     | Pending |
-| UIUX-03     | —     | Pending |
-| UIUX-04     | —     | Pending |
-| UIUX-05     | —     | Pending |
-| UIUX-06     | —     | Pending |
+| AUTH-01     | 1     | Pending |
+| AUTH-02     | 1     | Pending |
+| AUTH-03     | 1     | Pending |
+| AUTH-04     | 1     | Pending |
+| VEHI-01     | 2     | Pending |
+| VEHI-02     | 2     | Pending |
+| VEHI-03     | 2     | Pending |
+| VEHI-04     | 2     | Pending |
+| VEHI-05     | 2     | Pending |
+| VEHI-06     | 2     | Pending |
+| FUEL-01     | 3     | Pending |
+| FUEL-02     | 3     | Pending |
+| FUEL-03     | 3     | Pending |
+| FUEL-04     | 3     | Pending |
+| FUEL-05     | 3     | Pending |
+| FUEL-06     | 3     | Pending |
+| STAT-01     | 4     | Pending |
+| STAT-02     | 4     | Pending |
+| STAT-03     | 4     | Pending |
+| STAT-04     | 4     | Pending |
+| UIUX-01     | 1     | Pending |
+| UIUX-02     | 5     | Pending |
+| UIUX-03     | 3     | Pending |
+| UIUX-04     | 3     | Pending |
+| UIUX-05     | 3     | Pending |
+| UIUX-06     | 1     | Pending |
 
 **Coverage:**
 
 - v1 requirements: 26 total
-- Mapped to phases: 0
-- Unmapped: 26 ⚠️
+- Mapped to phases: 26 ✓
+- Unmapped: 0
 
 ---
 
 _Requirements defined: 2026-01-30_
-_Last updated: 2026-01-30 after initial definition_
+_Last updated: 2026-01-30 after roadmap creation (traceability updated)_
