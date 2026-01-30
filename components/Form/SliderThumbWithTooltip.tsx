@@ -1,43 +1,35 @@
-import React from "react";
-import { Slider, SliderMark, SliderTrack, SliderFilledTrack, SliderThumb, Tooltip } from "@chakra-ui/react"
+import React from 'react';
+import { Box, Input } from '@chakra-ui/react';
 
-export const SliderThumbWithTooltip = ({defaultValue, name}) => {
-  const [sliderValue, setSliderValue] = React.useState(defaultValue)
-  const [showTooltip, setShowTooltip] = React.useState(false)
-  return (
-    <Slider
-      id={name}
-      name={name}
-      defaultValue={defaultValue}
-      min={0}
-      max={100}
-      colorScheme='teal'
-      onChange={(v) => setSliderValue(v)}
-      onMouseEnter={() => setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
-    >
-      <SliderMark value={25} mt='1' ml='-2.5' fontSize='sm'>
-        25%
-      </SliderMark>
-      <SliderMark value={50} mt='1' ml='-2.5' fontSize='sm'>
-        50%
-      </SliderMark>
-      <SliderMark value={75} mt='1' ml='-2.5' fontSize='sm'>
-        75%
-      </SliderMark>
-      <SliderTrack>
-        <SliderFilledTrack />
-      </SliderTrack>
-      <Tooltip
-        hasArrow
-        bg='teal.500'
-        color='white'
-        placement='top'
-        isOpen={showTooltip}
-        label={`${sliderValue}%`}
-      >
-        <SliderThumb />
-      </Tooltip>
-    </Slider>
-  )
-}
+type SliderThumbWithTooltipProps = {
+	defaultValue: number;
+	name: string;
+};
+
+// Temporary: Using native HTML range input until Chakra v3 Slider API is clarified
+export const SliderThumbWithTooltip: React.FC<SliderThumbWithTooltipProps> = ({
+	defaultValue,
+	name,
+}) => {
+	const [value, setValue] = React.useState(defaultValue);
+	return (
+		<Box mb='4'>
+			<Box display='flex' justifyContent='space-between' mb='2' fontSize='sm'>
+				<Box>0%</Box>
+				<Box fontWeight='bold' color='teal.600'>
+					{value}%
+				</Box>
+				<Box>100%</Box>
+			</Box>
+			<Input
+				type="range"
+				name={name}
+				value={value}
+				onChange={(e) => setValue(Number(e.target.value))}
+				min={0}
+				max={100}
+				width="100%"
+			/>
+		</Box>
+	);
+};
