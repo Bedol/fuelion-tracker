@@ -23,8 +23,23 @@ type LocaleProviderProps = {
 };
 
 export const LocaleProvider: React.FC<LocaleProviderProps> = ({ children }) => {
-	const [locale, setLocale] = useState<Locale>('pl');
+	// Initialize locale from localStorage or default to 'pl'
+	const [locale, setLocaleState] = useState<Locale>(() => {
+		if (typeof window !== 'undefined') {
+			const saved = localStorage.getItem('locale');
+			return saved === 'pl' || saved === 'en' ? saved : 'pl';
+		}
+		return 'pl';
+	});
 	const [dictionary, setDictionary] = useState<Dictionary>({});
+
+	// Wrapper to persist locale changes to localStorage
+	const setLocale = (newLocale: Locale) => {
+		setLocaleState(newLocale);
+		if (typeof window !== 'undefined') {
+			localStorage.setItem('locale', newLocale);
+		}
+	};
 
 	useEffect(() => {
 		// Dynamically import dictionary based on locale
