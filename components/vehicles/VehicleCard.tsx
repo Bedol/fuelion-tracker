@@ -21,7 +21,7 @@ const VehicleCard = ({ vehicleId }) => {
 		queryFn: async () => {
 			const result = await fetch(`/api/vehicles/${vehicleId}`);
 			return result.json();
-		}
+		},
 	});
 
 	if (isPending) return <Box>Loading...</Box>;
@@ -72,15 +72,20 @@ const VehicleCard = ({ vehicleId }) => {
 				</CardBody>
 
 				<CardFooter>
-					<Button
-						as={NextLink}
+					<NextLink
 						href={`/vehicles/${vehicleId}/fueling/new`}
-						aria-label='Add fueling'
-						colorScheme='green'
-						rightIcon={<FaGasPump />}
+						passHref
+						legacyBehavior
 					>
-						Add fueling
-					</Button>
+						<Button
+							as='a'
+							aria-label='Add fueling'
+							colorScheme='green'
+							rightIcon={<FaGasPump />}
+						>
+							Add fueling
+						</Button>
+					</NextLink>
 				</CardFooter>
 			</Stack>
 		</Card>
