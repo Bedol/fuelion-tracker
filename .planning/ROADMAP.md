@@ -17,6 +17,8 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Dependencies:** None (foundation phase)
 
+**Plans:** 5 plans
+
 **Requirements:**
 
 - AUTH-01: User can sign in with Google OAuth
@@ -33,6 +35,14 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 3. User can sign out from any page and is redirected to sign-in
 4. Unauthenticated user visiting any page is redirected to sign-in
 5. Navigation shows clear links to Vehicles, Fuelings, Statistics sections
+
+**Plans:**
+
+- [ ] 01-01-PLAN.md — Implement i18n with Polish/English support using React Context
+- [ ] 01-02-PLAN.md — Verify and enhance NextAuth Google OAuth with custom sign-in page
+- [ ] 01-03-PLAN.md — Create enhanced loading (SkeletonLoader) and error (ErrorAlert) components
+- [ ] 01-04-PLAN.md — Build responsive navigation (desktop top bar, mobile bottom bar)
+- [ ] 01-05-PLAN.md — Human verification of auth flow and navigation
 
 **Notes:**
 
