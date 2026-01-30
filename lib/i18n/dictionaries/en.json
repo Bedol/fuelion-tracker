@@ -1,0 +1,21 @@
+{
+	"nav": {
+		"vehicles": "Vehicles",
+		"statistics": "Statistics",
+		"signOut": "Sign Out",
+		"signIn": "Sign In"
+	},
+	"auth": {
+		"signInWithGoogle": "Sign in with Google",
+		"welcome": "Welcome to Fuelion"
+	},
+	"errors": {
+		"generic": "An error occurred",
+		"tryAgain": "Please try again",
+		"showDetails": "Show details",
+		"hideDetails": "Hide details"
+	},
+	"loading": {
+		"pleaseWait": "Please wait..."
+	}
+}
