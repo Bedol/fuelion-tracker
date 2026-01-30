@@ -1,7 +1,7 @@
 import { Box, Heading, Text, Stack } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import Loading from '../components/Loading';
+import SkeletonLoader from '../components/ui/SkeletonLoader';
 import { useLocale } from '../contexts/LocaleContext';
 
 const HomePage = () => {
@@ -15,7 +15,7 @@ const HomePage = () => {
 	const { t } = useLocale();
 
 	if (status === 'loading') {
-		return <Loading />;
+		return <SkeletonLoader type='page' />;
 	}
 
 	return (
