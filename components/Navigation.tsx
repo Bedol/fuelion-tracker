@@ -5,25 +5,20 @@ import {
 	Container,
 	Flex,
 	HStack,
-	useColorModeValue,
 } from '@chakra-ui/react';
 import { signOut, useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 
 const Navigation = () => {
-  const {status} = useSession()
+	const { status } = useSession();
 
 	return (
 		<Box as='section' pb='12'>
-			<Box
-				as='nav'
-				bg='bg-surface'
-				boxShadow={useColorModeValue('sm', 'sm-dark')}
-			>
+			<Box as='nav' bg='bg-surface' boxShadow='sm'>
 				<Container py='4'>
-					<HStack spacing='10' justify='space-between'>
+					<HStack gap='10' justify='space-between'>
 						<Flex justify='space-between' flex='1'>
-							<ButtonGroup variant='link' spacing='8'>
+							<ButtonGroup  gap='8'>
 								<Button
 									as={NextLink}
 									href='/'
@@ -41,17 +36,24 @@ const Navigation = () => {
 								>
 									Your Vehicles
 								</Button>
-                {status === "unauthenticated" ? ( 
-								<Button
-									as={NextLink}
-									href='/auth/signin'
-									colorScheme='teal'
-									variant='ghost'
-								>
-									Login
-								</Button>):(
-                <Button variant='solid' colorScheme='red' onClick={() => signOut()}>Sign Out</Button>
-                )}
+								{status === 'unauthenticated' ? (
+									<Button
+										as={NextLink}
+										href='/auth/signin'
+										colorScheme='teal'
+										variant='ghost'
+									>
+										Login
+									</Button>
+								) : (
+									<Button
+										variant='solid'
+										colorScheme='red'
+										onClick={() => signOut()}
+									>
+										Sign Out
+									</Button>
+								)}
 							</ButtonGroup>
 						</Flex>
 					</HStack>
