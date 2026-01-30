@@ -1,40 +1,50 @@
-import { Box, Button } from '@chakra-ui/react';
-import { NextPageContext } from 'next';
-import {
-	BuiltInProviderType,
-	CommonProviderOptions,
-} from 'next-auth/providers';
-import {
-	ClientSafeProvider,
-	getProviders,
-	LiteralUnion,
-	signIn,
-} from 'next-auth/react';
+import { Box, Button, Heading, Stack } from '@chakra-ui/react';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { FaGasPump } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { useLocale } from '../../contexts/LocaleContext';
 
-export default function SignIn({ providers }) {
+export default function SignIn() {
+	const router = useRouter();
+	const { data: session } = useSession();
+	const { t } = useLocale();
+
+	useEffect(() => {
+		if (session) {
+			router.push('/');
+		}
+	}, [session, router]);
+
 	return (
-		<Box>
-			{Object.values(providers).map((provider: CommonProviderOptions) => (
-				<Box key={provider.name}>
-					<Button variant='solid' onClick={() => signIn(provider.id)}>
-						Sign in with {provider.name}
-					</Button>
+		<Box
+			minH='100vh'
+			display='flex'
+			alignItems='center'
+			justifyContent='center'
+			bg='gray.50'
+		>
+			<Stack gap='6' align='center' maxW='md' px='6'>
+				<Box color='blue.500'>
+					<FaGasPump size={64} />
 				</Box>
-			))}
+				<Heading size='2xl' color='blue.600'>
+					Fuelion
+				</Heading>
+				<Button
+					onClick={() => signIn('google', { callbackUrl: '/' })}
+					colorScheme='blue'
+					size='lg'
+					width='full'
+					maxW='sm'
+				>
+					<Box mr='3'>
+						<FcGoogle size={24} />
+					</Box>
+					{t('auth.signInWithGoogle')}
+				</Button>
+			</Stack>
 		</Box>
 	);
-}
-
-export async function getServerSideProps(_context: NextPageContext): Promise<{
-	props: {
-		providers: Record<
-			LiteralUnion<BuiltInProviderType, string>,
-			ClientSafeProvider
-		>;
-	};
-}> {
-	const providers = await getProviders();
-	return {
-		props: { providers },
-	};
 }
