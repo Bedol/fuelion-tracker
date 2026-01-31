@@ -38,11 +38,11 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Plans:**
 
-- [ ] 01-01-PLAN.md — Implement i18n with Polish/English support using React Context
-- [ ] 01-02-PLAN.md — Verify and enhance NextAuth Google OAuth with custom sign-in page
-- [ ] 01-03-PLAN.md — Create enhanced loading (SkeletonLoader) and error (ErrorAlert) components
-- [ ] 01-04-PLAN.md — Build responsive navigation (desktop top bar, mobile bottom bar)
-- [ ] 01-05-PLAN.md — Human verification of auth flow and navigation
+- [x] 01-01-PLAN.md — Implement i18n with Polish/English support using React Context
+- [x] 01-02-PLAN.md — Verify and enhance NextAuth Google OAuth with custom sign-in page
+- [x] 01-03-PLAN.md — Create enhanced loading (SkeletonLoader) and error (ErrorAlert) components
+- [x] 01-04-PLAN.md — Build responsive navigation (desktop top bar, mobile bottom bar)
+- [x] 01-05-PLAN.md — Human verification of auth flow and navigation
 
 **Notes:**
 
@@ -173,13 +173,13 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 ## Progress
 
-| Phase | Name                | Requirements | Status  |
-| ----- | ------------------- | ------------ | ------- |
-| 1     | Auth & App Shell    | 6            | Pending |
-| 2     | Vehicle Management  | 6            | Pending |
-| 3     | Fueling Records     | 9            | Pending |
-| 4     | Statistics & Charts | 4            | Pending |
-| 5     | Dashboard           | 1            | Pending |
+| Phase | Name                | Requirements | Status   |
+| ----- | ------------------- | ------------ | -------- |
+| 1     | Auth & App Shell    | 6            | Complete |
+| 2     | Vehicle Management  | 6            | Pending  |
+| 3     | Fueling Records     | 9            | Pending  |
+| 4     | Statistics & Charts | 4            | Pending  |
+| 5     | Dashboard           | 1            | Pending  |
 
 **Total:** 26 requirements across 5 phases
 
@@ -198,4 +198,4 @@ All phases are sequential. Each depends on the previous.
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-01-30_
+_Last updated: 2026-01-31 (Phase 1 complete)_

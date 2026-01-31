@@ -9,10 +9,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can sign in with Google OAuth
-- [ ] **AUTH-02**: User session persists across browser refresh
-- [ ] **AUTH-03**: User can sign out from any page
-- [ ] **AUTH-04**: Unauthenticated users are redirected to sign-in page
+- [x] **AUTH-01**: User can sign in with Google OAuth
+- [x] **AUTH-02**: User session persists across browser refresh
+- [x] **AUTH-03**: User can sign out from any page
+- [x] **AUTH-04**: Unauthenticated users are redirected to sign-in page
 
 ### Vehicles
 
@@ -41,12 +41,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### UI/UX
 
-- [ ] **UIUX-01**: App has clear navigation between sections (vehicles, fuelings, stats)
+- [x] **UIUX-01**: App has clear navigation between sections (vehicles, fuelings, stats)
 - [ ] **UIUX-02**: Dashboard shows summary of user's vehicles and recent activity
 - [ ] **UIUX-03**: Forms are simple with minimal required fields
 - [ ] **UIUX-04**: Forms have smart defaults (current date, last odometer value)
 - [ ] **UIUX-05**: User receives feedback on actions (success/error toasts)
-- [ ] **UIUX-06**: Loading and error states are clearly displayed
+- [x] **UIUX-06**: Loading and error states are clearly displayed
 
 ## v2 Requirements
 
@@ -100,34 +100,34 @@ Deferred to future release. Tracked but not in current roadmap.
 
 Which phases cover which requirements. Updated during roadmap creation.
 
-| Requirement | Phase | Status  |
-| ----------- | ----- | ------- |
-| AUTH-01     | 1     | Pending |
-| AUTH-02     | 1     | Pending |
-| AUTH-03     | 1     | Pending |
-| AUTH-04     | 1     | Pending |
-| VEHI-01     | 2     | Pending |
-| VEHI-02     | 2     | Pending |
-| VEHI-03     | 2     | Pending |
-| VEHI-04     | 2     | Pending |
-| VEHI-05     | 2     | Pending |
-| VEHI-06     | 2     | Pending |
-| FUEL-01     | 3     | Pending |
-| FUEL-02     | 3     | Pending |
-| FUEL-03     | 3     | Pending |
-| FUEL-04     | 3     | Pending |
-| FUEL-05     | 3     | Pending |
-| FUEL-06     | 3     | Pending |
-| STAT-01     | 4     | Pending |
-| STAT-02     | 4     | Pending |
-| STAT-03     | 4     | Pending |
-| STAT-04     | 4     | Pending |
-| UIUX-01     | 1     | Pending |
-| UIUX-02     | 5     | Pending |
-| UIUX-03     | 3     | Pending |
-| UIUX-04     | 3     | Pending |
-| UIUX-05     | 3     | Pending |
-| UIUX-06     | 1     | Pending |
+| Requirement | Phase | Status   |
+| ----------- | ----- | -------- |
+| AUTH-01     | 1     | Complete |
+| AUTH-02     | 1     | Complete |
+| AUTH-03     | 1     | Complete |
+| AUTH-04     | 1     | Complete |
+| VEHI-01     | 2     | Pending  |
+| VEHI-02     | 2     | Pending  |
+| VEHI-03     | 2     | Pending  |
+| VEHI-04     | 2     | Pending  |
+| VEHI-05     | 2     | Pending  |
+| VEHI-06     | 2     | Pending  |
+| FUEL-01     | 3     | Pending  |
+| FUEL-02     | 3     | Pending  |
+| FUEL-03     | 3     | Pending  |
+| FUEL-04     | 3     | Pending  |
+| FUEL-05     | 3     | Pending  |
+| FUEL-06     | 3     | Pending  |
+| STAT-01     | 4     | Pending  |
+| STAT-02     | 4     | Pending  |
+| STAT-03     | 4     | Pending  |
+| STAT-04     | 4     | Pending  |
+| UIUX-01     | 1     | Complete |
+| UIUX-02     | 5     | Pending  |
+| UIUX-03     | 3     | Pending  |
+| UIUX-04     | 3     | Pending  |
+| UIUX-05     | 3     | Pending  |
+| UIUX-06     | 1     | Complete |
 
 **Coverage:**
 
