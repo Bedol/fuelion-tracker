@@ -115,11 +115,13 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 
 			{/* Section 2: Action Buttons */}
 			<ButtonGroup mb='8' gap='4'>
-				<Link href={`/vehicles/${vehicleId}/edit`} passHref>
-					<Button as='a' colorPalette='blue' variant='solid'>
-						Edit Vehicle
-					</Button>
-				</Link>
+				<Button
+					colorPalette='blue'
+					variant='solid'
+					onClick={() => router.push(`/vehicles/${vehicleId}/edit`)}
+				>
+					Edit Vehicle
+				</Button>
 				<Button
 					colorPalette='red'
 					variant='outline'
@@ -127,11 +129,9 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				>
 					Delete Vehicle
 				</Button>
-				<Link href='/vehicles' passHref>
-					<Button as='a' variant='ghost'>
-						← Back to Vehicles
-					</Button>
-				</Link>
+				<Button variant='ghost' onClick={() => router.push('/vehicles')}>
+					← Back to Vehicles
+				</Button>
 			</ButtonGroup>
 
 			<Stack direction={{ base: 'column', md: 'row' }} gap='6' mb='8'>
