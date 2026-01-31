@@ -119,6 +119,13 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 4. User can see all fuelings for a vehicle sorted by date (newest first)
 5. User receives toast confirmation when fueling is added/edited/deleted
 
+**Plans:**
+
+- [ ] 03-01-PLAN.md — Install dependencies and create fueling type definitions
+- [ ] 03-02-PLAN.md — Create TanStack Query hooks and draft persistence hooks
+- [ ] 03-03-PLAN.md — Create fueling form, list, and delete modal components
+- [ ] 03-04-PLAN.md — Create API routes and page components for complete CRUD
+
 **Notes:**
 
 - This phase delivers the core value proposition
