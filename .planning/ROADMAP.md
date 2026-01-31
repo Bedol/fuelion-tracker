@@ -79,11 +79,11 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Plans:**
 
-- [ ] 02-01-PLAN.md — Simplify Vehicle schema to remove lookup table dependencies
-- [ ] 02-02-PLAN.md — Add empty state and enhance vehicle cards with fuel type icons
-- [ ] 02-03-PLAN.md — Rebuild vehicle forms (create & edit) with collapsible technical data
-- [ ] 02-04-PLAN.md — Create vehicle detail page and delete confirmation modal
-- [ ] 02-05-PLAN.md — Human verification of complete CRUD flow
+- [x] 02-01-PLAN.md — Simplify Vehicle schema to remove lookup table dependencies
+- [x] 02-02-PLAN.md — Add empty state and enhance vehicle cards with fuel type icons
+- [x] 02-03-PLAN.md — Rebuild vehicle forms (create & edit) with collapsible technical data
+- [x] 02-04-PLAN.md — Create vehicle detail page and delete confirmation modal
+- [x] 02-05-PLAN.md — Human verification of complete CRUD flow
 
 **Notes:**
 
@@ -193,12 +193,12 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 | Phase | Name                | Requirements | Status   |
 | ----- | ------------------- | ------------ | -------- |
 | 1     | Auth & App Shell    | 6            | Complete |
-| 2     | Vehicle Management  | 6            | Pending  |
+| 2     | Vehicle Management  | 6            | Complete |
 | 3     | Fueling Records     | 9            | Pending  |
 | 4     | Statistics & Charts | 4            | Pending  |
 | 5     | Dashboard           | 1            | Pending  |
 
-**Total:** 26 requirements across 5 phases
+**Total:** 26 requirements across 5 phases (12 complete, 14 remaining)
 
 ## Dependency Graph
 
@@ -215,4 +215,4 @@ All phases are sequential. Each depends on the previous.
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-01-31 (Phase 1 complete)_
+_Last updated: 2026-01-31 (Phase 2 complete)_

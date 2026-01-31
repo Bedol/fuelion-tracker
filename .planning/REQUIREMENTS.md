@@ -16,12 +16,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Vehicles
 
-- [ ] **VEHI-01**: User can create a vehicle with basic data (brand, model, year, registration)
-- [ ] **VEHI-02**: User can add technical data to vehicle (engine capacity, power, fuel type)
-- [ ] **VEHI-03**: User can view list of their vehicles
-- [ ] **VEHI-04**: User can edit vehicle data
-- [ ] **VEHI-05**: User can delete a vehicle (with confirmation)
-- [ ] **VEHI-06**: User can select a vehicle to view its details and expenses
+- [x] **VEHI-01**: User can create a vehicle with basic data (brand, model, year, registration)
+- [x] **VEHI-02**: User can add technical data to vehicle (engine capacity, power, fuel type)
+- [x] **VEHI-03**: User can view list of their vehicles
+- [x] **VEHI-04**: User can edit vehicle data
+- [x] **VEHI-05**: User can delete a vehicle (with confirmation)
+- [x] **VEHI-06**: User can select a vehicle to view its details and expenses
 
 ### Fueling
 
