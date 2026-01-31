@@ -33,7 +33,7 @@ const NewVehiclePage = () => {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					...values,
-					user_id: parseInt(session.user.id),
+					user_id: Number(session.user.id),
 				}),
 			});
 

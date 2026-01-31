@@ -1,12 +1,13 @@
 import { Vehicle } from '@prisma/client';
 import { Button } from '@chakra-ui/react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
 import Loading from '../../components/Loading';
 import VehicleCard from '../../components/VehicleCard';
 
 const EmptyState = () => {
+	const router = useRouter();
 	return (
 		<div className='flex flex-col items-center justify-center min-h-[400px] px-4'>
 			<div className='text-6xl mb-6'>🚗</div>
@@ -17,7 +18,12 @@ const EmptyState = () => {
 				Start tracking fuel expenses by adding your vehicle. Keep all your car
 				costs in one place.
 			</p>
-			<Button as={Link} href='/vehicles/new' colorPalette='blue' size='lg'>
+			<Button
+				colorPalette='blue'
+				size='lg'
+				onClick={() => router.push('/vehicles/new')}
+				cursor='pointer'
+			>
 				Add Vehicle
 			</Button>
 		</div>
@@ -25,6 +31,7 @@ const EmptyState = () => {
 };
 
 const AllVehicles = () => {
+	const router = useRouter();
 	const { isPending, isError, data } = useQuery({
 		queryKey: ['vehicles'],
 		queryFn: async () => {
@@ -49,7 +56,11 @@ const AllVehicles = () => {
 		<div>
 			<div className='flex items-center justify-between mb-6'>
 				<h1 className='text-2xl font-bold text-gray-900'>My Vehicles</h1>
-				<Button as={Link} href='/vehicles/new' colorPalette='blue'>
+				<Button
+					colorPalette='blue'
+					onClick={() => router.push('/vehicles/new')}
+					cursor='pointer'
+				>
 					Add Vehicle
 				</Button>
 			</div>

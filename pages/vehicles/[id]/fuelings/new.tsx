@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { Vehicle } from '@prisma/client';
 import { useSession } from 'next-auth/react';
-import Layout from '../../../components/Layout';
-import { FuelingForm } from '../../../components/fueling';
-import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
-import Loading from '../../../components/Loading';
+import Layout from '../../../../components/Layout';
+import { FuelingForm } from '../../../../components/fueling';
+import FetchDataErrorAlert from '../../../../components/errors/FetchDataErrorAlert';
+import Loading from '../../../../components/Loading';
 
 const NewFuelingPage: React.FC = () => {
 	const router = useRouter();
@@ -43,7 +43,7 @@ const NewFuelingPage: React.FC = () => {
 	// Loading states
 	if (status === 'loading' || isPending) {
 		return (
-			<Layout title='Add Fueling'>
+			<Layout>
 				<Loading />
 			</Layout>
 		);
@@ -51,14 +51,14 @@ const NewFuelingPage: React.FC = () => {
 
 	if (isError || !vehicle) {
 		return (
-			<Layout title='Add Fueling'>
+			<Layout>
 				<FetchDataErrorAlert errorMessage='Failed to load vehicle details.' />
 			</Layout>
 		);
 	}
 
 	return (
-		<Layout title={`Add Fueling - ${vehicle.brand_name} ${vehicle.model_name}`}>
+		<Layout>
 			<Box maxW='1200px' mx='auto' p='4'>
 				{/* Header */}
 				<Box mb='6'>

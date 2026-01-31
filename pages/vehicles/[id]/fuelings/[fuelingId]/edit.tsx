@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { Vehicle } from '@prisma/client';
 import { useSession } from 'next-auth/react';
-import Layout from '../../../../components/Layout';
-import { FuelingForm } from '../../../../components/fueling';
-import { FuelingData } from '../../../../types';
-import FetchDataErrorAlert from '../../../../components/errors/FetchDataErrorAlert';
-import Loading from '../../../../components/Loading';
+import Layout from '../../../../../components/Layout';
+import { FuelingForm } from '../../../../../components/fueling';
+import { FuelingData } from '../../../../../types';
+import FetchDataErrorAlert from '../../../../../components/errors/FetchDataErrorAlert';
+import Loading from '../../../../../components/Loading';
 
 const EditFuelingPage: React.FC = () => {
 	const router = useRouter();
@@ -62,7 +62,7 @@ const EditFuelingPage: React.FC = () => {
 	// Loading states
 	if (status === 'loading' || isVehiclePending || isFuelingPending) {
 		return (
-			<Layout title='Edit Fueling'>
+			<Layout>
 				<Loading />
 			</Layout>
 		);
@@ -71,7 +71,7 @@ const EditFuelingPage: React.FC = () => {
 	// Error states
 	if (isVehicleError || isFuelingError || !vehicle || !fueling) {
 		return (
-			<Layout title='Edit Fueling'>
+			<Layout>
 				<FetchDataErrorAlert errorMessage='Failed to load fueling details.' />
 			</Layout>
 		);
@@ -80,7 +80,7 @@ const EditFuelingPage: React.FC = () => {
 	// Security check - ensure fueling belongs to this vehicle
 	if (fueling.vehicle_id !== vehicle.id) {
 		return (
-			<Layout title='Edit Fueling'>
+			<Layout>
 				<FetchDataErrorAlert errorMessage='Fueling record does not belong to this vehicle.' />
 			</Layout>
 		);
@@ -93,9 +93,7 @@ const EditFuelingPage: React.FC = () => {
 	});
 
 	return (
-		<Layout
-			title={`Edit Fueling - ${vehicle.brand_name} ${vehicle.model_name}`}
-		>
+		<Layout>
 			<Box maxW='1200px' mx='auto' p='4'>
 				{/* Header */}
 				<Box mb='6'>
