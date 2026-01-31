@@ -1,4 +1,5 @@
 import { Vehicle } from '@prisma/client';
+import { Button } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
@@ -16,12 +17,9 @@ const EmptyState = () => {
 				Start tracking fuel expenses by adding your vehicle. Keep all your car
 				costs in one place.
 			</p>
-			<Link
-				href='/vehicles/new'
-				className='px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-md'
-			>
+			<Button as={Link} href='/vehicles/new' colorPalette='blue' size='lg'>
 				Add Vehicle
-			</Link>
+			</Button>
 		</div>
 	);
 };
@@ -51,12 +49,9 @@ const AllVehicles = () => {
 		<div>
 			<div className='flex items-center justify-between mb-6'>
 				<h1 className='text-2xl font-bold text-gray-900'>My Vehicles</h1>
-				<Link
-					href='/vehicles/new'
-					className='px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors'
-				>
+				<Button as={Link} href='/vehicles/new' colorPalette='blue'>
 					Add Vehicle
-				</Link>
+				</Button>
 			</div>
 			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
 				{data.map((vehicle: Vehicle) => (
