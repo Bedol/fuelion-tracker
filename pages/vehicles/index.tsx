@@ -2,7 +2,6 @@ import { Vehicle } from '@prisma/client';
 import { Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import Layout from '../../components/Layout';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
 import Loading from '../../components/Loading';
 import VehicleCard from '../../components/VehicleCard';
@@ -41,49 +40,36 @@ const AllVehicles = () => {
 		},
 	});
 
-	if (isPending)
-		return (
-			<Layout>
-				<Loading />
-			</Layout>
-		);
+	if (isPending) return <Loading />;
 
 	if (isError)
 		return (
-			<Layout>
-				<FetchDataErrorAlert errorMessage='An error occurred while fetching vehicles.' />
-			</Layout>
+			<FetchDataErrorAlert errorMessage='An error occurred while fetching vehicles.' />
 		);
 
 	// Empty state when no vehicles exist
 	if (!data || data.length === 0) {
-		return (
-			<Layout>
-				<EmptyState />
-			</Layout>
-		);
+		return <EmptyState />;
 	}
 
 	return (
-		<Layout>
-			<div>
-				<div className='flex items-center justify-between mb-6'>
-					<h1 className='text-2xl font-bold text-gray-900'>My Vehicles</h1>
-					<Button
-						colorPalette='blue'
-						onClick={() => router.push('/vehicles/new')}
-						cursor='pointer'
-					>
-						Add Vehicle
-					</Button>
-				</div>
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-					{data.map((vehicle: Vehicle) => (
-						<VehicleCard key={vehicle.id} vehicle={vehicle} />
-					))}
-				</div>
+		<div>
+			<div className='flex items-center justify-between mb-6'>
+				<h1 className='text-2xl font-bold text-gray-900'>My Vehicles</h1>
+				<Button
+					colorPalette='blue'
+					onClick={() => router.push('/vehicles/new')}
+					cursor='pointer'
+				>
+					Add Vehicle
+				</Button>
 			</div>
-		</Layout>
+			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+				{data.map((vehicle: Vehicle) => (
+					<VehicleCard key={vehicle.id} vehicle={vehicle} />
+				))}
+			</div>
+		</div>
 	);
 };
 

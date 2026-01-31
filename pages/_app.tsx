@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { LocaleProvider } from '../contexts/LocaleContext';
+import Layout from '../components/Layout';
 import ClientToaster from '../components/ui/ClientToaster';
 import '../styles/globals.css';
 
@@ -21,9 +22,11 @@ function MyApp({ Component, pageProps }) {
 			<QueryClientProvider client={queryClient}>
 				<SessionProvider session={pageProps.session}>
 					<LocaleProvider>
-						<HydrationBoundary state={pageProps.dehydratedState}>
-							<Component {...pageProps} />
-						</HydrationBoundary>
+						<Layout>
+							<HydrationBoundary state={pageProps.dehydratedState}>
+								<Component {...pageProps} />
+							</HydrationBoundary>
+						</Layout>
 					</LocaleProvider>
 				</SessionProvider>
 				{!isProduction && <ReactQueryDevtools initialIsOpen={false} />}
