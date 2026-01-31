@@ -32,17 +32,19 @@ const DeleteVehicleModal: React.FC<DeleteVehicleModalProps> = ({
 			return resp.json();
 		},
 		onSuccess: () => {
-			toaster.success({
+			toaster.create({
 				title: 'Vehicle deleted successfully',
 				description: `${vehicle.brand_name} ${vehicle.model_name} has been removed.`,
+				type: 'success',
 			});
 			onClose();
 			onDeleteSuccess();
 		},
 		onError: (error: Error) => {
-			toaster.error({
+			toaster.create({
 				title: 'Failed to delete vehicle',
 				description: error.message || 'Please try again later.',
+				type: 'error',
 			});
 		},
 	});

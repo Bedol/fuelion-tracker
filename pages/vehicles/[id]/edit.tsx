@@ -49,15 +49,17 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['vehicle', vehicleId] });
 			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
-			toaster.success({
+			toaster.create({
 				title: 'Vehicle updated successfully',
+				type: 'success',
 			});
 			router.push('/vehicles');
 		},
 		onError: (error) => {
-			toaster.error({
+			toaster.create({
 				title:
 					error instanceof Error ? error.message : 'Failed to update vehicle',
+				type: 'error',
 			});
 		},
 	});

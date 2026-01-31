@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Toaster } from '@chakra-ui/react';
-import { toaster } from './toaster';
+import { Toaster } from './toaster';
 
 const ClientToaster = () => {
 	const [mounted, setMounted] = useState(false);
@@ -15,7 +14,7 @@ const ClientToaster = () => {
 		return null;
 	}
 
-	return <Toaster toaster={toaster} />;
+	return <Toaster />;
 };
 
 export default ClientToaster;

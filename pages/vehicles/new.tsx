@@ -46,15 +46,17 @@ const NewVehiclePage = () => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
-			toaster.success({
+			toaster.create({
 				title: 'Vehicle created successfully',
+				type: 'success',
 			});
 			router.push('/vehicles');
 		},
 		onError: (error) => {
-			toaster.error({
+			toaster.create({
 				title:
 					error instanceof Error ? error.message : 'Failed to create vehicle',
+				type: 'error',
 			});
 		},
 	});
