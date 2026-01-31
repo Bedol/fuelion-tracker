@@ -8,26 +8,26 @@ datasource db {
 }
 
 model Vehicle {
-  id              Int       @id @default(autoincrement())
-  user_id         Int
-  user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  brand_name      String    @db.VarChar(255)
-  model_name      String    @db.VarChar(255)
-  engine_capacity Int
-  production_year Int
-  fuel_type_id    Int
-  transmission_id Int
-  engine_power    Int
-  power_unit_id   Int
-  type_id         Int
-  mileage         Float     @default(0.0)
-  mileage_in_id   Int
-  value           Int
-  currency_id     Int
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  fuelings        Fueling[]
-  expenses        Expense[]
+  id                Int       @id @default(autoincrement())
+  user_id           Int
+  user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  brand_name        String    @db.VarChar(255)
+  model_name        String    @db.VarChar(255)
+  production_year   Int
+  fuel_type         String    @db.VarChar(50)
+  registration_number String? @db.VarChar(50)
+  engine_capacity   Int?
+  engine_power      Int?
+  power_unit        String?   @db.VarChar(10)
+  vehicle_type      String?   @db.VarChar(50)
+  transmission      String?   @db.VarChar(50)
+  mileage           Float     @default(0.0)
+  mileage_unit      String    @default("km") @db.VarChar(10)
+  currency          String    @default("PLN") @db.VarChar(3)
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  fuelings          Fueling[]
+  expenses          Expense[]
 }
 
 model Fueling {
