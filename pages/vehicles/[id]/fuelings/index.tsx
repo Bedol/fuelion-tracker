@@ -1,11 +1,4 @@
-import {
-	Box,
-	Button,
-	ButtonGroup,
-	Heading,
-	Stack,
-	Text,
-} from '@chakra-ui/react';
+import { Box, Button, Heading, Stack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -102,17 +95,22 @@ const FuelingsListPage: React.FC = () => {
 				</Box>
 
 				{/* Action Buttons */}
-				<ButtonGroup mb='6' gap='4'>
-					<Button colorPalette='blue' onClick={handleAddFueling}>
+				<Stack direction='row' mb='6' gap='4'>
+					<Button
+						colorPalette='blue'
+						onClick={handleAddFueling}
+						cursor='pointer'
+					>
 						Add Fueling
 					</Button>
 					<Button
 						variant='ghost'
 						onClick={() => router.push(`/vehicles/${id}`)}
+						cursor='pointer'
 					>
 						← Back to Vehicle
 					</Button>
-				</ButtonGroup>
+				</Stack>
 
 				{/* Fueling List */}
 				<FuelingList

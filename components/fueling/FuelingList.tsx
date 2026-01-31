@@ -103,7 +103,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 					Start tracking your fuel expenses by adding your first fueling record.
 				</Text>
 				{onAddNew && (
-					<Button colorPalette='blue' onClick={onAddNew}>
+					<Button colorPalette='blue' onClick={onAddNew} cursor='pointer'>
 						Add First Fueling
 					</Button>
 				)}
