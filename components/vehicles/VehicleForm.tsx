@@ -2,11 +2,9 @@ import {
 	Box,
 	Button,
 	ButtonGroup,
-	Collapse,
-	FormControl,
-	FormLabel,
+	Collapsible,
+	Field,
 	Input,
-	Select,
 	Text,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
@@ -70,8 +68,8 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 						Basic Information
 					</Text>
 
-					<FormControl mb='4' isRequired>
-						<FormLabel htmlFor='brand_name'>Brand</FormLabel>
+					<Field.Root mb='4' required>
+						<Field.Label>Brand</Field.Label>
 						<Input
 							type='text'
 							name='brand_name'
@@ -80,10 +78,10 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							value={formik.values.brand_name}
 							placeholder='e.g., Toyota'
 						/>
-					</FormControl>
+					</Field.Root>
 
-					<FormControl mb='4' isRequired>
-						<FormLabel htmlFor='model_name'>Model</FormLabel>
+					<Field.Root mb='4' required>
+						<Field.Label>Model</Field.Label>
 						<Input
 							type='text'
 							name='model_name'
@@ -92,10 +90,10 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							value={formik.values.model_name}
 							placeholder='e.g., Corolla'
 						/>
-					</FormControl>
+					</Field.Root>
 
-					<FormControl mb='4' isRequired>
-						<FormLabel htmlFor='production_year'>Production Year</FormLabel>
+					<Field.Root mb='4' required>
+						<Field.Label>Production Year</Field.Label>
 						<Input
 							type='number'
 							name='production_year'
@@ -105,11 +103,12 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							min={1900}
 							max={currentYear + 1}
 						/>
-					</FormControl>
+					</Field.Root>
 
-					<FormControl mb='4' isRequired>
-						<FormLabel htmlFor='fuel_type'>Fuel Type</FormLabel>
-						<Select
+					<Field.Root mb='4' required>
+						<Field.Label>Fuel Type</Field.Label>
+						<Box
+							as='select'
 							name='fuel_type'
 							id='fuel_type'
 							onChange={formik.handleChange}
@@ -120,13 +119,11 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 									{option.name}
 								</option>
 							))}
-						</Select>
-					</FormControl>
+						</Box>
+					</Field.Root>
 
-					<FormControl mb='4'>
-						<FormLabel htmlFor='registration_number'>
-							Registration Number (optional)
-						</FormLabel>
+					<Field.Root mb='4'>
+						<Field.Label>Registration Number (optional)</Field.Label>
 						<Input
 							type='text'
 							name='registration_number'
@@ -135,7 +132,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							value={formik.values.registration_number || ''}
 							placeholder='e.g., ABC 1234'
 						/>
-					</FormControl>
+					</Field.Root>
 				</Box>
 
 				{/* Section 2: Technical Data (Collapsible) */}
@@ -149,7 +146,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 						{showTechnical ? '− Hide technical data' : '+ Add technical data'}
 					</Button>
 
-					<Collapse in={showTechnical}>
+					<Collapsible open={showTechnical}>
 						<Box
 							p='4'
 							borderWidth='1px'
@@ -160,10 +157,8 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 								Technical Specifications
 							</Text>
 
-							<FormControl mb='4'>
-								<FormLabel htmlFor='engine_capacity'>
-									Engine Capacity (cc, optional)
-								</FormLabel>
+							<Field.Root mb='4'>
+								<Field.Label>Engine Capacity (cc, optional)</Field.Label>
 								<Input
 									type='number'
 									name='engine_capacity'
@@ -172,12 +167,10 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 									value={formik.values.engine_capacity || ''}
 									placeholder='e.g., 2000'
 								/>
-							</FormControl>
+							</Field.Root>
 
-							<FormControl mb='4'>
-								<FormLabel htmlFor='engine_power'>
-									Engine Power (optional)
-								</FormLabel>
+							<Field.Root mb='4'>
+								<Field.Label>Engine Power (optional)</Field.Label>
 								<Input
 									type='number'
 									name='engine_power'
@@ -186,13 +179,12 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 									value={formik.values.engine_power || ''}
 									placeholder='e.g., 150'
 								/>
-							</FormControl>
+							</Field.Root>
 
-							<FormControl mb='4'>
-								<FormLabel htmlFor='power_unit'>
-									Power Unit (optional)
-								</FormLabel>
-								<Select
+							<Field.Root mb='4'>
+								<Field.Label>Power Unit (optional)</Field.Label>
+								<Box
+									as='select'
 									name='power_unit'
 									id='power_unit'
 									onChange={formik.handleChange}
@@ -204,14 +196,13 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 											{option.name}
 										</option>
 									))}
-								</Select>
-							</FormControl>
+								</Box>
+							</Field.Root>
 
-							<FormControl mb='4'>
-								<FormLabel htmlFor='transmission'>
-									Transmission (optional)
-								</FormLabel>
-								<Select
+							<Field.Root mb='4'>
+								<Field.Label>Transmission (optional)</Field.Label>
+								<Box
+									as='select'
 									name='transmission'
 									id='transmission'
 									onChange={formik.handleChange}
@@ -223,10 +214,10 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 											{option.name}
 										</option>
 									))}
-								</Select>
-							</FormControl>
+								</Box>
+							</Field.Root>
 						</Box>
-					</Collapse>
+					</Collapsible>
 				</Box>
 
 				{/* Submit Buttons */}
@@ -235,7 +226,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 						loading={mutation.isPending}
 						loadingText='Submitting'
 						type='submit'
-						colorScheme='blue'
+						colorPalette='blue'
 					>
 						{mode === 'create' ? 'Create Vehicle' : 'Save Changes'}
 					</Button>
