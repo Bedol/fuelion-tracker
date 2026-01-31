@@ -1,4 +1,9 @@
-import { ChakraProvider, createSystem, defaultConfig } from '@chakra-ui/react';
+import {
+	ChakraProvider,
+	createSystem,
+	defaultConfig,
+	Toaster,
+} from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
 import {
 	HydrationBoundary,
@@ -29,6 +34,7 @@ function MyApp({ Component, pageProps }) {
 					</LocaleProvider>
 				</SessionProvider>
 				{!isProduction && <ReactQueryDevtools initialIsOpen={false} />}
+				<Toaster />
 			</QueryClientProvider>
 		</ChakraProvider>
 	);
