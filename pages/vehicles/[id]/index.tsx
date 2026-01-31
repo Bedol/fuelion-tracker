@@ -3,7 +3,7 @@ import {
 	Box,
 	Button,
 	ButtonGroup,
-	Card,
+	CardRoot,
 	CardBody,
 	Heading,
 	Stack,
@@ -26,8 +26,8 @@ type VehicleDetailPageProps = {
 const getFuelTypeIcon = (fuelType: string): string => {
 	const icons: Record<string, string> = {
 		gasoline: '⛽',
-		diesel: '⛽',
-		lpg: '🔥',
+		diesel: '🛢️',
+		lpg: '💨',
 		electric: '🔌',
 		hybrid: '🔋',
 	};
@@ -91,7 +91,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				<Stack direction='row' gap='4' align='center' color='gray.600'>
 					<Text>{vehicle.production_year}</Text>
 					<Text>•</Text>
-					<Badge variant='subtle' colorScheme='blue'>
+					<Badge variant='subtle' colorPalette='blue'>
 						{getFuelTypeIcon(vehicle.fuel_type)}{' '}
 						{getFuelTypeLabel(vehicle.fuel_type)}
 					</Badge>
@@ -116,12 +116,12 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 			{/* Section 2: Action Buttons */}
 			<ButtonGroup mb='8' gap='4'>
 				<Link href={`/vehicles/${vehicleId}/edit`} passHref>
-					<Button as='a' colorScheme='blue' variant='solid'>
+					<Button as='a' colorPalette='blue' variant='solid'>
 						Edit Vehicle
 					</Button>
 				</Link>
 				<Button
-					colorScheme='red'
+					colorPalette='red'
 					variant='outline'
 					onClick={() => setIsDeleteModalOpen(true)}
 				>
@@ -136,7 +136,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 
 			<Stack direction={{ base: 'column', md: 'row' }} gap='6' mb='8'>
 				{/* Section 3: Basic Information Card */}
-				<Card flex='1'>
+				<CardRoot flex='1'>
 					<CardBody>
 						<Heading size='md' mb='4'>
 							Basic Information
@@ -174,20 +174,16 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 									Registration
 								</Text>
 								<Text fontWeight='medium'>
-									{vehicle.registration_number || (
-										<Text as='span' color='gray.400'>
-											Not registered
-										</Text>
-									)}
+									{vehicle.registration_number || 'Not registered'}
 								</Text>
 							</Box>
 						</Stack>
 					</CardBody>
-				</Card>
+				</CardRoot>
 
 				{/* Section 3: Technical Specifications Card */}
 				{hasTechnicalData && (
-					<Card flex='1'>
+					<CardRoot flex='1'>
 						<CardBody>
 							<Heading size='md' mb='4'>
 								Technical Specifications
@@ -227,11 +223,11 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 								)}
 							</Stack>
 						</CardBody>
-					</Card>
+					</CardRoot>
 				)}
 
 				{/* Section 3: Metadata Card */}
-				<Card flex='1'>
+				<CardRoot flex='1'>
 					<CardBody>
 						<Heading size='md' mb='4'>
 							Vehicle Status
@@ -269,11 +265,11 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 							</Box>
 						</Stack>
 					</CardBody>
-				</Card>
+				</CardRoot>
 			</Stack>
 
 			{/* Section 4: Placeholder for Future Features */}
-			<Card variant='outline' borderStyle='dashed'>
+			<CardRoot variant='outline'>
 				<CardBody>
 					<Box textAlign='center' py='8'>
 						<Text fontSize='2xl' mb='4'>
@@ -285,7 +281,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 						<Text color='gray.500' mb='4'>
 							Fueling records and statistics will appear here in Phase 3 and 4
 						</Text>
-						<Button isDisabled colorScheme='green' variant='outline'>
+						<Button disabled colorPalette='green' variant='outline'>
 							Add Fueling
 						</Button>
 						<Text fontSize='xs' color='gray.400' mt='2'>
@@ -293,7 +289,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 						</Text>
 					</Box>
 				</CardBody>
-			</Card>
+			</CardRoot>
 
 			{/* Delete Confirmation Modal */}
 			<DeleteVehicleModal
