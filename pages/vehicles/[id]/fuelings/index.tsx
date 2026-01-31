@@ -41,7 +41,9 @@ const FuelingsListPage: React.FC = () => {
 
 	// Handlers
 	const handleAddFueling = () => {
-		router.push(`/vehicles/${id}/fuelings/new`);
+		if (vehicleId) {
+			router.push(`/vehicles/${vehicleId}/fuelings/new`);
+		}
 	};
 
 	const handleEditFueling = (fueling: FuelingData) => {
