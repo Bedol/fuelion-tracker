@@ -1,0 +1,146 @@
+import {
+	Box,
+	Button,
+	ButtonGroup,
+	Heading,
+	Stack,
+	Text,
+} from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { Vehicle } from '@prisma/client';
+import Layout from '../../../components/Layout';
+import { FuelingList, FuelingDeleteModal } from '../../../components/fueling';
+import { FuelingData } from '../../../types';
+import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
+import Loading from '../../../components/Loading';
+import { useSession } from 'next-auth/react';
+
+const FuelingsListPage: React.FC = () => {
+	const router = useRouter();
+	const { id } = router.query;
+	const { status } = useSession({ required: true });
+
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const [selectedFueling, setSelectedFueling] = useState<FuelingData | null>(
+		null
+	);
+
+	const vehicleId = id ? Number(id) : undefined;
+
+	// Fetch vehicle data
+	const {
+		data: vehicle,
+		isPending,
+		isError,
+	} = useQuery({
+		queryKey: ['vehicle', vehicleId],
+		queryFn: async () => {
+			const response = await fetch(`/api/vehicles/${vehicleId}`);
+			if (!response.ok) {
+				throw new Error('Failed to fetch vehicle');
+			}
+			return response.json() as Promise<Vehicle>;
+		},
+		enabled: !!vehicleId,
+	});
+
+	// Handlers
+	const handleAddFueling = () => {
+		router.push(`/vehicles/${id}/fuelings/new`);
+	};
+
+	const handleEditFueling = (fueling: FuelingData) => {
+		router.push(`/vehicles/${id}/fuelings/${fueling.id}/edit`);
+	};
+
+	const handleDeleteClick = (fueling: FuelingData) => {
+		setSelectedFueling(fueling);
+		setIsDeleteModalOpen(true);
+	};
+
+	const handleDeleteSuccess = () => {
+		setIsDeleteModalOpen(false);
+		setSelectedFueling(null);
+	};
+
+	const handleCloseDeleteModal = () => {
+		setIsDeleteModalOpen(false);
+		setSelectedFueling(null);
+	};
+
+	// Loading states
+	if (status === 'loading' || isPending) {
+		return (
+			<Layout title='Fueling Records'>
+				<Loading />
+			</Layout>
+		);
+	}
+
+	if (isError || !vehicle) {
+		return (
+			<Layout title='Fueling Records'>
+				<FetchDataErrorAlert errorMessage='Failed to load vehicle details.' />
+			</Layout>
+		);
+	}
+
+	return (
+		<Layout title={`${vehicle.brand_name} ${vehicle.model_name} - Fuelings`}>
+			<Box maxW='1200px' mx='auto' p='4'>
+				{/* Header */}
+				<Box mb='6'>
+					<Heading size='xl' mb='2'>
+						{vehicle.brand_name} {vehicle.model_name}
+					</Heading>
+					<Text color='gray.600'>
+						{vehicle.production_year} • {vehicle.mileage.toLocaleString()}{' '}
+						{vehicle.mileage_unit}
+					</Text>
+				</Box>
+
+				{/* Action Buttons */}
+				<ButtonGroup mb='6' gap='4'>
+					<Button colorPalette='blue' onClick={handleAddFueling}>
+						Add Fueling
+					</Button>
+					<Button
+						variant='ghost'
+						onClick={() => router.push(`/vehicles/${id}`)}
+					>
+						← Back to Vehicle
+					</Button>
+				</ButtonGroup>
+
+				{/* Fueling List */}
+				<FuelingList
+					vehicleId={vehicle.id}
+					currency={vehicle.currency}
+					onEdit={handleEditFueling}
+					onDelete={handleDeleteClick}
+					onAddNew={handleAddFueling}
+				/>
+			</Box>
+
+			{/* Delete Modal */}
+			{selectedFueling && (
+				<FuelingDeleteModal
+					isOpen={isDeleteModalOpen}
+					onClose={handleCloseDeleteModal}
+					fueling={{
+						id: selectedFueling.id,
+						date: selectedFueling.date,
+						cost: selectedFueling.cost,
+					}}
+					currency={vehicle.currency}
+					onDeleteSuccess={handleDeleteSuccess}
+					vehicleId={vehicle.id}
+				/>
+			)}
+		</Layout>
+	);
+};
+
+export default FuelingsListPage;
