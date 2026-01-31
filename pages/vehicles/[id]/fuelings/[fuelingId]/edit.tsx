@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { Vehicle } from '@prisma/client';
 import { useSession } from 'next-auth/react';
-import Layout from '../../../../../components/Layout';
 import { FuelingForm } from '../../../../../components/fueling';
 import { FuelingData } from '../../../../../types';
 import FetchDataErrorAlert from '../../../../../components/errors/FetchDataErrorAlert';
@@ -61,28 +60,20 @@ const EditFuelingPage: React.FC = () => {
 
 	// Loading states
 	if (status === 'loading' || isVehiclePending || isFuelingPending) {
-		return (
-			<Layout>
-				<Loading />
-			</Layout>
-		);
+		return <Loading />;
 	}
 
 	// Error states
 	if (isVehicleError || isFuelingError || !vehicle || !fueling) {
 		return (
-			<Layout>
-				<FetchDataErrorAlert errorMessage='Failed to load fueling details.' />
-			</Layout>
+			<FetchDataErrorAlert errorMessage='Failed to load fueling details.' />
 		);
 	}
 
 	// Security check - ensure fueling belongs to this vehicle
 	if (fueling.vehicle_id !== vehicle.id) {
 		return (
-			<Layout>
-				<FetchDataErrorAlert errorMessage='Fueling record does not belong to this vehicle.' />
-			</Layout>
+			<FetchDataErrorAlert errorMessage='Fueling record does not belong to this vehicle.' />
 		);
 	}
 
@@ -93,34 +84,32 @@ const EditFuelingPage: React.FC = () => {
 	});
 
 	return (
-		<Layout>
-			<Box maxW='1200px' mx='auto' p='4'>
-				{/* Header */}
-				<Box mb='6'>
-					<Heading size='xl' mb='2'>
-						Edit Fueling
-					</Heading>
-					<Text color='gray.600'>
-						{vehicle.brand_name} {vehicle.model_name} • {formattedDate}
-					</Text>
-				</Box>
-
-				{/* Back Button */}
-				<ButtonGroup mb='6'>
-					<Button variant='ghost' onClick={handleCancel}>
-						← Back to Fuelings
-					</Button>
-				</ButtonGroup>
-
-				{/* Fueling Form */}
-				<FuelingForm
-					vehicle={vehicle}
-					initialData={fueling}
-					mode='edit'
-					onSubmitSuccess={handleSubmitSuccess}
-				/>
+		<Box maxW='1200px' mx='auto' p='4'>
+			{/* Header */}
+			<Box mb='6'>
+				<Heading size='xl' mb='2'>
+					Edit Fueling
+				</Heading>
+				<Text color='gray.600'>
+					{vehicle.brand_name} {vehicle.model_name} • {formattedDate}
+				</Text>
 			</Box>
-		</Layout>
+
+			{/* Back Button */}
+			<ButtonGroup mb='6'>
+				<Button variant='ghost' onClick={handleCancel}>
+					← Back to Fuelings
+				</Button>
+			</ButtonGroup>
+
+			{/* Fueling Form */}
+			<FuelingForm
+				vehicle={vehicle}
+				initialData={fueling}
+				mode='edit'
+				onSubmitSuccess={handleSubmitSuccess}
+			/>
+		</Box>
 	);
 };
 

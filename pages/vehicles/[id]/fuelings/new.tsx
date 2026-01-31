@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { Vehicle } from '@prisma/client';
 import { useSession } from 'next-auth/react';
-import Layout from '../../../../components/Layout';
 import { FuelingForm } from '../../../../components/fueling';
 import FetchDataErrorAlert from '../../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../../components/Loading';
@@ -42,50 +41,41 @@ const NewFuelingPage: React.FC = () => {
 
 	// Loading states
 	if (status === 'loading' || isPending) {
-		return (
-			<Layout>
-				<Loading />
-			</Layout>
-		);
+		return <Loading />;
 	}
 
 	if (isError || !vehicle) {
 		return (
-			<Layout>
-				<FetchDataErrorAlert errorMessage='Failed to load vehicle details.' />
-			</Layout>
+			<FetchDataErrorAlert errorMessage='Failed to load vehicle details.' />
 		);
 	}
 
 	return (
-		<Layout>
-			<Box maxW='1200px' mx='auto' p='4'>
-				{/* Header */}
-				<Box mb='6'>
-					<Heading size='xl' mb='2'>
-						Add Fueling
-					</Heading>
-					<Text color='gray.600'>
-						{vehicle.brand_name} {vehicle.model_name} •{' '}
-						{vehicle.production_year}
-					</Text>
-				</Box>
-
-				{/* Back Button */}
-				<ButtonGroup mb='6'>
-					<Button variant='ghost' onClick={handleCancel}>
-						← Back to Fuelings
-					</Button>
-				</ButtonGroup>
-
-				{/* Fueling Form */}
-				<FuelingForm
-					vehicle={vehicle}
-					mode='create'
-					onSubmitSuccess={handleSubmitSuccess}
-				/>
+		<Box maxW='1200px' mx='auto' p='4'>
+			{/* Header */}
+			<Box mb='6'>
+				<Heading size='xl' mb='2'>
+					Add Fueling
+				</Heading>
+				<Text color='gray.600'>
+					{vehicle.brand_name} {vehicle.model_name} • {vehicle.production_year}
+				</Text>
 			</Box>
-		</Layout>
+
+			{/* Back Button */}
+			<ButtonGroup mb='6'>
+				<Button variant='ghost' onClick={handleCancel}>
+					← Back to Fuelings
+				</Button>
+			</ButtonGroup>
+
+			{/* Fueling Form */}
+			<FuelingForm
+				vehicle={vehicle}
+				mode='create'
+				onSubmitSuccess={handleSubmitSuccess}
+			/>
+		</Box>
 	);
 };
 

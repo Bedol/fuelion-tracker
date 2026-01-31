@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Vehicle } from '@prisma/client';
-import Layout from '../../../../components/Layout';
 import {
 	FuelingList,
 	FuelingDeleteModal,
@@ -70,62 +69,50 @@ const FuelingsListPage: React.FC = () => {
 
 	// Loading states
 	if (status === 'loading' || isPending) {
-		return (
-			<Layout>
-				<Loading />
-			</Layout>
-		);
+		return <Loading />;
 	}
 
 	if (isError || !vehicle) {
 		return (
-			<Layout>
-				<FetchDataErrorAlert errorMessage='Failed to load vehicle details.' />
-			</Layout>
+			<FetchDataErrorAlert errorMessage='Failed to load vehicle details.' />
 		);
 	}
 
 	return (
-		<Layout>
-			<Box maxW='1200px' mx='auto' p='4'>
-				{/* Header */}
-				<Box mb='6'>
-					<Heading size='xl' mb='2'>
-						{vehicle.brand_name} {vehicle.model_name}
-					</Heading>
-					<Text color='gray.600'>
-						{vehicle.production_year} • {vehicle.mileage.toLocaleString()}{' '}
-						{vehicle.mileage_unit}
-					</Text>
-				</Box>
-
-				{/* Action Buttons */}
-				<Stack direction='row' mb='6' gap='4'>
-					<Button
-						colorPalette='blue'
-						onClick={handleAddFueling}
-						cursor='pointer'
-					>
-						Add Fueling
-					</Button>
-					<Button
-						variant='ghost'
-						onClick={() => router.push(`/vehicles/${id}`)}
-						cursor='pointer'
-					>
-						← Back to Vehicle
-					</Button>
-				</Stack>
-
-				{/* Fueling List */}
-				<FuelingList
-					vehicleId={vehicle.id}
-					currency={vehicle.currency}
-					onEdit={handleEditFueling}
-					onDelete={handleDeleteClick}
-					onAddNew={handleAddFueling}
-				/>
+		<Box maxW='1200px' mx='auto' p='4'>
+			{/* Header */}
+			<Box mb='6'>
+				<Heading size='xl' mb='2'>
+					{vehicle.brand_name} {vehicle.model_name}
+				</Heading>
+				<Text color='gray.600'>
+					{vehicle.production_year} • {vehicle.mileage.toLocaleString()}{' '}
+					{vehicle.mileage_unit}
+				</Text>
 			</Box>
+
+			{/* Action Buttons */}
+			<Stack direction='row' mb='6' gap='4'>
+				<Button colorPalette='blue' onClick={handleAddFueling} cursor='pointer'>
+					Add Fueling
+				</Button>
+				<Button
+					variant='ghost'
+					onClick={() => router.push(`/vehicles/${id}`)}
+					cursor='pointer'
+				>
+					← Back to Vehicle
+				</Button>
+			</Stack>
+
+			{/* Fueling List */}
+			<FuelingList
+				vehicleId={vehicle.id}
+				currency={vehicle.currency}
+				onEdit={handleEditFueling}
+				onDelete={handleDeleteClick}
+				onAddNew={handleAddFueling}
+			/>
 
 			{/* Delete Modal */}
 			{selectedFueling && (
@@ -142,7 +129,7 @@ const FuelingsListPage: React.FC = () => {
 					vehicleId={vehicle.id}
 				/>
 			)}
-		</Layout>
+		</Box>
 	);
 };
 
