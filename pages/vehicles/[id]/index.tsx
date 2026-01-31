@@ -279,14 +279,26 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 							Fueling Records & Statistics
 						</Heading>
 						<Text color='gray.500' mb='4'>
-							Fueling records and statistics will appear here in Phase 3 and 4
+							Track your fuel expenses and view statistics
 						</Text>
-						<Button disabled colorPalette='green' variant='outline'>
-							Add Fueling
-						</Button>
-						<Text fontSize='xs' color='gray.400' mt='2'>
-							Available in Phase 3
-						</Text>
+						<ButtonGroup gap='3'>
+							<Button
+								colorPalette='blue'
+								onClick={() =>
+									router.push(`/vehicles/${vehicleId}/fuelings/new`)
+								}
+								cursor='pointer'
+							>
+								Add Fueling
+							</Button>
+							<Button
+								variant='outline'
+								onClick={() => router.push(`/vehicles/${vehicleId}/fuelings`)}
+								cursor='pointer'
+							>
+								View All Fuelings
+							</Button>
+						</ButtonGroup>
 					</Box>
 				</CardBody>
 			</CardRoot>
