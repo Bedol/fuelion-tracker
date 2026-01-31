@@ -1,12 +1,12 @@
 # Project State: Fuelion
 
-**Last Updated:** 2026-01-31 (03-02 complete - 50% of Phase 3)
+**Last Updated:** 2026-01-31 (03-04 complete - 100% of Phase 3)
 
 ## Project Reference
 
 **Core Value:** Szybkie dodawanie wpisów - 30 sekund na dodanie tankowania
 
-**Current Focus:** Phase 2 complete - Ready for Phase 3 (Fueling Records)
+**Current Focus:** Phase 3 complete - Ready for Phase 4 (Statistics & Charts)
 
 **Key Files:**
 
@@ -17,28 +17,28 @@
 
 ## Current Position
 
-**Phase:** Phase 3 in progress (Fueling Records)
-**Plan:** 3 of 4 complete
-**Status:** Fueling form components ready
-**Last activity:** 2026-01-31 - Completed 03-03-PLAN.md (form components)
+**Phase:** Phase 3 complete (Fueling Records) - awaiting human verification
+**Plan:** 4 of 4 complete
+**Status:** API routes and pages ready for verification
+**Last activity:** 2026-01-31 - Completed 03-04-PLAN.md (API routes and pages)
 
 **Progress:**
 
 ```
 Phase 1: Auth & App Shell      [✓] ██████████ 100%
 Phase 2: Vehicle Management    [✓] ██████████ 100%
-Phase 3: Fueling Records       [▶] ██████░░░░ 75%
+Phase 3: Fueling Records       [▶] ██████████ 100% (pending verification)
 Phase 4: Statistics & Charts   [ ] ░░░░░░░░░░ 0%
 Phase 5: Dashboard             [ ] ░░░░░░░░░░ 0%
 ```
 
-**Overall:** 20/26 requirements complete (77%)
+**Overall:** 24/26 requirements complete (92%)
 
 ## Performance Metrics
 
 | Metric              | Value  |
 | ------------------- | ------ |
-| Plans completed     | 10     |
+| Plans completed     | 11     |
 | Plans failed        | 0      |
 | Avg completion time | 11 min |
 | Blockers resolved   | 12     |
@@ -84,6 +84,10 @@ Phase 5: Dashboard             [ ] ░░░░░░░░░░ 0%
 | Partial tank visual distinction       | Orange bg/border for partial, green badge for full           | 03-03   |
 | Chakra v3 Switch onCheckedChange      | New API for Switch component in v3                           | 03-03   |
 | Barrel exports for hooks/types        | Clean import paths via index.ts files                        | 03-03   |
+| Fuel type mapping in API              | String values mapped to fuel_type_id integers for Prisma     | 03-04   |
+| Vehicle mileage sync on fueling       | API updates vehicle.mileage when fueling mileage is higher   | 03-04   |
+| Security check on edit page           | Verifies fueling.vehicle_id matches URL before rendering     | 03-04   |
+| RESTful API pattern                   | Switch statement routing for GET/POST/PUT/DELETE             | 03-04   |
 
 ### Learnings
 
@@ -130,6 +134,7 @@ Phase 5: Dashboard             [ ] ░░░░░░░░░░ 0%
 - [x] Install dependencies and create fueling type definitions (03-01)
 - [x] Create TanStack Query hooks and draft persistence (03-02)
 - [x] Create fueling form components (03-03)
+- [x] Create API routes and pages for fueling records (03-04)
 
 ### Blockers
 
@@ -140,21 +145,32 @@ _None currently_
 ### Last Session
 
 **Date:** 2026-01-31
-**Work:** Completed 03-03 - Created 5 React components for fueling records
-**Stopped at:** 03-03 complete, ready for 03-04
+**Work:** Completed 03-04 - Created 3 API routes and 3 page files
+**Stopped at:** 03-04 complete, awaiting human verification
 
 ### Next Session
 
-**Resume with:** Execute 03-04-PLAN.md - Create API routes and pages
-**Context needed:** Components ready, hooks available
+**Resume with:** Checkpoint verification - test complete fueling flow
+**Context needed:** API routes, pages, and components all integrated
 **Handoff notes:**
 
-- Five components created: FuelingForm, FuelingList, FuelingListItem, FuelingDeleteModal, index.ts
-- Form has live calculation, validation, draft persistence
-- List has infinite scroll, monthly grouping
-- Barrel exports available: `import { FuelingForm } from '../../components/fueling'`
-- Phase 3 is 75% complete (3/4 plans)
-- Ready for 03-04: API routes and pages for fueling records
+- **API Routes:**
+  - GET/POST /api/fueling - paginated list and create
+  - GET /api/fueling/last - smart defaults
+  - GET/PUT/DELETE /api/fueling/[id] - single fueling operations
+- **Pages:**
+  - /vehicles/[id]/fuelings - list page with infinite scroll
+  - /vehicles/[id]/fuelings/new - create page
+  - /vehicles/[id]/fuelings/[fuelingId]/edit - edit page
+- **Features ready:**
+  - Live price-per-liter calculation
+  - Draft persistence in create mode
+  - Smart defaults from last fueling
+  - Vehicle mileage synchronization
+  - Monthly grouping in list view
+  - Delete confirmation with modal
+- Phase 3 is 100% complete (4/4 plans) - pending verification
+- After verification: Ready for Phase 4 (Statistics & Charts)
 
 ---
 
