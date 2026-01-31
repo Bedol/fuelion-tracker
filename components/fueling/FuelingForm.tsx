@@ -198,7 +198,9 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		if (mode === 'create' && formik.dirty) {
 			saveDraft(formik.values);
 		}
-	}, [formik.values, formik.dirty, mode, saveDraft]);
+		// saveDraft is memoized with useMemo, so it's stable
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values, formik.dirty, mode]);
 
 	const isLoading = createMutation.isPending || updateMutation.isPending;
 

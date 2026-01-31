@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 
 // Simple debounce implementation (project doesn't have lodash)
 const debounce = <T extends (...args: unknown[]) => void>(
@@ -39,12 +39,14 @@ export const useFuelingDraft = (vehicleId: number) => {
 	}, [DRAFT_KEY]);
 
 	// Save draft to localStorage (debounced, 1 second delay)
-	const saveDraft = useCallback(
-		debounce((values: DraftValues) => {
-			if (typeof window === 'undefined') return;
-			localStorage.setItem(DRAFT_KEY, JSON.stringify(values));
-			setHasDraft(true);
-		}, 1000),
+	// useMemo to ensure debounced function is stable across renders
+	const saveDraft = useMemo(
+		() =>
+			debounce((values: DraftValues) => {
+				if (typeof window === 'undefined') return;
+				localStorage.setItem(DRAFT_KEY, JSON.stringify(values));
+				setHasDraft(true);
+			}, 1000),
 		[DRAFT_KEY]
 	);
 
