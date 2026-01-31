@@ -111,7 +111,7 @@ const NewFuelingForm = ({ vehicle }: NewFuelingFormProps) => {
 				{() => (
 					<Box py='12px' px='32px'>
 						<Form>
-							<SimpleGrid columns={2} spacing={2}>
+							<SimpleGrid columns={2} gap={2}>
 								<FormControl mb='2'>
 									<FormLabel htmlFor='date'>Date</FormLabel>
 									<Input placeholder='Select Date' type='date' name='date' />

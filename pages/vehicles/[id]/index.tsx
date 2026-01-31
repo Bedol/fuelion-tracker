@@ -88,7 +88,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				<Heading size='xl' mb='2'>
 					{vehicle.brand_name} {vehicle.model_name}
 				</Heading>
-				<Stack direction='row' spacing='4' align='center' color='gray.600'>
+				<Stack direction='row' gap='4' align='center' color='gray.600'>
 					<Text>{vehicle.production_year}</Text>
 					<Text>•</Text>
 					<Badge variant='subtle' colorScheme='blue'>
@@ -114,7 +114,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 			</Box>
 
 			{/* Section 2: Action Buttons */}
-			<ButtonGroup mb='8' spacing='4'>
+			<ButtonGroup mb='8' gap='4'>
 				<Link href={`/vehicles/${vehicleId}/edit`} passHref>
 					<Button as='a' colorScheme='blue' variant='solid'>
 						Edit Vehicle
@@ -134,14 +134,14 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				</Link>
 			</ButtonGroup>
 
-			<Stack direction={{ base: 'column', md: 'row' }} spacing='6' mb='8'>
+			<Stack direction={{ base: 'column', md: 'row' }} gap='6' mb='8'>
 				{/* Section 3: Basic Information Card */}
 				<Card flex='1'>
 					<CardBody>
 						<Heading size='md' mb='4'>
 							Basic Information
 						</Heading>
-						<Stack spacing='3'>
+						<Stack gap='3'>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
 									Brand
@@ -192,7 +192,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 							<Heading size='md' mb='4'>
 								Technical Specifications
 							</Heading>
-							<Stack spacing='3'>
+							<Stack gap='3'>
 								{vehicle.engine_capacity && (
 									<Box>
 										<Text color='gray.500' fontSize='sm'>
@@ -236,7 +236,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 						<Heading size='md' mb='4'>
 							Vehicle Status
 						</Heading>
-						<Stack spacing='3'>
+						<Stack gap='3'>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
 									Current Mileage

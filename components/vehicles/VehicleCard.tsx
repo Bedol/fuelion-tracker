@@ -36,7 +36,7 @@ const VehicleCard = ({ vehicleId }) => {
 						{data.brand} {data.model}
 					</Heading>
 
-					<SimpleGrid columns={{ sm: 1, md: 4, lg: 6 }} spacing={6}>
+					<SimpleGrid columns={{ sm: 1, md: 4, lg: 6 }} gap={6}>
 						<Stat>
 							<StatLabel>Capacity</StatLabel>
 							<StatNumber>{data.engine_capacity}</StatNumber>

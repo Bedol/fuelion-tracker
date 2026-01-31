@@ -1,9 +1,4 @@
-import {
-	ChakraProvider,
-	createSystem,
-	defaultConfig,
-	Toaster,
-} from '@chakra-ui/react';
+import { ChakraProvider, createSystem, defaultConfig } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
 import {
 	HydrationBoundary,
@@ -13,6 +8,7 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { LocaleProvider } from '../contexts/LocaleContext';
 import Layout from '../components/Layout';
+import ClientToaster from '../components/ui/ClientToaster';
 import '../styles/globals.css';
 
 const queryClient = new QueryClient();
@@ -34,7 +30,7 @@ function MyApp({ Component, pageProps }) {
 					</LocaleProvider>
 				</SessionProvider>
 				{!isProduction && <ReactQueryDevtools initialIsOpen={false} />}
-				<Toaster />
+				<ClientToaster />
 			</QueryClientProvider>
 		</ChakraProvider>
 	);
