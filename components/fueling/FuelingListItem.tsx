@@ -82,8 +82,9 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 							size='sm'
 							variant='ghost'
 							onClick={onEdit}
+							cursor='pointer'
 						>
-							✏️
+							<span>✏️</span>
 						</IconButton>
 					)}
 					{onDelete && (
@@ -93,8 +94,9 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 							variant='ghost'
 							colorPalette='red'
 							onClick={onDelete}
+							cursor='pointer'
 						>
-							🗑️
+							<span>🗑️</span>
 						</IconButton>
 					)}
 				</HStack>
