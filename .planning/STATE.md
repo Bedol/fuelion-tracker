@@ -18,21 +18,21 @@
 ## Current Position
 
 **Phase:** Phase 2 in progress (Vehicle Management)
-**Plan:** 2 of 5 in current phase
-**Status:** Vehicle list enhanced with empty state and improved cards
-**Last activity:** 2026-01-31 - Completed 02-02-PLAN.md
+**Plan:** 3 of 5 in current phase
+**Status:** Vehicle forms rebuilt with collapsible technical section
+**Last activity:** 2026-01-31 - Completed 02-03-PLAN.md
 
 **Progress:**
 
 ```
 Phase 1: Auth & App Shell      [✓] ██████████ 100%
-Phase 2: Vehicle Management    [░░] ██░░░░░░░░ 40%
+Phase 2: Vehicle Management    [░░] ███░░░░░░░ 60%
 Phase 3: Fueling Records       [ ] ░░░░░░░░░░ 0%
 Phase 4: Statistics & Charts   [ ] ░░░░░░░░░░ 0%
 Phase 5: Dashboard             [ ] ░░░░░░░░░░ 0%
 ```
 
-**Overall:** 8/26 requirements complete (31%)
+**Overall:** 9/26 requirements complete (35%)
 
 ## Performance Metrics
 
@@ -68,6 +68,9 @@ Phase 5: Dashboard             [ ] ░░░░░░░░░░ 0%
 | Fuel type icons use emoji        | Simple v1 approach, color-coded for quick visual scanning   | 02-02   |
 | Vehicle cards to detail          | Navigate to /vehicles/[id], not statistics sub-page         | 02-02   |
 | Empty state pattern              | Emoji + heading + value proposition + prominent CTA         | 02-02   |
+| Unified vehicle form component   | Single component for create/edit via mode prop              | 02-03   |
+| Collapsible technical section    | Hide technical fields by default, expand on demand          | 02-03   |
+| toaster.create() API             | Chakra v3 pattern replaces old useToast hook                | 02-03   |
 
 ### Learnings
 
@@ -105,7 +108,7 @@ Phase 5: Dashboard             [ ] ░░░░░░░░░░ 0%
 - [x] Check existing Vehicle schema against VEHI requirements
 - [x] Simplify Vehicle schema (02-01 complete)
 - [x] Add empty state and enhance vehicle cards (02-02 complete)
-- [ ] Rebuild vehicle forms with collapsible technical data (02-03)
+- [x] Rebuild vehicle forms with collapsible technical data (02-03 complete)
 - [ ] Create vehicle detail page and delete confirmation (02-04)
 - [ ] Human verification of complete CRUD flow (02-05)
 
@@ -118,20 +121,22 @@ _None currently_
 ### Last Session
 
 **Date:** 2026-01-31
-**Work:** Completed 02-02 - Vehicle list empty state and card enhancements
-**Stopped at:** Phase 2, Plan 2 complete
+**Work:** Completed 02-03 - Vehicle forms rebuilt with collapsible technical section
+**Stopped at:** Phase 2, Plan 3 complete
 
 ### Next Session
 
-**Resume with:** Continue Phase 2 with 02-03-PLAN.md (vehicle forms)
-**Context needed:** Vehicle list ready, cards link to detail page (will 404 until 02-04)
+**Resume with:** Continue Phase 2 with 02-04-PLAN.md (vehicle detail page and delete)
+**Context needed:** Forms ready, need detail page for vehicle cards to link to
 **Handoff notes:**
 
-- Vehicle list page has empty state with encouraging CTA
-- VehicleCard displays fuel type badges with emoji icons
-- Cards navigate to /vehicles/[id] (detail page coming in 02-04)
-- Responsive grid layout: 1 col mobile, 2-3 cols desktop
-- TypeScript types properly imported from @prisma/client
+- Unified VehicleForm component handles create and edit
+- Form has collapsible technical data section (hidden by default)
+- All field names match Prisma schema (brand_name, model_name, etc.)
+- Create page at /vehicles/new uses POST /api/vehicles
+- Edit page at /vehicles/[id]/edit uses PUT /api/vehicles/[id]
+- Chakra v3 toaster.create() for success/error feedback
+- Vehicle list cards link to /vehicles/[id] which will 404 until 02-04
 
 ---
 
