@@ -49,7 +49,7 @@ const Header: React.FC = () => {
 								Welcome, {session.user?.name || 'User'}!
 							</Text>
 							<Button
-								colorScheme="red"
+								colorPalette="red"
 								variant="outline"
 								size="sm"
 								onClick={() => signOut()}
@@ -59,7 +59,7 @@ const Header: React.FC = () => {
 						</HStack>
 					) : (
 						<Button
-							colorScheme="blue"
+							colorPalette="blue"
 							variant="solid"
 							size="sm"
 							onClick={() => signIn()}

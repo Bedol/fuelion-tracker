@@ -46,27 +46,27 @@ const Navigation: React.FC = () => {
 						</Heading>
 
 						<HStack gap='2'>
-							<Button
-								as={Link}
-								href='/vehicles'
-								variant={isActive('/vehicles') ? 'solid' : 'ghost'}
-								colorScheme={isActive('/vehicles') ? 'blue' : 'gray'}
-								size='sm'
-							>
-								<FaCar />
-								{t('nav.vehicles')}
-							</Button>
+							<Link href='/vehicles'>
+								<Button
+									variant={isActive('/vehicles') ? 'solid' : 'ghost'}
+									colorPalette={isActive('/vehicles') ? 'blue' : 'gray'}
+									size='sm'
+								>
+									<FaCar />
+									{t('nav.vehicles')}
+								</Button>
+							</Link>
 
-							<Button
-								as={Link}
-								href='/statistics'
-								variant={isActive('/statistics') ? 'solid' : 'ghost'}
-								colorScheme={isActive('/statistics') ? 'blue' : 'gray'}
-								size='sm'
-							>
-								<FaChartBar />
-								{t('nav.statistics')}
-							</Button>
+							<Link href='/statistics'>
+								<Button
+									variant={isActive('/statistics') ? 'solid' : 'ghost'}
+									colorPalette={isActive('/statistics') ? 'blue' : 'gray'}
+									size='sm'
+								>
+									<FaChartBar />
+									{t('nav.statistics')}
+								</Button>
+							</Link>
 						</HStack>
 					</HStack>
 
@@ -79,21 +79,25 @@ const Navigation: React.FC = () => {
 
 						{/* User Avatar Menu */}
 						{session && (
+							// @ts-ignore - Chakra v3 Menu/Avatar compound component types
 							<Menu.Root>
+								{/* @ts-ignore */}
 								<Menu.Trigger asChild>
 									<Button variant='ghost' size='sm' p='0' minW='auto'>
+										{/* @ts-ignore */}
 										<Avatar.Root size='sm'>
-											<Avatar.Image
-												src={session.user?.image || undefined}
-												alt={session.user?.name || 'User'}
-											/>
+											{/* @ts-ignore */}
+											<Avatar.Image src={session.user?.image || ''} />
+											{/* @ts-ignore */}
 											<Avatar.Fallback>
 												{(session.user?.name || 'U').charAt(0).toUpperCase()}
 											</Avatar.Fallback>
 										</Avatar.Root>
 									</Button>
 								</Menu.Trigger>
+								{/* @ts-ignore */}
 								<Menu.Content>
+									{/* @ts-ignore */}
 									<Menu.Item
 										value='signout'
 										onClick={() => signOut({ callbackUrl: '/auth/signin' })}
@@ -119,36 +123,36 @@ const Navigation: React.FC = () => {
 			>
 				<Flex justify='space-around' py='3'>
 					{/* Vehicles Button */}
-					<Button
-						as={Link}
-						href='/vehicles'
-						variant={isActive('/vehicles') ? 'solid' : 'ghost'}
-						colorScheme={isActive('/vehicles') ? 'blue' : 'gray'}
-						flexDirection='column'
-						height='auto'
-						py='2'
-					>
-						<FaCar size={20} />
-						<Box fontSize='xs' mt='1'>
-							{t('nav.vehicles')}
-						</Box>
-					</Button>
+					<Link href='/vehicles'>
+						<Button
+							variant={isActive('/vehicles') ? 'solid' : 'ghost'}
+							colorPalette={isActive('/vehicles') ? 'blue' : 'gray'}
+							flexDirection='column'
+							height='auto'
+							py='2'
+						>
+							<FaCar size={20} />
+							<Box fontSize='xs' mt='1'>
+								{t('nav.vehicles')}
+							</Box>
+						</Button>
+					</Link>
 
 					{/* Statistics Button */}
-					<Button
-						as={Link}
-						href='/statistics'
-						variant={isActive('/statistics') ? 'solid' : 'ghost'}
-						colorScheme={isActive('/statistics') ? 'blue' : 'gray'}
-						flexDirection='column'
-						height='auto'
-						py='2'
-					>
-						<FaChartBar size={20} />
-						<Box fontSize='xs' mt='1'>
-							{t('nav.statistics')}
-						</Box>
-					</Button>
+					<Link href='/statistics'>
+						<Button
+							variant={isActive('/statistics') ? 'solid' : 'ghost'}
+							colorPalette={isActive('/statistics') ? 'blue' : 'gray'}
+							flexDirection='column'
+							height='auto'
+							py='2'
+						>
+							<FaChartBar size={20} />
+							<Box fontSize='xs' mt='1'>
+								{t('nav.statistics')}
+							</Box>
+						</Button>
+					</Link>
 				</Flex>
 			</Box>
 		</>

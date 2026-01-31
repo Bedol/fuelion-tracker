@@ -12,10 +12,10 @@ export type FuelingData = {
 };
 
 export type FuelingFormValues = {
-	cost: string;
-	quantity: string;
+	cost: string | number;
+	quantity: string | number;
 	cost_per_unit: number;
-	mileage: string;
+	mileage: string | number;
 	date: string;
 	full_tank: boolean;
 	fuel_type: string;

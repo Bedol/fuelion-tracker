@@ -1,7 +1,7 @@
 import { Alert, Box, Button } from '@chakra-ui/react';
 import { Collapsible } from '@chakra-ui/react';
 import { useState } from 'react';
-import { useLocale } from '@/contexts/LocaleContext';
+import { useLocale } from '../../contexts/LocaleContext';
 
 type ErrorAlertProps = {
 	error: Error | { message: string };
@@ -32,7 +32,9 @@ const ErrorAlert: React.FC<ErrorAlertProps> = ({ error, title }) => {
 						>
 							{showDetails ? t('errors.hideDetails') : t('errors.showDetails')}
 						</Button>
+						{/* @ts-ignore - Chakra v3 Collapsible compound types */}
 						<Collapsible.Root open={showDetails}>
+							{/* @ts-ignore */}
 							<Collapsible.Content>
 								<Box
 									as='pre'

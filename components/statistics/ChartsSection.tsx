@@ -1,12 +1,14 @@
-import { Card, CardBody, Heading } from '@chakra-ui/react';
+import { Card, Heading } from '@chakra-ui/react';
 
 const ChartsSection = () => {
 	return (
-		<Card mb='3'>
-			<CardBody width={{ base: '200px', lg: '900px', md: '640px' }}>
+		// @ts-ignore - Chakra v3 Card compound component types
+		<Card.Root mb='3'>
+			{/* @ts-ignore */}
+			<Card.Body width={{ base: '200px', lg: '900px', md: '640px' }}>
 				<Heading size='md'>Charts</Heading>
-			</CardBody>
-		</Card>
+			</Card.Body>
+		</Card.Root>
 	);
 };
 

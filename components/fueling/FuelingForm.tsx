@@ -1,14 +1,6 @@
 import { useEffect } from 'react';
 import { useFormik } from 'formik';
-import {
-	Box,
-	Button,
-	ButtonGroup,
-	Field,
-	Input,
-	Switch,
-	Text,
-} from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Input, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import {
 	useFuelingDraft,
@@ -37,9 +29,13 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 	const { data: lastFueling } = useLastFuelingData(vehicle.id);
 
 	// Calculate cost_per_unit from cost and quantity
-	const calculateCostPerUnit = (cost: string, quantity: string): number => {
-		const costNum = parseFloat(cost);
-		const quantityNum = parseFloat(quantity);
+	const calculateCostPerUnit = (
+		cost: string | number,
+		quantity: string | number
+	): number => {
+		const costNum = typeof cost === 'string' ? parseFloat(cost) : cost;
+		const quantityNum =
+			typeof quantity === 'string' ? parseFloat(quantity) : quantity;
 		if (costNum > 0 && quantityNum > 0) {
 			return parseFloat((costNum / quantityNum).toFixed(3));
 		}
@@ -95,17 +91,24 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 	const validate = (values: FuelingFormValues) => {
 		const errors: Partial<Record<keyof FuelingFormValues, string>> = {};
 
-		const costNum = parseFloat(values.cost);
+		const costNum =
+			typeof values.cost === 'string' ? parseFloat(values.cost) : values.cost;
 		if (!values.cost || costNum <= 0) {
 			errors.cost = 'Total cost must be greater than 0';
 		}
 
-		const quantityNum = parseFloat(values.quantity);
+		const quantityNum =
+			typeof values.quantity === 'string'
+				? parseFloat(values.quantity)
+				: values.quantity;
 		if (!values.quantity || quantityNum <= 0) {
 			errors.quantity = 'Quantity must be greater than 0';
 		}
 
-		const mileageNum = parseFloat(values.mileage);
+		const mileageNum =
+			typeof values.mileage === 'string'
+				? parseFloat(values.mileage)
+				: values.mileage;
 		if (!values.mileage || mileageNum <= 0) {
 			errors.mileage = 'Odometer reading must be greater than 0';
 		}
@@ -130,9 +133,18 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		onSubmit: (values) => {
 			const submitData = {
 				...values,
-				cost: parseFloat(values.cost),
-				quantity: parseFloat(values.quantity),
-				mileage: parseFloat(values.mileage),
+				cost:
+					typeof values.cost === 'string'
+						? parseFloat(values.cost)
+						: values.cost,
+				quantity:
+					typeof values.quantity === 'string'
+						? parseFloat(values.quantity)
+						: values.quantity,
+				mileage:
+					typeof values.mileage === 'string'
+						? parseFloat(values.mileage)
+						: values.mileage,
 			};
 
 			if (mode === 'edit' && initialData) {
@@ -194,13 +206,17 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		<Box maxW='600px'>
 			<form onSubmit={formik.handleSubmit}>
 				{/* Total Price Paid */}
-				<Field
-					label='Total Price Paid'
-					required
-					invalid={!!formik.errors.cost && formik.touched.cost}
-					errorText={formik.errors.cost}
-					mb='4'
-				>
+				<Box mb='4'>
+					<label
+						style={{
+							display: 'block',
+							marginBottom: '0.5rem',
+							fontSize: '0.875rem',
+							fontWeight: '500',
+						}}
+					>
+						Total Price Paid *
+					</label>
 					<Input
 						name='cost'
 						type='number'
@@ -210,17 +226,29 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 						onChange={handleCostChange}
 						onBlur={formik.handleBlur}
 						placeholder='0.00'
+						borderColor={
+							formik.errors.cost && formik.touched.cost ? 'red.500' : undefined
+						}
 					/>
-				</Field>
+					{formik.errors.cost && formik.touched.cost && (
+						<Text color='red.500' fontSize='sm' mt='1'>
+							{formik.errors.cost}
+						</Text>
+					)}
+				</Box>
 
 				{/* Liters */}
-				<Field
-					label='Liters'
-					required
-					invalid={!!formik.errors.quantity && formik.touched.quantity}
-					errorText={formik.errors.quantity}
-					mb='4'
-				>
+				<Box mb='4'>
+					<label
+						style={{
+							display: 'block',
+							marginBottom: '0.5rem',
+							fontSize: '0.875rem',
+							fontWeight: '500',
+						}}
+					>
+						Liters *
+					</label>
 					<Input
 						name='quantity'
 						type='number'
@@ -230,11 +258,31 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 						onChange={handleQuantityChange}
 						onBlur={formik.handleBlur}
 						placeholder='0.00'
+						borderColor={
+							formik.errors.quantity && formik.touched.quantity
+								? 'red.500'
+								: undefined
+						}
 					/>
-				</Field>
+					{formik.errors.quantity && formik.touched.quantity && (
+						<Text color='red.500' fontSize='sm' mt='1'>
+							{formik.errors.quantity}
+						</Text>
+					)}
+				</Box>
 
 				{/* Price per Liter (read-only) */}
-				<Field label='Price per Liter' mb='4'>
+				<Box mb='4'>
+					<label
+						style={{
+							display: 'block',
+							marginBottom: '0.5rem',
+							fontSize: '0.875rem',
+							fontWeight: '500',
+						}}
+					>
+						Price per Liter
+					</label>
 					<Input
 						name='cost_per_unit'
 						type='number'
@@ -246,33 +294,43 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 					<Text fontSize='sm' color='gray.500' mt='1'>
 						{vehicle.currency}/L (auto-calculated)
 					</Text>
-				</Field>
+				</Box>
 
 				{/* Full Tank Toggle */}
-				<Field label='Full Tank' mb='4'>
-					<Switch
-						checked={formik.values.full_tank}
-						onCheckedChange={(details) =>
-							formik.setFieldValue('full_tank', details.checked)
-						}
-						size='lg'
+				<Box mb='4'>
+					<label
+						style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
 					>
-						<Text as='span' ml='2'>
+						<input
+							type='checkbox'
+							name='full_tank'
+							checked={formik.values.full_tank}
+							onChange={(e) =>
+								formik.setFieldValue('full_tank', e.target.checked)
+							}
+							style={{ marginRight: '0.5rem', cursor: 'pointer' }}
+						/>
+						<span style={{ fontSize: '0.875rem' }}>
+							Full Tank:{' '}
 							{formik.values.full_tank
 								? 'Yes - Full tank fill'
 								: 'No - Partial fill'}
-						</Text>
-					</Switch>
-				</Field>
+						</span>
+					</label>
+				</Box>
 
 				{/* Odometer */}
-				<Field
-					label='Odometer Reading'
-					required
-					invalid={!!formik.errors.mileage && formik.touched.mileage}
-					errorText={formik.errors.mileage}
-					mb='4'
-				>
+				<Box mb='4'>
+					<label
+						style={{
+							display: 'block',
+							marginBottom: '0.5rem',
+							fontSize: '0.875rem',
+							fontWeight: '500',
+						}}
+					>
+						Odometer Reading *
+					</label>
 					<Input
 						name='mileage'
 						type='number'
@@ -282,52 +340,85 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 						placeholder={formik.values.last_odometer?.toString()}
+						borderColor={
+							formik.errors.mileage && formik.touched.mileage
+								? 'red.500'
+								: undefined
+						}
 					/>
+					{formik.errors.mileage && formik.touched.mileage && (
+						<Text color='red.500' fontSize='sm' mt='1'>
+							{formik.errors.mileage}
+						</Text>
+					)}
 					{formik.values.last_odometer && (
 						<Text fontSize='sm' color='gray.500' mt='1'>
 							Last recorded: {formik.values.last_odometer.toLocaleString()}{' '}
 							{vehicle.mileage_unit}
 						</Text>
 					)}
-				</Field>
+				</Box>
 
 				{/* Date */}
-				<Field
-					label='Date'
-					required
-					invalid={!!formik.errors.date && formik.touched.date}
-					errorText={formik.errors.date}
-					mb='4'
-				>
+				<Box mb='4'>
+					<label
+						style={{
+							display: 'block',
+							marginBottom: '0.5rem',
+							fontSize: '0.875rem',
+							fontWeight: '500',
+						}}
+					>
+						Date *
+					</label>
 					<Input
 						name='date'
 						type='date'
 						value={formik.values.date}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
+						borderColor={
+							formik.errors.date && formik.touched.date ? 'red.500' : undefined
+						}
 					/>
-				</Field>
+					{formik.errors.date && formik.touched.date && (
+						<Text color='red.500' fontSize='sm' mt='1'>
+							{formik.errors.date}
+						</Text>
+					)}
+				</Box>
 
 				{/* Fuel Type */}
-				<Field label='Fuel Type' required mb='4'>
-					<Box
-						as='select'
+				<Box mb='4'>
+					<label
+						style={{
+							display: 'block',
+							marginBottom: '0.5rem',
+							fontSize: '0.875rem',
+							fontWeight: '500',
+						}}
+					>
+						Fuel Type *
+					</label>
+					<select
 						name='fuel_type'
 						value={formik.values.fuel_type}
 						onChange={formik.handleChange}
-						className='chakra-select'
-						p='2'
-						borderWidth='1px'
-						borderRadius='md'
-						w='full'
+						style={{
+							width: '100%',
+							padding: '0.5rem',
+							borderWidth: '1px',
+							borderRadius: '0.375rem',
+							fontSize: '1rem',
+						}}
 					>
 						<option value='gasoline'>Gasoline</option>
 						<option value='diesel'>Diesel</option>
 						<option value='lpg'>LPG</option>
 						<option value='electric'>Electric</option>
 						<option value='hybrid'>Hybrid</option>
-					</Box>
-				</Field>
+					</select>
+				</Box>
 
 				{/* Submit Buttons */}
 				<ButtonGroup mt='6' gap='3'>

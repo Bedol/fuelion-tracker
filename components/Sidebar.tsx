@@ -32,7 +32,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, children, href, isActive }) => 
 		<Link href={href} style={{ textDecoration: 'none', width: '100%' }}>
 			<Button
 				variant={isActive ? 'solid' : 'ghost'}
-				colorScheme={isActive ? 'blue' : 'gray'}
+				colorPalette={isActive ? 'blue' : 'gray'}
 				justifyContent="flex-start"
 				w="100%"
 				size="sm"
