@@ -58,6 +58,8 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Dependencies:** Phase 1 (auth required to own vehicles)
 
+**Plans:** 5 plans
+
 **Requirements:**
 
 - VEHI-01: User can create a vehicle with basic data (brand, model, year, registration)
@@ -74,6 +76,14 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 3. User can edit any field of an existing vehicle
 4. User can delete a vehicle after confirming the action
 5. User can select a vehicle to see its detail page with associated data
+
+**Plans:**
+
+- [ ] 02-01-PLAN.md — Simplify Vehicle schema to remove lookup table dependencies
+- [ ] 02-02-PLAN.md — Add empty state and enhance vehicle cards with fuel type icons
+- [ ] 02-03-PLAN.md — Rebuild vehicle forms (create & edit) with collapsible technical data
+- [ ] 02-04-PLAN.md — Create vehicle detail page and delete confirmation modal
+- [ ] 02-05-PLAN.md — Human verification of complete CRUD flow
 
 **Notes:**
 
