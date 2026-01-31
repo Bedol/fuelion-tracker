@@ -427,6 +427,7 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 						colorPalette='blue'
 						loading={isLoading}
 						loadingText={mode === 'create' ? 'Adding...' : 'Saving...'}
+						cursor='pointer'
 					>
 						{mode === 'create' ? 'Add Fueling' : 'Save Changes'}
 					</Button>
@@ -435,6 +436,7 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 						variant='outline'
 						onClick={onSubmitSuccess}
 						disabled={isLoading}
+						cursor='pointer'
 					>
 						Cancel
 					</Button>
