@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useFormik } from 'formik';
 import { Box, Button, ButtonGroup, Input, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
@@ -57,8 +57,8 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		};
 	};
 
-	// Get initial values based on mode
-	const getInitialValues = (): FuelingFormValues => {
+	// Memoize initial values to prevent infinite re-renders with enableReinitialize
+	const initialValues = useMemo((): FuelingFormValues => {
 		if (mode === 'edit' && initialData) {
 			return {
 				cost: initialData.cost.toString(),
@@ -85,7 +85,9 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 			vehicle_id: vehicle.id,
 			last_odometer: smartDefaults.last_odometer || vehicle.mileage,
 		};
-	};
+		// Only recreate if these key values change
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [mode, initialData?.id, vehicle.id, vehicle.fuel_type, vehicle.mileage]);
 
 	// Validation function
 	const validate = (values: FuelingFormValues) => {
@@ -125,7 +127,7 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 	};
 
 	const formik = useFormik({
-		initialValues: getInitialValues(),
+		initialValues,
 		validate,
 		validateOnChange: false,
 		validateOnBlur: true,
