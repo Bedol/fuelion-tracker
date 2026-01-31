@@ -3,7 +3,6 @@ import {
 	Button,
 	ButtonGroup,
 	Collapsible,
-	Field,
 	Input,
 	Text,
 } from '@chakra-ui/react';
@@ -68,8 +67,17 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 						Basic Information
 					</Text>
 
-					<Field.Root mb='4' required>
-						<Field.Label>Brand</Field.Label>
+					<Box mb='4'>
+						<Text
+							as='label'
+							htmlFor='brand_name'
+							fontSize='sm'
+							fontWeight='medium'
+							mb='2'
+							display='block'
+						>
+							Brand *
+						</Text>
 						<Input
 							type='text'
 							name='brand_name'
@@ -77,11 +85,21 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							onChange={formik.handleChange}
 							value={formik.values.brand_name}
 							placeholder='e.g., Toyota'
+							required
 						/>
-					</Field.Root>
+					</Box>
 
-					<Field.Root mb='4' required>
-						<Field.Label>Model</Field.Label>
+					<Box mb='4'>
+						<Text
+							as='label'
+							htmlFor='model_name'
+							fontSize='sm'
+							fontWeight='medium'
+							mb='2'
+							display='block'
+						>
+							Model *
+						</Text>
 						<Input
 							type='text'
 							name='model_name'
@@ -89,11 +107,21 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							onChange={formik.handleChange}
 							value={formik.values.model_name}
 							placeholder='e.g., Corolla'
+							required
 						/>
-					</Field.Root>
+					</Box>
 
-					<Field.Root mb='4' required>
-						<Field.Label>Production Year</Field.Label>
+					<Box mb='4'>
+						<Text
+							as='label'
+							htmlFor='production_year'
+							fontSize='sm'
+							fontWeight='medium'
+							mb='2'
+							display='block'
+						>
+							Production Year *
+						</Text>
 						<Input
 							type='number'
 							name='production_year'
@@ -102,17 +130,33 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							value={formik.values.production_year}
 							min={1900}
 							max={currentYear + 1}
+							required
 						/>
-					</Field.Root>
+					</Box>
 
-					<Field.Root mb='4' required>
-						<Field.Label>Fuel Type</Field.Label>
+					<Box mb='4'>
+						<Text
+							as='label'
+							htmlFor='fuel_type'
+							fontSize='sm'
+							fontWeight='medium'
+							mb='2'
+							display='block'
+						>
+							Fuel Type *
+						</Text>
 						<Box
 							as='select'
 							name='fuel_type'
 							id='fuel_type'
 							onChange={formik.handleChange}
 							value={formik.values.fuel_type}
+							required
+							className='chakra-select'
+							p='2'
+							borderWidth='1px'
+							borderRadius='md'
+							w='full'
 						>
 							{fuelTypes.map((option) => (
 								<option key={option.value} value={option.value}>
@@ -120,10 +164,19 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 								</option>
 							))}
 						</Box>
-					</Field.Root>
+					</Box>
 
-					<Field.Root mb='4'>
-						<Field.Label>Registration Number (optional)</Field.Label>
+					<Box mb='4'>
+						<Text
+							as='label'
+							htmlFor='registration_number'
+							fontSize='sm'
+							fontWeight='medium'
+							mb='2'
+							display='block'
+						>
+							Registration Number (optional)
+						</Text>
 						<Input
 							type='text'
 							name='registration_number'
@@ -132,7 +185,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							value={formik.values.registration_number || ''}
 							placeholder='e.g., ABC 1234'
 						/>
-					</Field.Root>
+					</Box>
 				</Box>
 
 				{/* Section 2: Technical Data (Collapsible) */}
@@ -146,82 +199,130 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 						{showTechnical ? '− Hide technical data' : '+ Add technical data'}
 					</Button>
 
-					<Collapsible open={showTechnical}>
-						<Box
-							p='4'
-							borderWidth='1px'
-							borderRadius='md'
-							borderColor='gray.200'
-						>
-							<Text fontSize='md' fontWeight='medium' mb='4'>
-								Technical Specifications
-							</Text>
+					<Collapsible.Root open={showTechnical}>
+						<Collapsible.Content>
+							<Box
+								p='4'
+								borderWidth='1px'
+								borderRadius='md'
+								borderColor='gray.200'
+							>
+								<Text fontSize='md' fontWeight='medium' mb='4'>
+									Technical Specifications
+								</Text>
 
-							<Field.Root mb='4'>
-								<Field.Label>Engine Capacity (cc, optional)</Field.Label>
-								<Input
-									type='number'
-									name='engine_capacity'
-									id='engine_capacity'
-									onChange={formik.handleChange}
-									value={formik.values.engine_capacity || ''}
-									placeholder='e.g., 2000'
-								/>
-							</Field.Root>
-
-							<Field.Root mb='4'>
-								<Field.Label>Engine Power (optional)</Field.Label>
-								<Input
-									type='number'
-									name='engine_power'
-									id='engine_power'
-									onChange={formik.handleChange}
-									value={formik.values.engine_power || ''}
-									placeholder='e.g., 150'
-								/>
-							</Field.Root>
-
-							<Field.Root mb='4'>
-								<Field.Label>Power Unit (optional)</Field.Label>
-								<Box
-									as='select'
-									name='power_unit'
-									id='power_unit'
-									onChange={formik.handleChange}
-									value={formik.values.power_unit || ''}
-								>
-									<option value=''>Select unit...</option>
-									{powerUnits.map((option) => (
-										<option key={option.value} value={option.value}>
-											{option.name}
-										</option>
-									))}
+								<Box mb='4'>
+									<Text
+										as='label'
+										htmlFor='engine_capacity'
+										fontSize='sm'
+										fontWeight='medium'
+										mb='2'
+										display='block'
+									>
+										Engine Capacity (cc, optional)
+									</Text>
+									<Input
+										type='number'
+										name='engine_capacity'
+										id='engine_capacity'
+										onChange={formik.handleChange}
+										value={formik.values.engine_capacity || ''}
+										placeholder='e.g., 2000'
+									/>
 								</Box>
-							</Field.Root>
 
-							<Field.Root mb='4'>
-								<Field.Label>Transmission (optional)</Field.Label>
-								<Box
-									as='select'
-									name='transmission'
-									id='transmission'
-									onChange={formik.handleChange}
-									value={formik.values.transmission || ''}
-								>
-									<option value=''>Select transmission...</option>
-									{transmissionTypes.map((option) => (
-										<option key={option.value} value={option.value}>
-											{option.name}
-										</option>
-									))}
+								<Box mb='4'>
+									<Text
+										as='label'
+										htmlFor='engine_power'
+										fontSize='sm'
+										fontWeight='medium'
+										mb='2'
+										display='block'
+									>
+										Engine Power (optional)
+									</Text>
+									<Input
+										type='number'
+										name='engine_power'
+										id='engine_power'
+										onChange={formik.handleChange}
+										value={formik.values.engine_power || ''}
+										placeholder='e.g., 150'
+									/>
 								</Box>
-							</Field.Root>
-						</Box>
-					</Collapsible>
+
+								<Box mb='4'>
+									<Text
+										as='label'
+										htmlFor='power_unit'
+										fontSize='sm'
+										fontWeight='medium'
+										mb='2'
+										display='block'
+									>
+										Power Unit (optional)
+									</Text>
+									<Box
+										as='select'
+										name='power_unit'
+										id='power_unit'
+										onChange={formik.handleChange}
+										value={formik.values.power_unit || ''}
+										className='chakra-select'
+										p='2'
+										borderWidth='1px'
+										borderRadius='md'
+										w='full'
+									>
+										<option value=''>Select unit...</option>
+										{powerUnits.map((option) => (
+											<option key={option.value} value={option.value}>
+												{option.name}
+											</option>
+										))}
+									</Box>
+								</Box>
+
+								<Box mb='4'>
+									<Text
+										as='label'
+										htmlFor='transmission'
+										fontSize='sm'
+										fontWeight='medium'
+										mb='2'
+										display='block'
+									>
+										Transmission (optional)
+									</Text>
+									<Box
+										as='select'
+										name='transmission'
+										id='transmission'
+										onChange={formik.handleChange}
+										value={formik.values.transmission || ''}
+										className='chakra-select'
+										p='2'
+										borderWidth='1px'
+										borderRadius='md'
+										w='full'
+									>
+										<option value=''>Select transmission...</option>
+										{transmissionTypes.map((option) => (
+											<option key={option.value} value={option.value}>
+												{option.name}
+											</option>
+										))}
+									</Box>
+								</Box>
+							</Box>
+						</Collapsible.Content>
+					</Collapsible.Root>
 				</Box>
 
 				{/* Submit Buttons */}
-				<ButtonGroup mt='4' variant='outline'>
+				<ButtonGroup mt='4' gap='3'>
 					<Button
 						loading={mutation.isPending}
 						loadingText='Submitting'
@@ -230,7 +331,9 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 					>
 						{mode === 'create' ? 'Create Vehicle' : 'Save Changes'}
 					</Button>
-					<Button onClick={backToVehicles}>Cancel</Button>
+					<Button variant='outline' onClick={backToVehicles}>
+						Cancel
+					</Button>
 				</ButtonGroup>
 			</form>
 		</Box>
