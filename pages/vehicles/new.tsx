@@ -2,6 +2,7 @@ import { Box, Heading } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import Layout from '../../components/Layout';
 import VehicleForm from '../../components/vehicles/VehicleForm';
 import { toaster } from '../../components/ui/toaster';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
@@ -62,12 +63,18 @@ const NewVehiclePage = () => {
 	});
 
 	if (status === 'loading') {
-		return <Loading />;
+		return (
+			<Layout>
+				<Loading />
+			</Layout>
+		);
 	}
 
 	if (status === 'unauthenticated') {
 		return (
-			<FetchDataErrorAlert errorMessage='You need to sign in to create a vehicle.' />
+			<Layout>
+				<FetchDataErrorAlert errorMessage='You need to sign in to create a vehicle.' />
+			</Layout>
 		);
 	}
 
@@ -84,16 +91,18 @@ const NewVehiclePage = () => {
 	};
 
 	return (
-		<Box maxW='800px' mx='auto' p='4'>
-			<Heading mb='6' size='lg'>
-				Add New Vehicle
-			</Heading>
-			<VehicleForm
-				initialValues={initialValues}
-				mutation={vehicleMutation}
-				mode='create'
-			/>
-		</Box>
+		<Layout>
+			<Box maxW='800px' mx='auto' p='4'>
+				<Heading mb='6' size='lg'>
+					Add New Vehicle
+				</Heading>
+				<VehicleForm
+					initialValues={initialValues}
+					mutation={vehicleMutation}
+					mode='create'
+				/>
+			</Box>
+		</Layout>
 	);
 };
 
