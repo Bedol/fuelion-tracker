@@ -54,8 +54,8 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
 	};
 
 	// Convert string values to numbers for Prisma
+	// Only include valid database fields - explicitly map each field
 	const fuelingData = {
-		...data,
 		vehicle_id: Number(data.vehicle_id),
 		cost: parseFloat(data.cost),
 		quantity: parseFloat(data.quantity),
@@ -68,6 +68,8 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
 		date: new Date(data.date),
 		fuel_type_id: fuelTypeMap[data.fuel_type] || 1,
 		currency_id: 1, // Default currency - simplified for v1
+		full_tank: data.full_tank !== undefined ? data.full_tank : true,
+		note: data.note || null,
 	};
 
 	const fueling = await prisma.fueling.create({
