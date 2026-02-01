@@ -69,7 +69,6 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
 		fuel_type_id: fuelTypeMap[data.fuel_type] || 1,
 		currency_id: 1, // Default currency - simplified for v1
 		full_tank: data.full_tank !== undefined ? data.full_tank : true,
-		note: data.note || null,
 	};
 
 	const fueling = await prisma.fueling.create({
