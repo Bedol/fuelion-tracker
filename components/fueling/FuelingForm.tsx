@@ -134,7 +134,13 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 			errors.mileage = 'Odometer reading must be greater than 0';
 		}
 
-		if (values.last_odometer && mileageNum <= values.last_odometer) {
+		// Only validate against last odometer in CREATE mode
+		// In EDIT mode, user might be editing an older record with lower mileage
+		if (
+			mode === 'create' &&
+			values.last_odometer &&
+			mileageNum <= values.last_odometer
+		) {
 			errors.mileage = `Odometer must be greater than last reading (${values.last_odometer})`;
 		}
 
