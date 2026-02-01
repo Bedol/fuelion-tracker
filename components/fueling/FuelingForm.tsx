@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useFormik } from 'formik';
 import { Box, Button, ButtonGroup, Input, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
@@ -58,6 +58,14 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 	};
 
 	// Memoize initial values to prevent infinite re-renders with enableReinitialize
+	// Load draft once on mount for create mode
+	const [mountDraft] = useState(() => {
+		if (mode === 'create') {
+			return loadDraft();
+		}
+		return null;
+	});
+
 	const initialValues = useMemo((): FuelingFormValues => {
 		if (mode === 'edit' && initialData) {
 			return {
@@ -73,21 +81,32 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 			};
 		}
 
-		const smartDefaults = getSmartDefaults();
+		// In create mode, use draft if available, otherwise smart defaults
+		if (mountDraft) {
+			return mountDraft as FuelingFormValues;
+		}
+
 		return {
 			cost: '',
 			quantity: '',
 			cost_per_unit: 0,
 			mileage: '',
-			date: smartDefaults.date || format(new Date(), 'yyyy-MM-dd'),
-			full_tank: smartDefaults.full_tank ?? true,
-			fuel_type: smartDefaults.fuel_type || vehicle.fuel_type || 'gasoline',
+			date: format(new Date(), 'yyyy-MM-dd'),
+			full_tank: true,
+			fuel_type: lastFueling?.fuel_type || vehicle.fuel_type || 'gasoline',
 			vehicle_id: vehicle.id,
-			last_odometer: smartDefaults.last_odometer || vehicle.mileage,
+			last_odometer: lastFueling?.mileage || vehicle.mileage,
 		};
 		// Only recreate if these key values change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [mode, initialData?.id, vehicle.id, vehicle.fuel_type, vehicle.mileage]);
+	}, [
+		mode,
+		initialData?.id,
+		vehicle.id,
+		vehicle.fuel_type,
+		vehicle.mileage,
+		lastFueling?.mileage,
+	]);
 
 	// Validation function
 	const validate = (values: FuelingFormValues) => {
