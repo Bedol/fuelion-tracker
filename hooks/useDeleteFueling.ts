@@ -21,7 +21,8 @@ export const useDeleteFueling = () => {
 				throw new Error(errorData.message || 'Failed to delete fueling');
 			}
 
-			return response.json();
+			// DELETE returns 204 No Content (no body to parse)
+			return null;
 		},
 		onSuccess: (_, variables) => {
 			toaster.create({
