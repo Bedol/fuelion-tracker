@@ -155,6 +155,15 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 4. Consumption calculation uses only full-tank-to-full-tank intervals
 5. User sees "not enough data" message instead of wrong numbers when insufficient fuelings
 
+**Plans:** 4 plans
+
+**Plans:**
+
+- [ ] 04-01-PLAN.md — Build statistics aggregation API and helpers
+- [ ] 04-02-PLAN.md — Add Recharts, statistics hook, and chart components
+- [ ] 04-03-PLAN.md — Wire statistics page to summary and charts
+- [ ] 04-04-PLAN.md — Human verification of statistics charts
+
 **Notes:**
 
 - Research recommends Recharts for charts
