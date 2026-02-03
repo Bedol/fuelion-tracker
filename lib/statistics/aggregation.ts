@@ -2,6 +2,7 @@ import {
 	addMonths,
 	endOfMonth,
 	format,
+	isSameMonth,
 	startOfMonth,
 	subMonths,
 } from 'date-fns';
@@ -22,6 +23,7 @@ type FuelingInput = {
 };
 
 type ConsumptionInterval = {
+	startDate: Date;
 	endDate: Date;
 	consumption: number;
 	distance: number;
@@ -45,6 +47,7 @@ const buildIntervals = (fuelings: FuelingInput[]): ConsumptionInterval[] => {
 				const distance = fueling.mileage - lastFull.mileage;
 				if (distance > 0) {
 					intervals.push({
+						startDate: toDate(lastFull.date),
 						endDate: toDate(fueling.date),
 						consumption: (fuelSum / distance) * 100,
 						distance,
@@ -70,6 +73,10 @@ const buildConsumptionSeries = (
 	>();
 
 	intervals.forEach((interval) => {
+		if (!isSameMonth(interval.startDate, interval.endDate)) {
+			return;
+		}
+
 		const monthKey = format(new Date(interval.endDate), 'MMM yyyy');
 		const existing = grouped.get(monthKey);
 		if (existing) {
@@ -146,10 +153,7 @@ export const buildVehicleStatistics = (
 		(sum, interval) => sum + interval.distance,
 		0
 	);
-	const totalFuel = intervals.reduce(
-		(sum, interval) => sum + interval.fuel,
-		0
-	);
+	const totalFuel = intervals.reduce((sum, interval) => sum + interval.fuel, 0);
 
 	const hasConsumptionData = intervals.length > 0;
 	const hasCostData = monthlyCosts.length > 0;
@@ -160,7 +164,8 @@ export const buildVehicleStatistics = (
 			hasConsumptionData && totalDistance > 0
 				? (totalFuel / totalDistance) * 100
 				: null,
-		totalDistance: hasConsumptionData && totalDistance > 0 ? totalDistance : null,
+		totalDistance:
+			hasConsumptionData && totalDistance > 0 ? totalDistance : null,
 	};
 
 	return {
