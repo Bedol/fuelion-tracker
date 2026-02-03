@@ -155,14 +155,15 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 4. Consumption calculation uses only full-tank-to-full-tank intervals
 5. User sees "not enough data" message instead of wrong numbers when insufficient fuelings
 
-**Plans:** 4 plans
+**Plans:** 5 plans
 
 **Plans:**
 
-- [ ] 04-01-PLAN.md — Build statistics aggregation API and helpers
-- [ ] 04-02-PLAN.md — Add Recharts, statistics hook, and chart components
-- [ ] 04-03-PLAN.md — Wire statistics page to summary and charts
-- [ ] 04-04-PLAN.md — Human verification of statistics charts
+- [x] 04-01-PLAN.md — Build statistics aggregation API and helpers
+- [ ] 04-02-PLAN.md — Install Recharts and add statistics data hook
+- [ ] 04-03-PLAN.md — Build statistics UI components and charts
+- [ ] 04-04-PLAN.md — Wire statistics page to summary and charts
+- [ ] 04-05-PLAN.md — Human verification of statistics charts
 
 **Notes:**
 
@@ -199,13 +200,13 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 ## Progress
 
-| Phase | Name                | Requirements | Status   |
-| ----- | ------------------- | ------------ | -------- |
-| 1     | Auth & App Shell    | 6            | Complete |
-| 2     | Vehicle Management  | 6            | Complete |
-| 3     | Fueling Records     | 9            | Complete |
-| 4     | Statistics & Charts | 4            | Pending  |
-| 5     | Dashboard           | 1            | Pending  |
+| Phase | Name                | Requirements | Status      |
+| ----- | ------------------- | ------------ | ----------- |
+| 1     | Auth & App Shell    | 6            | Complete    |
+| 2     | Vehicle Management  | 6            | Complete    |
+| 3     | Fueling Records     | 9            | Complete    |
+| 4     | Statistics & Charts | 4            | In progress |
+| 5     | Dashboard           | 1            | Pending     |
 
 **Total:** 26 requirements across 5 phases (21 complete, 5 remaining)
 
