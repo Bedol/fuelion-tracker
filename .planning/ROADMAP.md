@@ -161,7 +161,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 - [x] 04-01-PLAN.md — Build statistics aggregation API and helpers
 - [x] 04-02-PLAN.md — Install Recharts and add statistics data hook
-- [ ] 04-03-PLAN.md — Build statistics UI components and charts
+- [x] 04-03-PLAN.md — Build statistics UI components and charts
 - [ ] 04-04-PLAN.md — Wire statistics page to summary and charts
 - [ ] 04-05-PLAN.md — Human verification of statistics charts
 
@@ -225,4 +225,4 @@ All phases are sequential. Each depends on the previous.
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-02-03 (Phase 4 plan 02 complete)_
+_Last updated: 2026-02-03 (Phase 4 plan 03 complete)_
