@@ -76,17 +76,25 @@ const splitIntervalForYear = (
 	interval: ConsumptionInterval,
 	selectedYear: number
 ): ConsumptionSegment[] => {
+	const normalizedStart =
+		interval.startDate <= interval.endDate
+			? interval.startDate
+			: interval.endDate;
+	const normalizedEnd =
+		interval.startDate <= interval.endDate
+			? interval.endDate
+			: interval.startDate;
 	const yearStart = startOfYear(new Date(selectedYear, 0, 1));
 	const yearEnd = endOfYear(new Date(selectedYear, 0, 1));
 
-	if (interval.endDate < yearStart || interval.startDate > yearEnd) {
+	if (normalizedEnd < yearStart || normalizedStart > yearEnd) {
 		return [];
 	}
 
 	const clippedStart =
-		interval.startDate > yearStart ? interval.startDate : yearStart;
-	const clippedEnd = interval.endDate < yearEnd ? interval.endDate : yearEnd;
-	const rawDuration = interval.endDate.getTime() - interval.startDate.getTime();
+		normalizedStart > yearStart ? normalizedStart : yearStart;
+	const clippedEnd = normalizedEnd < yearEnd ? normalizedEnd : yearEnd;
+	const rawDuration = normalizedEnd.getTime() - normalizedStart.getTime();
 	const safeDuration = rawDuration === 0 ? 1 : rawDuration;
 	const segments: ConsumptionSegment[] = [];
 
