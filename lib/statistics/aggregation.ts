@@ -1,8 +1,8 @@
 import {
 	addMonths,
+	endOfMonth,
 	endOfYear,
 	format,
-	isSameMonth,
 	startOfMonth,
 	startOfYear,
 } from 'date-fns';
@@ -25,6 +25,14 @@ type FuelingInput = {
 type ConsumptionInterval = {
 	startDate: Date;
 	endDate: Date;
+	consumption: number;
+	distance: number;
+	fuel: number;
+};
+
+type ConsumptionSegment = {
+	month: string;
+	date: Date;
 	consumption: number;
 	distance: number;
 	fuel: number;
@@ -64,31 +72,83 @@ const buildIntervals = (fuelings: FuelingInput[]): ConsumptionInterval[] => {
 	return intervals;
 };
 
+const splitIntervalForYear = (
+	interval: ConsumptionInterval,
+	selectedYear: number
+): ConsumptionSegment[] => {
+	const yearStart = startOfYear(new Date(selectedYear, 0, 1));
+	const yearEnd = endOfYear(new Date(selectedYear, 0, 1));
+
+	if (interval.endDate < yearStart || interval.startDate > yearEnd) {
+		return [];
+	}
+
+	const clippedStart =
+		interval.startDate > yearStart ? interval.startDate : yearStart;
+	const clippedEnd = interval.endDate < yearEnd ? interval.endDate : yearEnd;
+	const rawDuration = interval.endDate.getTime() - interval.startDate.getTime();
+	const safeDuration = rawDuration === 0 ? 1 : rawDuration;
+	const segments: ConsumptionSegment[] = [];
+
+	let cursor = startOfMonth(clippedStart);
+	while (cursor <= clippedEnd) {
+		const monthStart = startOfMonth(cursor);
+		const monthEnd = endOfMonth(cursor);
+		const segmentStart = clippedStart > monthStart ? clippedStart : monthStart;
+		const segmentEnd = clippedEnd < monthEnd ? clippedEnd : monthEnd;
+		const segmentDurationRaw = segmentEnd.getTime() - segmentStart.getTime();
+		const segmentDuration =
+			segmentDurationRaw === 0 ? safeDuration : segmentDurationRaw;
+
+		if (segmentDuration > 0) {
+			const share = segmentDuration / safeDuration;
+			segments.push({
+				month: format(new Date(segmentEnd), 'MMM yyyy'),
+				date: segmentEnd,
+				consumption: interval.consumption,
+				distance: interval.distance * share,
+				fuel: interval.fuel * share,
+			});
+		}
+		cursor = addMonths(cursor, 1);
+	}
+
+	return segments;
+};
+
+const buildConsumptionSegments = (
+	intervals: ConsumptionInterval[],
+	selectedYear: number | null
+): ConsumptionSegment[] => {
+	if (!selectedYear) {
+		return [];
+	}
+
+	return intervals.flatMap((interval) =>
+		splitIntervalForYear(interval, selectedYear)
+	);
+};
+
 const buildConsumptionSeries = (
-	intervals: ConsumptionInterval[]
+	segments: ConsumptionSegment[]
 ): ConsumptionPoint[] => {
 	const grouped = new Map<
 		string,
 		{ total: number; count: number; date: Date }
 	>();
 
-	intervals.forEach((interval) => {
-		if (!isSameMonth(interval.startDate, interval.endDate)) {
-			return;
-		}
-
-		const monthKey = format(new Date(interval.endDate), 'MMM yyyy');
-		const existing = grouped.get(monthKey);
+	segments.forEach((segment) => {
+		const existing = grouped.get(segment.month);
 		if (existing) {
-			existing.total += interval.consumption;
+			existing.total += segment.consumption;
 			existing.count += 1;
 			return;
 		}
 
-		grouped.set(monthKey, {
-			total: interval.consumption,
+		grouped.set(segment.month, {
+			total: segment.consumption,
 			count: 1,
-			date: interval.endDate,
+			date: segment.date,
 		});
 	});
 
@@ -167,30 +227,28 @@ export const buildVehicleStatistics = (
 			)
 		: [];
 
-	const intervals = buildIntervals(fuelings);
-	const intervalsForYear = selectedYear
-		? intervals.filter(
-				(interval) => interval.endDate.getFullYear() === selectedYear
-			)
-		: [];
-
-	const consumption = buildConsumptionSeries(intervalsForYear);
+	const allIntervals = buildIntervals(fuelings);
+	const consumptionSegments = buildConsumptionSegments(
+		allIntervals,
+		selectedYear
+	);
+	const consumption = buildConsumptionSeries(consumptionSegments);
 	const monthlyCosts = buildMonthlyCosts(fuelingsForYear, selectedYear);
 
 	const totalSpent = fuelingsForYear.reduce(
 		(sum, fueling) => sum + fueling.cost,
 		0
 	);
-	const totalDistance = intervalsForYear.reduce(
-		(sum, interval) => sum + interval.distance,
+	const totalDistance = consumptionSegments.reduce(
+		(sum, segment) => sum + segment.distance,
 		0
 	);
-	const totalFuel = intervalsForYear.reduce(
-		(sum, interval) => sum + interval.fuel,
+	const totalFuel = consumptionSegments.reduce(
+		(sum, segment) => sum + segment.fuel,
 		0
 	);
 
-	const hasConsumptionData = intervalsForYear.length > 0;
+	const hasConsumptionData = consumptionSegments.length > 0;
 	const hasCostData = monthlyCosts.length > 0;
 
 	const summary: StatisticsSummary = {
