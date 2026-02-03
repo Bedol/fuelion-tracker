@@ -20,4 +20,6 @@ export type VehicleStatisticsResponse = {
 	monthlyCosts: MonthlyCostPoint[];
 	hasConsumptionData: boolean;
 	hasCostData: boolean;
+	availableYears: number[];
+	selectedYear: number | null;
 };

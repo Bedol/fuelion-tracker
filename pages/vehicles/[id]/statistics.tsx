@@ -1,8 +1,9 @@
-import { Box, Button, Heading, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Heading, Stack, Text, chakra } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { Vehicle } from '@prisma/client';
+import { useState } from 'react';
 import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../components/Loading';
 import {
@@ -17,6 +18,7 @@ const VehicleStatisticsPage: React.FC = () => {
 	const { status } = useSession({ required: true });
 
 	const vehicleId = id ? Number(id) : undefined;
+	const [selectedYear, setSelectedYear] = useState<number | null>(null);
 
 	const {
 		data: vehicle,
@@ -38,12 +40,20 @@ const VehicleStatisticsPage: React.FC = () => {
 		data: statistics,
 		isPending: isStatisticsPending,
 		isError: isStatisticsError,
-	} = useVehicleStatistics(vehicleId);
+	} = useVehicleStatistics(vehicleId, selectedYear ?? undefined);
+
+	const availableYears = statistics?.availableYears ?? [];
+	const resolvedSelectedYear = selectedYear ?? statistics?.selectedYear ?? null;
 
 	const handleAddFueling = () => {
 		if (vehicleId) {
 			router.push(`/vehicles/${vehicleId}/fuelings/new`);
 		}
+	};
+
+	const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const nextYear = Number(event.target.value);
+		setSelectedYear(Number.isNaN(nextYear) ? null : nextYear);
 	};
 
 	if (status === 'loading' || isVehiclePending) {
@@ -116,12 +126,51 @@ const VehicleStatisticsPage: React.FC = () => {
 							/>
 						</Box>
 						<Box>
-							<Heading size='md' mb='3'>
-								Charts
-							</Heading>
-							<Text color='gray.600' mb='4'>
-								Trends across time for consumption and monthly costs.
-							</Text>
+							<Stack
+								direction={{ base: 'column', md: 'row' }}
+								align='flex-start'
+								justify='space-between'
+								gap='4'
+								mb='4'
+							>
+								<Box>
+									<Heading size='md' mb='2'>
+										Charts
+									</Heading>
+									<Text color='gray.600'>
+										Trends across time for consumption and monthly costs.
+									</Text>
+								</Box>
+								{availableYears.length > 1 && (
+									<Box minW='140px'>
+										<chakra.label
+											htmlFor='statistics-year'
+											fontSize='sm'
+											fontWeight='medium'
+											mb='2'
+											display='block'
+										>
+											Year
+										</chakra.label>
+										<chakra.select
+											id='statistics-year'
+											onChange={handleYearChange}
+											value={resolvedSelectedYear ?? ''}
+											className='chakra-select'
+											p='2'
+											borderWidth='1px'
+											borderRadius='md'
+											w='full'
+										>
+											{availableYears.map((year) => (
+												<option key={year} value={year}>
+													{year}
+												</option>
+											))}
+										</chakra.select>
+									</Box>
+								)}
+							</Stack>
 							<ChartsSection
 								consumption={statistics.consumption}
 								monthlyCosts={statistics.monthlyCosts}

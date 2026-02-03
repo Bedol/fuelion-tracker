@@ -1,10 +1,10 @@
 import {
 	addMonths,
-	endOfMonth,
+	endOfYear,
 	format,
 	isSameMonth,
 	startOfMonth,
-	subMonths,
+	startOfYear,
 } from 'date-fns';
 
 import type {
@@ -100,23 +100,23 @@ const buildConsumptionSeries = (
 		}));
 };
 
-const buildMonthlyCosts = (fuelings: FuelingInput[]): MonthlyCostPoint[] => {
-	if (fuelings.length === 0) {
+const buildMonthlyCosts = (
+	fuelings: FuelingInput[],
+	selectedYear: number | null
+): MonthlyCostPoint[] => {
+	if (fuelings.length === 0 || !selectedYear) {
 		return [];
 	}
 
-	const latestDate = fuelings
-		.map((fueling) => toDate(fueling.date))
-		.reduce((maxDate, currentDate) =>
-			currentDate > maxDate ? currentDate : maxDate
-		);
-
-	const windowStart = startOfMonth(subMonths(latestDate, 11));
-	const windowEnd = endOfMonth(latestDate);
+	const windowStart = startOfYear(new Date(selectedYear, 0, 1));
+	const windowEnd = endOfYear(new Date(selectedYear, 0, 1));
 	const costsByMonth = new Map<string, number>();
 
 	fuelings.forEach((fueling) => {
 		const fuelingDate = toDate(fueling.date);
+		if (fuelingDate.getFullYear() !== selectedYear) {
+			return;
+		}
 		if (fuelingDate < windowStart || fuelingDate > windowEnd) {
 			return;
 		}
@@ -127,7 +127,7 @@ const buildMonthlyCosts = (fuelings: FuelingInput[]): MonthlyCostPoint[] => {
 	});
 
 	const results: MonthlyCostPoint[] = [];
-	let cursor = windowStart;
+	let cursor = startOfMonth(windowStart);
 
 	while (cursor <= windowEnd) {
 		const monthKey = format(new Date(cursor), 'MMM yyyy');
@@ -141,21 +141,56 @@ const buildMonthlyCosts = (fuelings: FuelingInput[]): MonthlyCostPoint[] => {
 	return results;
 };
 
-export const buildVehicleStatistics = (
-	fuelings: FuelingInput[]
-): VehicleStatisticsResponse => {
-	const intervals = buildIntervals(fuelings);
-	const consumption = buildConsumptionSeries(intervals);
-	const monthlyCosts = buildMonthlyCosts(fuelings);
+const buildAvailableYears = (fuelings: FuelingInput[]): number[] => {
+	const years = new Set<number>();
+	fuelings.forEach((fueling) => {
+		years.add(toDate(fueling.date).getFullYear());
+	});
 
-	const totalSpent = fuelings.reduce((sum, fueling) => sum + fueling.cost, 0);
-	const totalDistance = intervals.reduce(
+	return Array.from(years).sort((a, b) => b - a);
+};
+
+export const buildVehicleStatistics = (
+	fuelings: FuelingInput[],
+	requestedYear?: number | null
+): VehicleStatisticsResponse => {
+	const availableYears = buildAvailableYears(fuelings);
+	const selectedYear = availableYears.length
+		? requestedYear && availableYears.includes(requestedYear)
+			? requestedYear
+			: availableYears[0]
+		: null;
+
+	const fuelingsForYear = selectedYear
+		? fuelings.filter(
+				(fueling) => toDate(fueling.date).getFullYear() === selectedYear
+			)
+		: [];
+
+	const intervals = buildIntervals(fuelings);
+	const intervalsForYear = selectedYear
+		? intervals.filter(
+				(interval) => interval.endDate.getFullYear() === selectedYear
+			)
+		: [];
+
+	const consumption = buildConsumptionSeries(intervalsForYear);
+	const monthlyCosts = buildMonthlyCosts(fuelingsForYear, selectedYear);
+
+	const totalSpent = fuelingsForYear.reduce(
+		(sum, fueling) => sum + fueling.cost,
+		0
+	);
+	const totalDistance = intervalsForYear.reduce(
 		(sum, interval) => sum + interval.distance,
 		0
 	);
-	const totalFuel = intervals.reduce((sum, interval) => sum + interval.fuel, 0);
+	const totalFuel = intervalsForYear.reduce(
+		(sum, interval) => sum + interval.fuel,
+		0
+	);
 
-	const hasConsumptionData = intervals.length > 0;
+	const hasConsumptionData = intervalsForYear.length > 0;
 	const hasCostData = monthlyCosts.length > 0;
 
 	const summary: StatisticsSummary = {
@@ -174,5 +209,7 @@ export const buildVehicleStatistics = (
 		monthlyCosts,
 		hasConsumptionData,
 		hasCostData,
+		availableYears,
+		selectedYear,
 	};
 };

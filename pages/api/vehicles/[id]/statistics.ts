@@ -15,7 +15,7 @@ const handleGet = async (
 		return res.status(401).json({ error: 'Unauthorized' });
 	}
 
-	const { id } = req.query;
+	const { id, year } = req.query;
 	if (!id || Array.isArray(id)) {
 		return res.status(400).json({ error: 'Invalid vehicle id' });
 	}
@@ -23,6 +23,18 @@ const handleGet = async (
 	const vehicleId = Number(id);
 	if (Number.isNaN(vehicleId)) {
 		return res.status(400).json({ error: 'Invalid vehicle id' });
+	}
+
+	let requestedYear: number | undefined;
+	if (year !== undefined) {
+		if (Array.isArray(year)) {
+			return res.status(400).json({ error: 'Invalid year' });
+		}
+		const parsedYear = Number(year);
+		if (!Number.isInteger(parsedYear)) {
+			return res.status(400).json({ error: 'Invalid year' });
+		}
+		requestedYear = parsedYear;
 	}
 
 	const fuelings = await prisma.fueling.findMany({
@@ -37,7 +49,7 @@ const handleGet = async (
 		orderBy: { date: 'asc' },
 	});
 
-	const statistics = buildVehicleStatistics(fuelings);
+	const statistics = buildVehicleStatistics(fuelings, requestedYear);
 	return res.status(200).json(statistics);
 };
 
