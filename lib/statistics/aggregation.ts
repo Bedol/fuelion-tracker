@@ -240,20 +240,33 @@ export const buildAllTimeSummary = (
 
 	const totalSpent = fuelings.reduce((sum, fueling) => sum + fueling.cost, 0);
 	const allIntervals = buildIntervals(fuelings);
-	const totalDistance = allIntervals.reduce(
+	const intervalDistance = allIntervals.reduce(
 		(sum, interval) => sum + interval.distance,
 		0
 	);
-	const totalFuel = allIntervals.reduce(
+	const intervalFuel = allIntervals.reduce(
 		(sum, interval) => sum + interval.fuel,
 		0
 	);
+	const sortedFuelings = [...fuelings].sort((a, b) => a.mileage - b.mileage);
+	const fallbackDistance =
+		sortedFuelings.length < 2
+			? 0
+			: sortedFuelings.reduce((distanceSum, fueling, index) => {
+					if (index === 0) {
+						return distanceSum;
+					}
+					const delta = fueling.mileage - sortedFuelings[index - 1].mileage;
+					return delta > 0 ? distanceSum + delta : distanceSum;
+				}, 0);
+	const totalDistance =
+		intervalDistance > 0 ? intervalDistance : fallbackDistance;
 
 	return {
 		totalSpent,
 		averageConsumption:
-			totalDistance > 0 ? (totalFuel / totalDistance) * 100 : 0,
-		totalDistance: totalDistance > 0 ? totalDistance : 0,
+			intervalDistance > 0 ? (intervalFuel / intervalDistance) * 100 : 0,
+		totalDistance,
 	};
 };
 
