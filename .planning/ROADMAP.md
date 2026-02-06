@@ -310,8 +310,8 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 **Plans:**
 
 - [x] 09-01-PLAN.md — Add auth guard to vehicle list/detail pages
-- [ ] 09-02-PLAN.md — Add auth guard to vehicle create/edit pages
-- [ ] 09-03-PLAN.md — Verify vehicle page redirect behavior
+- [x] 09-02-PLAN.md — Add auth guard to vehicle create/edit pages
+- [x] 09-03-PLAN.md — Verify vehicle page redirect behavior
 
 ---
 
@@ -374,11 +374,11 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 | 6     | API Ownership Guardrails                | 0            | Complete              |
 | 7     | Flow Wiring & Cache Consistency         | 0            | Complete (2026-02-06) |
 | 8     | Stats Window & DoD Verification Closure | 8            | Complete (2026-02-06) |
-| 9     | Vehicle Auth Protection                 | 1            | In progress           |
+| 9     | Vehicle Auth Protection                 | 1            | Complete (2026-02-06) |
 | 10    | Fueling Last Ownership Guard            | 0            | Planned               |
 | 11    | Dashboard Navigation Link               | 0            | Planned               |
 
-**Total:** 26 requirements across 11 phases (25 satisfied, 1 partial)
+**Total:** 26 requirements across 11 phases (26 satisfied, 0 partial)
 
 ## Dependency Graph
 
