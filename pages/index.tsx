@@ -1,38 +1,126 @@
-import { Box, Heading, Text, Stack } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	CardBody,
+	CardRoot,
+	Heading,
+	SimpleGrid,
+	Stack,
+	Text,
+} from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import SkeletonLoader from '../components/ui/SkeletonLoader';
+import DashboardSkeleton from '../components/dashboard/DashboardSkeleton';
+import RecentActivityList from '../components/dashboard/RecentActivityList';
+import VehicleSummaryCard from '../components/dashboard/VehicleSummaryCard';
+import FetchDataErrorAlert from '../components/errors/FetchDataErrorAlert';
+import { useDashboardData } from '../hooks/useDashboardData';
 import { useLocale } from '../contexts/LocaleContext';
 
 const HomePage = () => {
 	const router = useRouter();
-	const { data: session, status } = useSession({
+	const { status } = useSession({
 		required: true,
 		onUnauthenticated() {
 			router.push('/auth/signin');
 		},
 	});
 	const { t } = useLocale();
+	const { data, isPending, isError } = useDashboardData();
 
-	if (status === 'loading') {
-		return <SkeletonLoader type='page' />;
+	if (status === 'loading' || isPending) {
+		return <DashboardSkeleton />;
 	}
+
+	if (isError || !data) {
+		return <FetchDataErrorAlert errorMessage={t('errors.generic')} />;
+	}
+
+	const { vehicles, recentActivity } = data;
+	const hasVehicles = vehicles.length > 0;
+	const hasActivity = recentActivity.length > 0;
 
 	return (
 		<Box
-			minH='calc(100vh - 120px)'
-			display='flex'
-			alignItems='center'
-			justifyContent='center'
+			maxW='1200px'
+			mx='auto'
+			px={{ base: '4', md: '6' }}
+			py={{ base: '6', md: '8' }}
 		>
-			<Stack gap='6' align='center' textAlign='center' maxW='2xl' px='6'>
-				<Heading size='2xl' color='blue.600'>
-					{t('auth.welcome')}, {session?.user?.name}!
-				</Heading>
-				<Text fontSize='lg' color='gray.600'>
-					Dashboard coming in Phase 5. For now, use navigation to access
-					Vehicles or Statistics.
-				</Text>
+			<Stack gap={{ base: '6', md: '8' }}>
+				<Stack gap='2'>
+					<Heading size='xl'>{t('dashboard.title')}</Heading>
+					<Text color='gray.600'>{t('dashboard.subtitle')}</Text>
+				</Stack>
+
+				<Stack gap={{ base: '6', md: '8' }}>
+					<CardRoot variant='outline' order={{ base: 1, lg: 2 }}>
+						<CardBody>
+							<Stack gap='4'>
+								<Heading size='md'>{t('dashboard.activityTitle')}</Heading>
+								{hasActivity ? (
+									<RecentActivityList items={recentActivity} />
+								) : (
+									<Box textAlign='center' py='10'>
+										<Text fontSize='4xl' mb='4'>
+											🧾
+										</Text>
+										<Heading size='md' mb='2'>
+											{t('dashboard.emptyActivityTitle')}
+										</Heading>
+										<Text color='gray.500'>
+											{t('dashboard.emptyActivityDescription')}
+										</Text>
+									</Box>
+								)}
+							</Stack>
+						</CardBody>
+					</CardRoot>
+
+					<CardRoot variant='outline' order={{ base: 2, lg: 1 }}>
+						<CardBody>
+							<Stack gap='4'>
+								<Heading size='md'>{t('dashboard.vehiclesTitle')}</Heading>
+								{hasVehicles ? (
+									<SimpleGrid columns={{ base: 1, lg: 2 }} gap='4'>
+										{vehicles.map((vehicle) => (
+											<VehicleSummaryCard
+												key={vehicle.id}
+												vehicle={vehicle}
+												labels={{
+													totalSpent: t('dashboard.totalSpent'),
+													averageConsumption: t('dashboard.averageConsumption'),
+													totalDistance: t('dashboard.totalDistance'),
+													lastFueling: t('dashboard.lastFueling'),
+													viewVehicle: t('dashboard.viewVehicle'),
+													quickAdd: t('dashboard.quickAdd'),
+												}}
+											/>
+										))}
+									</SimpleGrid>
+								) : (
+									<Box textAlign='center' py='10'>
+										<Text fontSize='4xl' mb='4'>
+											🚗
+										</Text>
+										<Heading size='md' mb='2'>
+											{t('dashboard.emptyVehiclesTitle')}
+										</Heading>
+										<Text color='gray.500' mb='6'>
+											{t('dashboard.emptyVehiclesDescription')}
+										</Text>
+										<NextLink href='/vehicles/new' passHref legacyBehavior>
+											<Button as='a' colorPalette='blue'>
+												{t('dashboard.emptyVehiclesCta')}
+											</Button>
+										</NextLink>
+									</Box>
+								)}
+							</Stack>
+						</CardBody>
+					</CardRoot>
+				</Stack>
 			</Stack>
 		</Box>
 	);

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
 	Button,
 	CardBody,
@@ -13,9 +14,20 @@ import type { DashboardVehicleSummary } from '../../types/dashboard_types';
 
 type VehicleSummaryCardProps = {
 	vehicle: DashboardVehicleSummary;
+	labels: {
+		totalSpent: string;
+		averageConsumption: string;
+		totalDistance: string;
+		lastFueling: string;
+		viewVehicle: string;
+		quickAdd: string;
+	};
 };
 
-const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({ vehicle }) => {
+const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({
+	vehicle,
+	labels,
+}) => {
 	const currencyFormatter = new Intl.NumberFormat('pl-PL', {
 		style: 'currency',
 		currency: vehicle.currency,
@@ -57,7 +69,7 @@ const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({ vehicle }) => {
 					<SimpleGrid columns={{ base: 1, md: 2 }} gap='4'>
 						<Stack gap='1'>
 							<Text fontSize='sm' color='gray.500'>
-								Total spent
+								{labels.totalSpent}
 							</Text>
 							<Heading size='sm'>
 								{currencyFormatter.format(vehicle.totalSpent)}
@@ -65,19 +77,19 @@ const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({ vehicle }) => {
 						</Stack>
 						<Stack gap='1'>
 							<Text fontSize='sm' color='gray.500'>
-								Average consumption
+								{labels.averageConsumption}
 							</Text>
 							<Heading size='sm'>{formattedConsumption}</Heading>
 						</Stack>
 						<Stack gap='1'>
 							<Text fontSize='sm' color='gray.500'>
-								Total distance
+								{labels.totalDistance}
 							</Text>
 							<Heading size='sm'>{formattedDistance}</Heading>
 						</Stack>
 						<Stack gap='1'>
 							<Text fontSize='sm' color='gray.500'>
-								Last fueling
+								{labels.lastFueling}
 							</Text>
 							<Heading size='sm'>{formattedLastFuelingDate}</Heading>
 						</Stack>
@@ -86,7 +98,7 @@ const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({ vehicle }) => {
 					<Stack direction={{ base: 'column', sm: 'row' }} gap='3'>
 						<NextLink href={`/vehicles/${vehicle.id}`} passHref legacyBehavior>
 							<Button as='a' variant='outline' colorPalette='blue'>
-								View
+								{labels.viewVehicle}
 							</Button>
 						</NextLink>
 						<NextLink
@@ -95,7 +107,7 @@ const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({ vehicle }) => {
 							legacyBehavior
 						>
 							<Button as='a' colorPalette='green'>
-								Quick add
+								{labels.quickAdd}
 							</Button>
 						</NextLink>
 					</Stack>
