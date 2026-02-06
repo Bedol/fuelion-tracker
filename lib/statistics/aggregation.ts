@@ -1,8 +1,10 @@
 import {
 	addMonths,
+	differenceInCalendarDays,
 	endOfMonth,
 	endOfYear,
 	format,
+	getDaysInMonth,
 	startOfMonth,
 	startOfYear,
 } from 'date-fns';
@@ -168,21 +170,15 @@ const buildConsumptionSeries = (
 		}));
 };
 
-const buildMonthlyCosts = (
-	fuelings: FuelingInput[],
-	selectedYear: number | null
-): MonthlyCostPoint[] => {
-	if (fuelings.length === 0 || !selectedYear) {
-		return [];
-	}
-
-	const windowStart = startOfYear(new Date(selectedYear, 0, 1));
-	const windowEnd = endOfYear(new Date(selectedYear, 0, 1));
+const buildMonthlyCosts = (fuelings: FuelingInput[]): MonthlyCostPoint[] => {
+	const now = new Date();
+	const windowStart = startOfMonth(addMonths(now, -11));
+	const windowEnd = endOfMonth(now);
 	const costsByMonth = new Map<string, number>();
 
 	fuelings.forEach((fueling) => {
 		const fuelingDate = toDate(fueling.date);
-		if (fuelingDate.getFullYear() !== selectedYear) {
+		if (fuelingDate > now) {
 			return;
 		}
 		if (fuelingDate < windowStart || fuelingDate > windowEnd) {
@@ -195,14 +191,27 @@ const buildMonthlyCosts = (
 	});
 
 	const results: MonthlyCostPoint[] = [];
+	const currentMonthKey = format(new Date(now), 'MMM yyyy');
+	const daysInMonth = getDaysInMonth(now);
+	const daysElapsed = differenceInCalendarDays(now, startOfMonth(now)) + 1;
 	let cursor = startOfMonth(windowStart);
 
 	while (cursor <= windowEnd) {
 		const monthKey = format(new Date(cursor), 'MMM yyyy');
-		const value = costsByMonth.get(monthKey) ?? 0;
-		if (value > 0) {
-			results.push({ month: monthKey, value });
-		}
+		const rawValue = costsByMonth.get(monthKey) ?? 0;
+		const hasData = rawValue > 0;
+		const isCurrentMonth = monthKey === currentMonthKey;
+		const value =
+			isCurrentMonth && hasData && daysElapsed > 0
+				? (rawValue * daysInMonth) / daysElapsed
+				: rawValue;
+
+		results.push({
+			month: monthKey,
+			value,
+			hasData,
+			...(isCurrentMonth && hasData ? { isEstimated: true } : {}),
+		});
 		cursor = addMonths(cursor, 1);
 	}
 
@@ -271,7 +280,7 @@ export const buildVehicleStatistics = (
 		selectedYear
 	);
 	const consumption = buildConsumptionSeries(consumptionSegments);
-	const monthlyCosts = buildMonthlyCosts(fuelingsForYear, selectedYear);
+	const monthlyCosts = buildMonthlyCosts(fuelings);
 
 	const totalSpent = fuelingsForYear.reduce(
 		(sum, fueling) => sum + fueling.cost,
@@ -287,7 +296,7 @@ export const buildVehicleStatistics = (
 	);
 
 	const hasConsumptionData = consumptionSegments.length > 0;
-	const hasCostData = monthlyCosts.length > 0;
+	const hasCostData = monthlyCosts.some((point) => point.hasData);
 
 	const summary: StatisticsSummary = {
 		totalSpent,

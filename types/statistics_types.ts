@@ -12,6 +12,8 @@ export type ConsumptionPoint = {
 export type MonthlyCostPoint = {
 	month: string;
 	value: number;
+	hasData: boolean;
+	isEstimated?: boolean;
 };
 
 export type VehicleStatisticsResponse = {
