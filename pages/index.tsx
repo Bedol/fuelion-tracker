@@ -5,16 +5,19 @@ import {
 	CardRoot,
 	Heading,
 	SimpleGrid,
+	Spinner,
 	Stack,
 	Text,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
 import DashboardSkeleton from '../components/dashboard/DashboardSkeleton';
 import RecentActivityList from '../components/dashboard/RecentActivityList';
 import VehicleSummaryCard from '../components/dashboard/VehicleSummaryCard';
 import FetchDataErrorAlert from '../components/errors/FetchDataErrorAlert';
+import { toaster } from '../components/ui/toaster';
 import { useDashboardData } from '../hooks/useDashboardData';
 import { useLocale } from '../contexts/LocaleContext';
 
@@ -27,14 +30,33 @@ const HomePage = () => {
 		},
 	});
 	const { t } = useLocale();
-	const { data, isPending, isError } = useDashboardData();
+	const { data, isPending, isError, isFetching } = useDashboardData();
+	const refreshErrorShown = useRef(false);
+
+	useEffect(() => {
+		if (isError && data && !refreshErrorShown.current) {
+			toaster.create({
+				title: 'Failed to refresh dashboard',
+				type: 'error',
+			});
+			refreshErrorShown.current = true;
+		}
+
+		if (!isError) {
+			refreshErrorShown.current = false;
+		}
+	}, [data, isError]);
 
 	if (status === 'loading' || isPending) {
 		return <DashboardSkeleton />;
 	}
 
-	if (isError || !data) {
+	if (isError && !data) {
 		return <FetchDataErrorAlert errorMessage={t('errors.generic')} />;
+	}
+
+	if (!data) {
+		return <DashboardSkeleton />;
 	}
 
 	const { vehicles, recentActivity } = data;
@@ -50,7 +72,10 @@ const HomePage = () => {
 		>
 			<Stack gap={{ base: '6', md: '8' }}>
 				<Stack gap='2'>
-					<Heading size='xl'>{t('dashboard.title')}</Heading>
+					<Stack direction='row' align='center' gap='3'>
+						<Heading size='xl'>{t('dashboard.title')}</Heading>
+						{isFetching && data && <Spinner size='sm' color='gray.500' />}
+					</Stack>
 					<Text color='gray.600'>{t('dashboard.subtitle')}</Text>
 				</Stack>
 
