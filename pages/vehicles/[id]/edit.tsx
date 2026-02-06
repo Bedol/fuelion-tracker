@@ -1,5 +1,6 @@
 import { Box, Heading } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import VehicleForm from '../../../components/vehicles/VehicleForm';
 import { toaster } from '../../../components/ui/toaster';
@@ -9,6 +10,12 @@ import Loading from '../../../components/Loading';
 const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+	const { status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/auth/signin');
+		},
+	});
 
 	const { isPending, isError, data } = useQuery({
 		queryKey: ['vehicle', vehicleId],
@@ -17,6 +24,7 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 			if (!resp.ok) throw new Error('An error occurred.');
 			return resp.json();
 		},
+		enabled: status === 'authenticated',
 	});
 
 	const vehicleMutation = useMutation({
@@ -64,6 +72,7 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 		},
 	});
 
+	if (status === 'loading') return <Loading />;
 	if (isPending) return <Loading />;
 	if (isError)
 		return (
