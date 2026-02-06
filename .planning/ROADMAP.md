@@ -2,7 +2,7 @@
 
 **Created:** 2026-01-30
 **Depth:** Standard
-**Phases:** 8
+**Phases:** 11
 **Requirements:** 26 mapped
 
 ## Overview
@@ -290,6 +290,78 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 ---
 
+### Phase 9: Vehicle Auth Protection
+
+**Goal:** Enforce authentication redirects on vehicle pages for unauthenticated users.
+
+**Dependencies:** Phase 1 (auth foundation), Phase 2 (vehicle pages)
+
+**Plans:** 3 plans
+
+**Requirements:**
+
+- AUTH-04: Unauthenticated users are redirected to sign-in page
+
+**Gap Closure:**
+
+- Closes audit requirement gap: AUTH-04 partial on vehicle pages
+- Closes audit integration gap: vehicle pages lack enforced auth protection
+
+**Plans:**
+
+- [x] 09-01-PLAN.md — Add auth guard to vehicle list/detail pages
+- [ ] 09-02-PLAN.md — Add auth guard to vehicle create/edit pages
+- [ ] 09-03-PLAN.md — Verify vehicle page redirect behavior
+
+---
+
+### Phase 10: Fueling Last Ownership Guard
+
+**Goal:** Enforce per-user ownership on `/api/fueling/last` for smart defaults.
+
+**Dependencies:** Phase 6 (ownership guardrails)
+
+**Plans:** 2 plans
+
+**Requirements:**
+
+- Security closure for fueling smart defaults data integrity
+
+**Gap Closure:**
+
+- Closes audit integration gap: `/api/fueling/last` lacks ownership guard
+
+**Plans:**
+
+- [ ] 10-01-PLAN.md — Scope `/api/fueling/last` to session user
+- [ ] 10-02-PLAN.md — Verify non-owner access is blocked
+
+---
+
+### Phase 11: Dashboard Navigation Link
+
+**Goal:** Restore dashboard/home navigation so stats to dashboard flow works.
+
+**Dependencies:** Phase 5 (dashboard), Phase 7 (flow wiring)
+
+**Plans:** 2 plans
+
+**Requirements:**
+
+- Flow closure for UIUX-02 consistency and cross-phase navigation
+
+**Gap Closure:**
+
+- Closes audit integration gap: navigation lacks dashboard/home link
+- Closes audit flow gap: statistics to dashboard navigation broken
+
+**Plans:**
+
+- [ ] 11-01-PLAN.md — Add dashboard/home link in navigation and stats page
+- [ ] 11-02-PLAN.md — Verify stats to dashboard path end-to-end
+
+---
+
 ## Progress
 
 | Phase | Name                                    | Requirements | Status                |
@@ -302,8 +374,11 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 | 6     | API Ownership Guardrails                | 0            | Complete              |
 | 7     | Flow Wiring & Cache Consistency         | 0            | Complete (2026-02-06) |
 | 8     | Stats Window & DoD Verification Closure | 8            | Complete (2026-02-06) |
+| 9     | Vehicle Auth Protection                 | 1            | In progress           |
+| 10    | Fueling Last Ownership Guard            | 0            | Planned               |
+| 11    | Dashboard Navigation Link               | 0            | Planned               |
 
-**Total:** 26 requirements across 8 phases (26 satisfied, 0 pending)
+**Total:** 26 requirements across 11 phases (25 satisfied, 1 partial)
 
 ## Dependency Graph
 
@@ -316,11 +391,14 @@ Phase 1: Auth & App Shell
                                     └── Phase 6: API Ownership Guardrails
                                             └── Phase 7: Flow Wiring & Cache Consistency
                                                     └── Phase 8: Stats Window & DoD Verification Closure
+                                                            └── Phase 9: Vehicle Auth Protection
+                                                                    └── Phase 10: Fueling Last Ownership Guard
+                                                                            └── Phase 11: Dashboard Navigation Link
 ```
 
-All phases are sequential. Gap-closure phases (6-8) finalize security, integration, and verification blockers identified by milestone audit.
+All phases are sequential. Gap-closure phases (6-11) finalize security, integration, and verification blockers identified by milestone audit.
 
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-02-06 (phase 8 complete)_
+_Last updated: 2026-02-06 (gap closure phases 9-11 added)_
