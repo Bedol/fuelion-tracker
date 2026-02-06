@@ -4,12 +4,16 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import VehicleForm from '../../components/vehicles/VehicleForm';
 import { toaster } from '../../components/ui/toaster';
-import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
 import Loading from '../../components/Loading';
 
 const NewVehiclePage = () => {
 	const router = useRouter();
-	const { data: session, status } = useSession();
+	const { data: session, status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/auth/signin');
+		},
+	});
 	const queryClient = useQueryClient();
 
 	const vehicleMutation = useMutation({
@@ -63,12 +67,6 @@ const NewVehiclePage = () => {
 
 	if (status === 'loading') {
 		return <Loading />;
-	}
-
-	if (status === 'unauthenticated') {
-		return (
-			<FetchDataErrorAlert errorMessage='You need to sign in to create a vehicle.' />
-		);
 	}
 
 	const initialValues = {
