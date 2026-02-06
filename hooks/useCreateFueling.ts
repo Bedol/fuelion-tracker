@@ -5,6 +5,24 @@ import { FuelingFormValues } from '../types/fueling_types';
 export const useCreateFueling = () => {
 	const queryClient = useQueryClient();
 
+	const getErrorMessage = async (response: Response, fallback: string) => {
+		const errorData = await response.json().catch(() => null);
+		if (errorData && typeof errorData === 'object') {
+			const message = (errorData as { error?: { message?: string } }).error
+				?.message;
+			if (typeof message === 'string' && message.trim()) {
+				return message;
+			}
+
+			const legacyMessage = (errorData as { message?: string }).message;
+			if (typeof legacyMessage === 'string' && legacyMessage.trim()) {
+				return legacyMessage;
+			}
+		}
+
+		return fallback;
+	};
+
 	return useMutation({
 		mutationFn: async ({
 			data,
@@ -22,8 +40,11 @@ export const useCreateFueling = () => {
 			});
 
 			if (!response.ok) {
-				const errorData = await response.json().catch(() => ({}));
-				throw new Error(errorData.message || 'Failed to create fueling');
+				const message = await getErrorMessage(
+					response,
+					'Failed to create fueling'
+				);
+				throw new Error(message);
 			}
 
 			return response.json();
