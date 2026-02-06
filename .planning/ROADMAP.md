@@ -212,7 +212,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Dependencies:** Phase 5 (cross-phase hardening after core feature delivery)
 
-**Plans:** 0 plans
+**Plans:** 3 plans
 
 **Requirements:**
 
@@ -222,6 +222,12 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 - Closes audit integration gap: missing ownership enforcement across `/api/vehicles`, `/api/vehicles/[id]`, `/api/fueling`, `/api/fueling/[id]`, `/api/vehicles/[id]/statistics`
 - Closes audit flow gap: unauthorized cross-user mutations in vehicle edit/delete data integrity flow
+
+**Plans:**
+
+- [ ] 06-01-PLAN.md — Build shared auth/error/ownership guard helpers for protected API routes
+- [ ] 06-02-PLAN.md — Enforce ownership in vehicle and vehicle statistics endpoints
+- [ ] 06-03-PLAN.md — Enforce ownership in fueling endpoints and align mutation hook error parsing
 
 ---
 
