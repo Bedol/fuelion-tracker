@@ -280,16 +280,16 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 ## Progress
 
-| Phase | Name                                    | Requirements | Status      |
-| ----- | --------------------------------------- | ------------ | ----------- |
-| 1     | Auth & App Shell                        | 6            | Complete    |
-| 2     | Vehicle Management                      | 6            | Complete    |
-| 3     | Fueling Records                         | 9            | Complete    |
-| 4     | Statistics & Charts                     | 4            | Complete    |
-| 5     | Dashboard                               | 1            | Complete    |
-| 6     | API Ownership Guardrails                | 0            | In progress |
-| 7     | Flow Wiring & Cache Consistency         | 0            | Planned     |
-| 8     | Stats Window & DoD Verification Closure | 8            | Planned     |
+| Phase | Name                                    | Requirements | Status   |
+| ----- | --------------------------------------- | ------------ | -------- |
+| 1     | Auth & App Shell                        | 6            | Complete |
+| 2     | Vehicle Management                      | 6            | Complete |
+| 3     | Fueling Records                         | 9            | Complete |
+| 4     | Statistics & Charts                     | 4            | Complete |
+| 5     | Dashboard                               | 1            | Complete |
+| 6     | API Ownership Guardrails                | 0            | Complete |
+| 7     | Flow Wiring & Cache Consistency         | 0            | Planned  |
+| 8     | Stats Window & DoD Verification Closure | 8            | Planned  |
 
 **Total:** 26 requirements across 8 phases (18 satisfied, 8 pending closure)
 
@@ -311,4 +311,4 @@ All phases are sequential. Gap-closure phases (6-8) finalize security, integrati
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-02-06 (added gap-closure phases 6-8 from milestone audit)_
+_Last updated: 2026-02-06 (phase 6 complete)_
