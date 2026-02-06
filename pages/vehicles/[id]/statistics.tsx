@@ -150,7 +150,7 @@ const VehicleStatisticsPage: React.FC = () => {
 											mb='2'
 											display='block'
 										>
-											Year
+											Consumption year
 										</chakra.label>
 										<chakra.select
 											id='statistics-year'

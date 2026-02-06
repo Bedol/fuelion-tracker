@@ -52,7 +52,8 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({
 						Monthly Fuel Costs
 					</Heading>
 					<Text color='gray.500' mb='4'>
-						Total spend per month in {currency}.
+						Rolling 12-month spend in {currency} with the current month in
+						progress.
 					</Text>
 					{hasCostData ? (
 						<MonthlyCostChart data={monthlyCosts} currency={currency} />

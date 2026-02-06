@@ -2,6 +2,7 @@ import { Box, Text } from '@chakra-ui/react';
 import {
 	Bar,
 	BarChart,
+	Cell,
 	CartesianGrid,
 	ResponsiveContainer,
 	Tooltip,
@@ -43,15 +44,36 @@ const MonthlyCostChart: React.FC<MonthlyCostChartProps> = ({
 			<ResponsiveContainer width='100%' height='100%'>
 				<BarChart data={data} margin={{ top: 10, right: 20, left: 0 }}>
 					<CartesianGrid strokeDasharray='3 3' />
-					<XAxis dataKey='month' tickLine={false} />
+					<XAxis
+						dataKey='month'
+						tickLine={false}
+						tickFormatter={(_, index) =>
+							data[index]?.hasData ? (data[index]?.month ?? '') : ''
+						}
+					/>
 					<YAxis tickLine={false} axisLine={false} />
 					<Tooltip
-						formatter={(value: number) => [
-							currencyFormatter.format(value),
-							'Total cost',
-						]}
+						formatter={(value: number, _label, item) => {
+							const payload = item?.payload as MonthlyCostPoint | undefined;
+							const label = payload?.isEstimated
+								? 'Estimated total'
+								: 'Total cost';
+							return [currencyFormatter.format(value), label];
+						}}
 					/>
-					<Bar dataKey='value' fill='var(--chakra-colors-orange-400)' />
+					<Bar dataKey='value' fill='var(--chakra-colors-orange-400)'>
+						{data.map((entry) => (
+							<Cell
+								key={entry.month}
+								fill={
+									entry.isEstimated
+										? 'var(--chakra-colors-orange-300)'
+										: 'var(--chakra-colors-orange-400)'
+								}
+								opacity={entry.isEstimated ? 0.7 : 1}
+							/>
+						))}
+					</Bar>
 				</BarChart>
 			</ResponsiveContainer>
 		</Box>
