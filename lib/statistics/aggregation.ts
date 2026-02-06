@@ -218,6 +218,36 @@ const buildAvailableYears = (fuelings: FuelingInput[]): number[] => {
 	return Array.from(years).sort((a, b) => b - a);
 };
 
+export const buildAllTimeSummary = (
+	fuelings: FuelingInput[]
+): {
+	totalSpent: number;
+	averageConsumption: number;
+	totalDistance: number;
+} => {
+	if (fuelings.length === 0) {
+		return { totalSpent: 0, averageConsumption: 0, totalDistance: 0 };
+	}
+
+	const totalSpent = fuelings.reduce((sum, fueling) => sum + fueling.cost, 0);
+	const allIntervals = buildIntervals(fuelings);
+	const totalDistance = allIntervals.reduce(
+		(sum, interval) => sum + interval.distance,
+		0
+	);
+	const totalFuel = allIntervals.reduce(
+		(sum, interval) => sum + interval.fuel,
+		0
+	);
+
+	return {
+		totalSpent,
+		averageConsumption:
+			totalDistance > 0 ? (totalFuel / totalDistance) * 100 : 0,
+		totalDistance: totalDistance > 0 ? totalDistance : 0,
+	};
+};
+
 export const buildVehicleStatistics = (
 	fuelings: FuelingInput[],
 	requestedYear?: number | null
