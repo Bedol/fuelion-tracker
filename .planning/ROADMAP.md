@@ -2,7 +2,7 @@
 
 **Created:** 2026-01-30
 **Depth:** Standard
-**Phases:** 5
+**Phases:** 8
 **Requirements:** 26 mapped
 
 ## Overview
@@ -206,17 +206,86 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 ---
 
+### Phase 6: API Ownership Guardrails
+
+**Goal:** Enforce strict per-user ownership in vehicles, fueling, and statistics APIs.
+
+**Dependencies:** Phase 5 (cross-phase hardening after core feature delivery)
+
+**Plans:** 0 plans
+
+**Requirements:**
+
+- Security closure for cross-user access/mutation gaps affecting VEHI-01..VEHI-06 and fueling/stats data integrity
+
+**Gap Closure:**
+
+- Closes audit integration gap: missing ownership enforcement across `/api/vehicles`, `/api/vehicles/[id]`, `/api/fueling`, `/api/fueling/[id]`, `/api/vehicles/[id]/statistics`
+- Closes audit flow gap: unauthorized cross-user mutations in vehicle edit/delete data integrity flow
+
+---
+
+### Phase 7: Flow Wiring & Cache Consistency
+
+**Goal:** Restore end-to-end navigation continuity and dashboard freshness after fueling CRUD.
+
+**Dependencies:** Phase 6 (requires secure API boundaries first)
+
+**Plans:** 0 plans
+
+**Requirements:**
+
+- Flow closure for UIUX-02 consistency and cross-phase discoverability
+
+**Gap Closure:**
+
+- Closes audit integration gap: dashboard cache not invalidated after fueling CRUD
+- Closes audit integration gap: vehicle detail missing direct navigation to vehicle statistics
+- Closes audit flow gaps: broken sign in -> vehicle -> fueling -> stats -> dashboard path and stale dashboard recency
+
+---
+
+### Phase 8: Stats Window & DoD Verification Closure
+
+**Goal:** Align statistics behavior with requirement intent and close milestone verification blockers.
+
+**Dependencies:** Phase 7 (final closure phase)
+
+**Plans:** 0 plans
+
+**Requirements:**
+
+- VEHI-01: User can create a vehicle with basic data (brand, model, year, registration)
+- VEHI-02: User can add technical data to vehicle (engine capacity, power, fuel type)
+- VEHI-03: User can view list of their vehicles
+- VEHI-04: User can edit vehicle data
+- VEHI-05: User can delete a vehicle (with confirmation)
+- VEHI-06: User can select a vehicle to view its details and expenses
+- STAT-02: User can view monthly fuel costs chart
+- UIUX-02: Dashboard shows summary of user's vehicles and recent activity
+
+**Gap Closure:**
+
+- Closes audit requirement gap: STAT-02 monthly costs must use rolling 12-month window
+- Closes audit blocker: missing Phase 2 verification artifact
+- Closes audit blocker: Phase 5 dashboard verification status `human_needed`
+
+---
+
 ## Progress
 
-| Phase | Name                | Requirements | Status   |
-| ----- | ------------------- | ------------ | -------- |
-| 1     | Auth & App Shell    | 6            | Complete |
-| 2     | Vehicle Management  | 6            | Complete |
-| 3     | Fueling Records     | 9            | Complete |
-| 4     | Statistics & Charts | 4            | Complete |
-| 5     | Dashboard           | 1            | Complete |
+| Phase | Name                                    | Requirements | Status   |
+| ----- | --------------------------------------- | ------------ | -------- |
+| 1     | Auth & App Shell                        | 6            | Complete |
+| 2     | Vehicle Management                      | 6            | Complete |
+| 3     | Fueling Records                         | 9            | Complete |
+| 4     | Statistics & Charts                     | 4            | Complete |
+| 5     | Dashboard                               | 1            | Complete |
+| 6     | API Ownership Guardrails                | 0            | Planned  |
+| 7     | Flow Wiring & Cache Consistency         | 0            | Planned  |
+| 8     | Stats Window & DoD Verification Closure | 8            | Planned  |
 
-**Total:** 26 requirements across 5 phases (26 complete, 0 remaining)
+**Total:** 26 requirements across 8 phases (18 satisfied, 8 pending closure)
 
 ## Dependency Graph
 
@@ -226,11 +295,14 @@ Phase 1: Auth & App Shell
             └── Phase 3: Fueling Records
                     └── Phase 4: Statistics & Charts
                             └── Phase 5: Dashboard
+                                    └── Phase 6: API Ownership Guardrails
+                                            └── Phase 7: Flow Wiring & Cache Consistency
+                                                    └── Phase 8: Stats Window & DoD Verification Closure
 ```
 
-All phases are sequential. Each depends on the previous.
+All phases are sequential. Gap-closure phases (6-8) finalize security, integration, and verification blockers identified by milestone audit.
 
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-02-06 (Phase 5 complete)_
+_Last updated: 2026-02-06 (added gap-closure phases 6-8 from milestone audit)_
