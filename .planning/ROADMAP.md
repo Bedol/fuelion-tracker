@@ -237,7 +237,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Dependencies:** Phase 6 (requires secure API boundaries first)
 
-**Plans:** 2 plans
+**Plans:** 4 plans
 
 **Requirements:**
 
@@ -262,7 +262,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Dependencies:** Phase 7 (final closure phase)
 
-**Plans:** 2 plans
+**Plans:** 4 plans
 
 **Requirements:**
 
@@ -284,7 +284,9 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 **Plans:**
 
 - [x] 08-01-PLAN.md — Update monthly cost chart to rolling 12-month window
-- [ ] 08-02-PLAN.md — Produce Phase 2 & Phase 5 verification artifacts
+- [x] 08-02-PLAN.md — Produce Phase 2 & Phase 5 verification artifacts
+- [x] 08-03-PLAN.md — Fix dashboard summary distance fallback
+- [ ] 08-04-PLAN.md — Re-run Phase 2 and Phase 5 verification
 
 ---
 
@@ -321,4 +323,4 @@ All phases are sequential. Gap-closure phases (6-8) finalize security, integrati
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-02-06 (phase 7 complete)_
+_Last updated: 2026-02-06 (phase 8 in progress)_
