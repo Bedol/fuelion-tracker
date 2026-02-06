@@ -1,22 +1,26 @@
 import { Fueling, Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next/types';
-import { getServerSession } from 'next-auth/next';
 import prisma from '../../../lib/prisma';
-import { authOptions } from '../auth/[...nextauth]';
+import { requireSessionUserId } from '../_shared/auth';
+import { sendForbidden, sendForbiddenAsNotFound } from '../_shared/errors';
+import { ensureOwnedFueling } from '../_shared/ownership';
 
 const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
-	const session = await getServerSession(req, res, authOptions);
-	if (!session) {
-		return res.status(401).json({ error: 'Unauthorized' });
-	}
+	const userId = await requireSessionUserId(req, res);
+	if (!userId) return;
 
 	const { id } = req.query;
 	if (!id || Array.isArray(id)) {
 		return res.status(400).json({ error: 'Invalid fueling ID' });
 	}
 
+	const ownedFueling = await ensureOwnedFueling(Number(id), userId);
+	if (!ownedFueling) {
+		return sendForbiddenAsNotFound(res, 'Fueling not found.');
+	}
+
 	const fueling = await prisma.fueling.findUnique({
-		where: { id: Number(id) },
+		where: { id: ownedFueling.id },
 	});
 
 	if (!fueling) {
@@ -27,10 +31,8 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
-	const session = await getServerSession(req, res, authOptions);
-	if (!session) {
-		return res.status(401).json({ error: 'Unauthorized' });
-	}
+	const userId = await requireSessionUserId(req, res);
+	if (!userId) return;
 
 	const { id } = req.query;
 	if (!id || Array.isArray(id)) {
@@ -39,13 +41,12 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	const data = req.body;
 
-	// Check if fueling exists
-	const existingFueling = await prisma.fueling.findUnique({
-		where: { id: Number(id) },
-	});
-
-	if (!existingFueling) {
-		return res.status(404).json({ error: 'Fueling not found' });
+	const ownedFueling = await ensureOwnedFueling(Number(id), userId);
+	if (!ownedFueling) {
+		return sendForbidden(
+			res,
+			'You do not have permission to update this fueling.'
+		);
 	}
 
 	// Map fuel_type to fuel_type_id
@@ -73,20 +74,34 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
 				: undefined,
 	};
 
-	const updated = await prisma.fueling.update({
-		where: { id: Number(id) },
-		data: updateData,
-	});
+	const nextMileage =
+		data.mileage !== undefined ? parseFloat(data.mileage) : undefined;
 
-	// Update vehicle mileage if this fueling has higher mileage
-	const vehicle = await prisma.vehicle.findUnique({
-		where: { id: updated.vehicle_id },
-	});
+	let updated;
+	if (nextMileage !== undefined) {
+		updated = await prisma.$transaction(async (tx) => {
+			const updatedFueling = await tx.fueling.update({
+				where: { id: ownedFueling.id },
+				data: updateData,
+			});
 
-	if (vehicle && data.mileage && vehicle.mileage < parseFloat(data.mileage)) {
-		await prisma.vehicle.update({
-			where: { id: updated.vehicle_id },
-			data: { mileage: parseFloat(data.mileage) },
+			const vehicle = await tx.vehicle.findUnique({
+				where: { id: updatedFueling.vehicle_id },
+			});
+
+			if (vehicle && vehicle.mileage < nextMileage) {
+				await tx.vehicle.update({
+					where: { id: updatedFueling.vehicle_id },
+					data: { mileage: nextMileage },
+				});
+			}
+
+			return updatedFueling;
+		});
+	} else {
+		updated = await prisma.fueling.update({
+			where: { id: ownedFueling.id },
+			data: updateData,
 		});
 	}
 
@@ -94,27 +109,24 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const handleDelete = async (req: NextApiRequest, res: NextApiResponse) => {
-	const session = await getServerSession(req, res, authOptions);
-	if (!session) {
-		return res.status(401).json({ error: 'Unauthorized' });
-	}
+	const userId = await requireSessionUserId(req, res);
+	if (!userId) return;
 
 	const { id } = req.query;
 	if (!id || Array.isArray(id)) {
 		return res.status(400).json({ error: 'Invalid fueling ID' });
 	}
 
-	// Check if fueling exists
-	const existingFueling = await prisma.fueling.findUnique({
-		where: { id: Number(id) },
-	});
-
-	if (!existingFueling) {
-		return res.status(404).json({ error: 'Fueling not found' });
+	const ownedFueling = await ensureOwnedFueling(Number(id), userId);
+	if (!ownedFueling) {
+		return sendForbidden(
+			res,
+			'You do not have permission to delete this fueling.'
+		);
 	}
 
 	await prisma.fueling.delete({
-		where: { id: Number(id) },
+		where: { id: ownedFueling.id },
 	});
 
 	res.status(204).end();
