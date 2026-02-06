@@ -17,5 +17,22 @@
 	},
 	"loading": {
 		"pleaseWait": "Please wait..."
+	},
+	"dashboard": {
+		"title": "Your dashboard",
+		"subtitle": "Quick overview of vehicles and recent fuelings.",
+		"vehiclesTitle": "Vehicles",
+		"activityTitle": "Recent activity",
+		"totalSpent": "Total spent",
+		"averageConsumption": "Average consumption",
+		"totalDistance": "Total distance",
+		"lastFueling": "Last fueling",
+		"viewVehicle": "View vehicle",
+		"quickAdd": "Quick add",
+		"emptyVehiclesTitle": "No vehicles yet",
+		"emptyVehiclesDescription": "Add your first vehicle to start tracking costs.",
+		"emptyVehiclesCta": "Add vehicle",
+		"emptyActivityTitle": "No activity yet",
+		"emptyActivityDescription": "Add a fueling to see it here."
 	}
 }
