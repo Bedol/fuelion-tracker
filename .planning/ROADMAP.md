@@ -225,7 +225,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Plans:**
 
-- [ ] 06-01-PLAN.md — Build shared auth/error/ownership guard helpers for protected API routes
+- [x] 06-01-PLAN.md — Build shared auth/error/ownership guard helpers for protected API routes
 - [ ] 06-02-PLAN.md — Enforce ownership in vehicle and vehicle statistics endpoints
 - [ ] 06-03-PLAN.md — Enforce ownership in fueling endpoints and align mutation hook error parsing
 
@@ -280,16 +280,16 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 ## Progress
 
-| Phase | Name                                    | Requirements | Status   |
-| ----- | --------------------------------------- | ------------ | -------- |
-| 1     | Auth & App Shell                        | 6            | Complete |
-| 2     | Vehicle Management                      | 6            | Complete |
-| 3     | Fueling Records                         | 9            | Complete |
-| 4     | Statistics & Charts                     | 4            | Complete |
-| 5     | Dashboard                               | 1            | Complete |
-| 6     | API Ownership Guardrails                | 0            | Planned  |
-| 7     | Flow Wiring & Cache Consistency         | 0            | Planned  |
-| 8     | Stats Window & DoD Verification Closure | 8            | Planned  |
+| Phase | Name                                    | Requirements | Status      |
+| ----- | --------------------------------------- | ------------ | ----------- |
+| 1     | Auth & App Shell                        | 6            | Complete    |
+| 2     | Vehicle Management                      | 6            | Complete    |
+| 3     | Fueling Records                         | 9            | Complete    |
+| 4     | Statistics & Charts                     | 4            | Complete    |
+| 5     | Dashboard                               | 1            | Complete    |
+| 6     | API Ownership Guardrails                | 0            | In progress |
+| 7     | Flow Wiring & Cache Consistency         | 0            | Planned     |
+| 8     | Stats Window & DoD Verification Closure | 8            | Planned     |
 
 **Total:** 26 requirements across 8 phases (18 satisfied, 8 pending closure)
 
