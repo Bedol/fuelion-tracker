@@ -195,7 +195,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 **Plans:**
 
 - [x] 05-01-PLAN.md — Build dashboard aggregation types and API endpoint
-- [ ] 05-02-PLAN.md — Create dashboard data hook and UI components
+- [x] 05-02-PLAN.md — Create dashboard data hook and UI components
 - [ ] 05-03-PLAN.md — Implement dashboard page layout, loading, and copy
 
 **Notes:**
