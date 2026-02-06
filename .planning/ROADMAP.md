@@ -262,7 +262,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Dependencies:** Phase 7 (final closure phase)
 
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 **Requirements:**
 
@@ -281,22 +281,27 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 - Closes audit blocker: missing Phase 2 verification artifact
 - Closes audit blocker: Phase 5 dashboard verification status `human_needed`
 
+**Plans:**
+
+- [x] 08-01-PLAN.md — Update monthly cost chart to rolling 12-month window
+- [ ] 08-02-PLAN.md — Produce Phase 2 & Phase 5 verification artifacts
+
 ---
 
 ## Progress
 
-| Phase | Name                                    | Requirements | Status                |
-| ----- | --------------------------------------- | ------------ | --------------------- |
-| 1     | Auth & App Shell                        | 6            | Complete              |
-| 2     | Vehicle Management                      | 6            | Complete              |
-| 3     | Fueling Records                         | 9            | Complete              |
-| 4     | Statistics & Charts                     | 4            | Complete              |
-| 5     | Dashboard                               | 1            | Complete              |
-| 6     | API Ownership Guardrails                | 0            | Complete              |
-| 7     | Flow Wiring & Cache Consistency         | 0            | Complete (2026-02-06) |
-| 8     | Stats Window & DoD Verification Closure | 8            | Planned               |
+| Phase | Name                                    | Requirements | Status                   |
+| ----- | --------------------------------------- | ------------ | ------------------------ |
+| 1     | Auth & App Shell                        | 6            | Complete                 |
+| 2     | Vehicle Management                      | 6            | Complete                 |
+| 3     | Fueling Records                         | 9            | Complete                 |
+| 4     | Statistics & Charts                     | 4            | Complete                 |
+| 5     | Dashboard                               | 1            | Complete                 |
+| 6     | API Ownership Guardrails                | 0            | Complete                 |
+| 7     | Flow Wiring & Cache Consistency         | 0            | Complete (2026-02-06)    |
+| 8     | Stats Window & DoD Verification Closure | 8            | In progress (2026-02-06) |
 
-**Total:** 26 requirements across 8 phases (18 satisfied, 8 pending closure)
+**Total:** 26 requirements across 8 phases (19 satisfied, 7 pending closure)
 
 ## Dependency Graph
 
