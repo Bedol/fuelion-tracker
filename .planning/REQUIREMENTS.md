@@ -42,7 +42,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### UI/UX
 
 - [x] **UIUX-01**: App has clear navigation between sections (vehicles, fuelings, stats)
-- [ ] **UIUX-02**: Dashboard shows summary of user's vehicles and recent activity
+- [x] **UIUX-02**: Dashboard shows summary of user's vehicles and recent activity
 - [ ] **UIUX-03**: Forms are simple with minimal required fields
 - [ ] **UIUX-04**: Forms have smart defaults (current date, last odometer value)
 - [ ] **UIUX-05**: User receives feedback on actions (success/error toasts)
@@ -123,7 +123,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STAT-03     | 4     | Pending  |
 | STAT-04     | 4     | Pending  |
 | UIUX-01     | 1     | Complete |
-| UIUX-02     | 5     | Pending  |
+| UIUX-02     | 5     | Complete |
 | UIUX-03     | 3     | Pending  |
 | UIUX-04     | 3     | Pending  |
 | UIUX-05     | 3     | Pending  |
@@ -138,4 +138,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 ---
 
 _Requirements defined: 2026-01-30_
-_Last updated: 2026-01-30 after roadmap creation (traceability updated)_
+_Last updated: 2026-02-06 after phase 5 completion (traceability updated)_
