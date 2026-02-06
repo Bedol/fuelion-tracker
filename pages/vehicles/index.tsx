@@ -2,6 +2,7 @@ import { Vehicle } from '@prisma/client';
 import { Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
 import Loading from '../../components/Loading';
 import VehicleCard from '../../components/VehicleCard';
@@ -32,13 +33,22 @@ const EmptyState = () => {
 
 const AllVehicles = () => {
 	const router = useRouter();
+	const { status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/auth/signin');
+		},
+	});
 	const { isPending, isError, data } = useQuery({
 		queryKey: ['vehicles'],
 		queryFn: async () => {
 			const result = await fetch('/api/vehicles');
 			return result.json();
 		},
+		enabled: status === 'authenticated',
 	});
+
+	if (status !== 'authenticated') return <Loading />;
 
 	if (isPending) return <Loading />;
 
