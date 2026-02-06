@@ -12,6 +12,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Vehicle } from '@prisma/client';
 import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
@@ -50,6 +51,12 @@ const formatDate = (date: Date | string): string => {
 const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 	const router = useRouter();
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const { status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/auth/signin');
+		},
+	});
 
 	const {
 		data: vehicle,
@@ -64,11 +71,14 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 			}
 			return result.json() as Promise<Vehicle>;
 		},
+		enabled: status === 'authenticated',
 	});
 
 	const handleDeleteSuccess = () => {
 		router.push('/vehicles');
 	};
+
+	if (status !== 'authenticated') return <Loading />;
 
 	if (isPending) return <Loading />;
 
