@@ -1,19 +1,21 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import prisma from '../../../../lib/prisma';
 import { buildVehicleStatistics } from '../../../../lib/statistics/aggregation';
-import { authOptions } from '../../auth/[...nextauth]';
+import { requireSessionUserId } from '../../_shared/auth';
+import type { ApiErrorEnvelope } from '../../_shared/errors';
+import { sendForbiddenAsNotFound } from '../../_shared/errors';
+import { ensureOwnedVehicle } from '../../_shared/ownership';
 import type { VehicleStatisticsResponse } from '../../../../types/statistics_types';
 
 const handleGet = async (
 	req: NextApiRequest,
-	res: NextApiResponse<VehicleStatisticsResponse | { error: string }>
+	res: NextApiResponse<
+		VehicleStatisticsResponse | ApiErrorEnvelope | { error: string }
+	>
 ) => {
-	const session = await getServerSession(req, res, authOptions);
-	if (!session) {
-		return res.status(401).json({ error: 'Unauthorized' });
-	}
+	const sessionUserId = await requireSessionUserId(req, res);
+	if (!sessionUserId) return;
 
 	const { id, year } = req.query;
 	if (!id || Array.isArray(id)) {
@@ -23,6 +25,11 @@ const handleGet = async (
 	const vehicleId = Number(id);
 	if (Number.isNaN(vehicleId)) {
 		return res.status(400).json({ error: 'Invalid vehicle id' });
+	}
+
+	const ownedVehicle = await ensureOwnedVehicle(vehicleId, sessionUserId);
+	if (!ownedVehicle) {
+		return sendForbiddenAsNotFound(res);
 	}
 
 	let requestedYear: number | undefined;
