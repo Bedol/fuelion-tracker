@@ -227,7 +227,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 - [x] 06-01-PLAN.md — Build shared auth/error/ownership guard helpers for protected API routes
 - [ ] 06-02-PLAN.md — Enforce ownership in vehicle and vehicle statistics endpoints
-- [ ] 06-03-PLAN.md — Enforce ownership in fueling endpoints and align mutation hook error parsing
+- [x] 06-03-PLAN.md — Enforce ownership in fueling endpoints and align mutation hook error parsing
 
 ---
 
