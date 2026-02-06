@@ -1,14 +1,13 @@
 import { Fueling, Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next/types';
-import { getServerSession } from 'next-auth/next';
 import prisma from '../../../lib/prisma';
-import { authOptions } from '../auth/[...nextauth]';
+import { requireSessionUserId } from '../_shared/auth';
+import { sendForbidden } from '../_shared/errors';
+import { ensureOwnedVehicle, getOwnedFuelingWhere } from '../_shared/ownership';
 
 const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
-	const session = await getServerSession(req, res, authOptions);
-	if (!session) {
-		return res.status(401).json({ error: 'Unauthorized' });
-	}
+	const userId = await requireSessionUserId(req, res);
+	if (!userId) return;
 
 	const { vehicleId, skip = '0', take = '20' } = req.query;
 	if (!vehicleId) {
@@ -16,7 +15,10 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	const fuelings = await prisma.fueling.findMany({
-		where: { vehicle_id: Number(vehicleId) },
+		where: {
+			vehicle_id: Number(vehicleId),
+			...getOwnedFuelingWhere(userId),
+		},
 		orderBy: { date: 'desc' },
 		skip: Number(skip),
 		take: Number(take),
@@ -26,10 +28,8 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
-	const session = await getServerSession(req, res, authOptions);
-	if (!session) {
-		return res.status(401).json({ error: 'Unauthorized' });
-	}
+	const userId = await requireSessionUserId(req, res);
+	if (!userId) return;
 
 	const data = req.body;
 
@@ -53,10 +53,35 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
 		hybrid: 5,
 	};
 
+	const vehicleId = Number(data.vehicle_id);
+	if (Number.isNaN(vehicleId)) {
+		return res.status(400).json({ error: 'Invalid vehicle_id' });
+	}
+
+	const ownedVehicle = await ensureOwnedVehicle(vehicleId, userId);
+	if (!ownedVehicle) {
+		return sendForbidden(
+			res,
+			'You do not have permission to create fuelings for this vehicle.'
+		);
+	}
+
+	const vehicle = await prisma.vehicle.findFirst({
+		where: { id: vehicleId, user_id: userId },
+		select: { mileage: true },
+	});
+
+	if (!vehicle) {
+		return sendForbidden(
+			res,
+			'You do not have permission to create fuelings for this vehicle.'
+		);
+	}
+
 	// Convert string values to numbers for Prisma
 	// Only include valid database fields - explicitly map each field
 	const fuelingData = {
-		vehicle_id: Number(data.vehicle_id),
+		vehicle_id: vehicleId,
 		cost: parseFloat(data.cost),
 		quantity: parseFloat(data.quantity),
 		mileage: parseFloat(data.mileage),
@@ -71,19 +96,23 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
 		full_tank: data.full_tank !== undefined ? data.full_tank : true,
 	};
 
-	const fueling = await prisma.fueling.create({
-		data: fuelingData,
-	});
+	let fueling;
+	if (vehicle.mileage < fuelingData.mileage) {
+		fueling = await prisma.$transaction(async (tx) => {
+			const createdFueling = await tx.fueling.create({
+				data: fuelingData,
+			});
 
-	// Update vehicle mileage if this fueling has higher mileage
-	const vehicle = await prisma.vehicle.findUnique({
-		where: { id: fuelingData.vehicle_id },
-	});
+			await tx.vehicle.update({
+				where: { id: fuelingData.vehicle_id },
+				data: { mileage: fuelingData.mileage },
+			});
 
-	if (vehicle && vehicle.mileage < fuelingData.mileage) {
-		await prisma.vehicle.update({
-			where: { id: fuelingData.vehicle_id },
-			data: { mileage: fuelingData.mileage },
+			return createdFueling;
+		});
+	} else {
+		fueling = await prisma.fueling.create({
+			data: fuelingData,
 		});
 	}
 
