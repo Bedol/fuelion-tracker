@@ -111,7 +111,7 @@ const handleGet = async (
 			},
 		},
 		orderBy: { date: 'desc' },
-		take: 8,
+		take: 5,
 	});
 
 	const recentActivity: DashboardActivityItem[] = recentFuelings.map(

@@ -19,7 +19,7 @@ const RecentActivityList: React.FC<RecentActivityListProps> = ({ items }) => {
 		);
 	}
 
-	const visibleItems = items.slice(0, 8);
+	const visibleItems = items.slice(0, 5);
 	const currencyFormatter = new Intl.NumberFormat('pl-PL', {
 		style: 'currency',
 		currency: 'PLN',
