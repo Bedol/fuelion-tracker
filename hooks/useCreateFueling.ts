@@ -63,6 +63,9 @@ export const useCreateFueling = () => {
 			queryClient.invalidateQueries({
 				queryKey: ['lastFueling', variables.vehicleId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ['dashboard'],
+			});
 		},
 		onError: (error: Error) => {
 			toaster.create({

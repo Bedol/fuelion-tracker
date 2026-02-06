@@ -62,6 +62,9 @@ export const useUpdateFueling = () => {
 			queryClient.invalidateQueries({
 				queryKey: ['fuelings', variables.vehicleId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ['dashboard'],
+			});
 		},
 		onError: (error: Error) => {
 			toaster.create({
