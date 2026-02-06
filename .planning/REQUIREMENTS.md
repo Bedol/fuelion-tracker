@@ -25,27 +25,27 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Fueling
 
-- [ ] **FUEL-01**: User can add fueling record (liters, total price, odometer, date)
-- [ ] **FUEL-02**: User can mark fueling as full tank or partial
-- [ ] **FUEL-03**: User can view list of fuelings for a vehicle
-- [ ] **FUEL-04**: User can edit existing fueling record
-- [ ] **FUEL-05**: User can delete fueling record (with confirmation)
-- [ ] **FUEL-06**: Price per liter is auto-calculated from total and liters
+- [x] **FUEL-01**: User can add fueling record (liters, total price, odometer, date)
+- [x] **FUEL-02**: User can mark fueling as full tank or partial
+- [x] **FUEL-03**: User can view list of fuelings for a vehicle
+- [x] **FUEL-04**: User can edit existing fueling record
+- [x] **FUEL-05**: User can delete fueling record (with confirmation)
+- [x] **FUEL-06**: Price per liter is auto-calculated from total and liters
 
 ### Statistics
 
-- [ ] **STAT-01**: User can view fuel consumption (L/100km) over time chart
-- [ ] **STAT-02**: User can view monthly fuel costs chart
-- [ ] **STAT-03**: User can view summary: total spent, average consumption, total distance
-- [ ] **STAT-04**: Consumption is calculated only from full-tank fuelings
+- [x] **STAT-01**: User can view fuel consumption (L/100km) over time chart
+- [x] **STAT-02**: User can view monthly fuel costs chart
+- [x] **STAT-03**: User can view summary: total spent, average consumption, total distance
+- [x] **STAT-04**: Consumption is calculated only from full-tank fuelings
 
 ### UI/UX
 
 - [x] **UIUX-01**: App has clear navigation between sections (vehicles, fuelings, stats)
 - [x] **UIUX-02**: Dashboard shows summary of user's vehicles and recent activity
-- [ ] **UIUX-03**: Forms are simple with minimal required fields
-- [ ] **UIUX-04**: Forms have smart defaults (current date, last odometer value)
-- [ ] **UIUX-05**: User receives feedback on actions (success/error toasts)
+- [x] **UIUX-03**: Forms are simple with minimal required fields
+- [x] **UIUX-04**: Forms have smart defaults (current date, last odometer value)
+- [x] **UIUX-05**: User receives feedback on actions (success/error toasts)
 - [x] **UIUX-06**: Loading and error states are clearly displayed
 
 ## v2 Requirements
@@ -106,27 +106,27 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-02     | 1     | Complete |
 | AUTH-03     | 1     | Complete |
 | AUTH-04     | 1     | Complete |
-| VEHI-01     | 2     | Pending  |
-| VEHI-02     | 2     | Pending  |
-| VEHI-03     | 2     | Pending  |
-| VEHI-04     | 2     | Pending  |
-| VEHI-05     | 2     | Pending  |
-| VEHI-06     | 2     | Pending  |
-| FUEL-01     | 3     | Pending  |
-| FUEL-02     | 3     | Pending  |
-| FUEL-03     | 3     | Pending  |
-| FUEL-04     | 3     | Pending  |
-| FUEL-05     | 3     | Pending  |
-| FUEL-06     | 3     | Pending  |
-| STAT-01     | 4     | Pending  |
-| STAT-02     | 4     | Pending  |
-| STAT-03     | 4     | Pending  |
-| STAT-04     | 4     | Pending  |
+| VEHI-01     | 2     | Complete |
+| VEHI-02     | 2     | Complete |
+| VEHI-03     | 2     | Complete |
+| VEHI-04     | 2     | Complete |
+| VEHI-05     | 2     | Complete |
+| VEHI-06     | 2     | Complete |
+| FUEL-01     | 3     | Complete |
+| FUEL-02     | 3     | Complete |
+| FUEL-03     | 3     | Complete |
+| FUEL-04     | 3     | Complete |
+| FUEL-05     | 3     | Complete |
+| FUEL-06     | 3     | Complete |
+| STAT-01     | 4     | Complete |
+| STAT-02     | 4     | Complete |
+| STAT-03     | 4     | Complete |
+| STAT-04     | 4     | Complete |
 | UIUX-01     | 1     | Complete |
 | UIUX-02     | 5     | Complete |
-| UIUX-03     | 3     | Pending  |
-| UIUX-04     | 3     | Pending  |
-| UIUX-05     | 3     | Pending  |
+| UIUX-03     | 3     | Complete |
+| UIUX-04     | 3     | Complete |
+| UIUX-05     | 3     | Complete |
 | UIUX-06     | 1     | Complete |
 
 **Coverage:**
@@ -138,4 +138,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 ---
 
 _Requirements defined: 2026-01-30_
-_Last updated: 2026-02-06 after phase 5 completion (traceability updated)_
+_Last updated: 2026-02-06 after phase 8 completion (traceability updated)_
