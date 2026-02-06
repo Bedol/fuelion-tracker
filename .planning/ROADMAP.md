@@ -179,6 +179,8 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Dependencies:** Phases 2, 3, 4 (needs vehicles, fuelings, and stats data)
 
+**Plans:** 3 plans
+
 **Requirements:**
 
 - UIUX-02: Dashboard shows summary of user's vehicles and recent activity
@@ -190,6 +192,12 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 3. Dashboard provides quick access to add fueling for any vehicle
 4. Dashboard loads quickly with meaningful loading states
 
+**Plans:**
+
+- [x] 05-01-PLAN.md — Build dashboard aggregation types and API endpoint
+- [ ] 05-02-PLAN.md — Create dashboard data hook and UI components
+- [ ] 05-03-PLAN.md — Implement dashboard page layout, loading, and copy
+
 **Notes:**
 
 - Dashboard is the landing page after sign-in
@@ -200,13 +208,13 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 ## Progress
 
-| Phase | Name                | Requirements | Status   |
-| ----- | ------------------- | ------------ | -------- |
-| 1     | Auth & App Shell    | 6            | Complete |
-| 2     | Vehicle Management  | 6            | Complete |
-| 3     | Fueling Records     | 9            | Complete |
-| 4     | Statistics & Charts | 4            | Complete |
-| 5     | Dashboard           | 1            | Pending  |
+| Phase | Name                | Requirements | Status      |
+| ----- | ------------------- | ------------ | ----------- |
+| 1     | Auth & App Shell    | 6            | Complete    |
+| 2     | Vehicle Management  | 6            | Complete    |
+| 3     | Fueling Records     | 9            | Complete    |
+| 4     | Statistics & Charts | 4            | Complete    |
+| 5     | Dashboard           | 1            | In progress |
 
 **Total:** 26 requirements across 5 phases (25 complete, 1 remaining)
 
@@ -225,4 +233,4 @@ All phases are sequential. Each depends on the previous.
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-02-03 (Phase 4 complete)_
+_Last updated: 2026-02-06 (Phase 5 in progress)_
