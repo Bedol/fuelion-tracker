@@ -12,7 +12,7 @@ export type ApiErrorEnvelope = {
 	};
 };
 
-type ApiErrorResponse = NextApiResponse<ApiErrorEnvelope>;
+export type ApiErrorResponse = NextApiResponse<ApiErrorEnvelope>;
 
 export const sendApiError = (
 	res: ApiErrorResponse,
