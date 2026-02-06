@@ -118,6 +118,13 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				<Button
 					colorPalette='blue'
 					variant='solid'
+					onClick={() => router.push(`/vehicles/${vehicleId}/statistics`)}
+				>
+					View statistics
+				</Button>
+				<Button
+					colorPalette='blue'
+					variant='outline'
 					onClick={() => router.push(`/vehicles/${vehicleId}/edit`)}
 				>
 					Edit Vehicle
