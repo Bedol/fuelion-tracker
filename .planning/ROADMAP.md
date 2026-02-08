@@ -333,7 +333,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Plans:**
 
-- [ ] 10-01-PLAN.md — Scope `/api/fueling/last` to session user
+- [x] 10-01-PLAN.md — Scope `/api/fueling/last` to session user
 - [ ] 10-02-PLAN.md — Verify non-owner access is blocked
 
 ---
@@ -375,7 +375,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 | 7     | Flow Wiring & Cache Consistency         | 0            | Complete (2026-02-06) |
 | 8     | Stats Window & DoD Verification Closure | 8            | Complete (2026-02-06) |
 | 9     | Vehicle Auth Protection                 | 1            | Complete (2026-02-06) |
-| 10    | Fueling Last Ownership Guard            | 0            | Planned               |
+| 10    | Fueling Last Ownership Guard            | 0            | In progress           |
 | 11    | Dashboard Navigation Link               | 0            | Planned               |
 
 **Total:** 26 requirements across 11 phases (26 satisfied, 0 partial)
