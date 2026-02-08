@@ -28,7 +28,7 @@ Overall: ██████████ 100% (39/39 plans)
 
 | Metric              | Value  |
 | ------------------- | ------ |
-| Plans completed     | 36     |
+| Plans completed     | 39     |
 | Plans failed        | 0      |
 | Avg completion time | 21 min |
 | Blockers resolved   | 16     |
