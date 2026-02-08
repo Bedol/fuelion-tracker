@@ -42,21 +42,6 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		return 0;
 	};
 
-	// Get smart defaults for create mode
-	const getSmartDefaults = (): Partial<FuelingFormValues> => {
-		const draft = loadDraft();
-		if (draft) {
-			return draft as FuelingFormValues;
-		}
-
-		return {
-			date: format(new Date(), 'yyyy-MM-dd'),
-			fuel_type: lastFueling?.fuel_type || vehicle.fuel_type || 'gasoline',
-			full_tank: true,
-			last_odometer: lastFueling?.mileage || vehicle.mileage,
-		};
-	};
-
 	// Memoize initial values to prevent infinite re-renders with enableReinitialize
 	// Load draft once on mount for create mode
 	const [mountDraft] = useState(() => {
@@ -98,7 +83,6 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 			last_odometer: lastFueling?.mileage || vehicle.mileage,
 		};
 		// Only recreate if these key values change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		mode,
 		initialData?.id,
@@ -226,7 +210,6 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 			saveDraft(formik.values);
 		}
 		// saveDraft is memoized with useMemo, so it's stable
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values, formik.dirty, mode]);
 
 	const isLoading = createMutation.isPending || updateMutation.isPending;

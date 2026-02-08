@@ -27,7 +27,6 @@ export const useUpdateFueling = () => {
 		mutationFn: async ({
 			id,
 			data,
-			vehicleId,
 		}: {
 			id: number;
 			data: FuelingFormValues;

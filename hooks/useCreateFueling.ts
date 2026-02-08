@@ -26,7 +26,6 @@ export const useCreateFueling = () => {
 	return useMutation({
 		mutationFn: async ({
 			data,
-			vehicleId,
 		}: {
 			data: FuelingFormValues;
 			vehicleId: number;

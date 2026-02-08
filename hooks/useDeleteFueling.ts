@@ -23,13 +23,7 @@ export const useDeleteFueling = () => {
 	};
 
 	return useMutation({
-		mutationFn: async ({
-			id,
-			vehicleId,
-		}: {
-			id: number;
-			vehicleId: number;
-		}) => {
+		mutationFn: async ({ id }: { id: number; vehicleId: number }) => {
 			const response = await fetch(`/api/fueling/${id}`, {
 				method: 'DELETE',
 			});

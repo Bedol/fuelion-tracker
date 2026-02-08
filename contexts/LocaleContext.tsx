@@ -8,7 +8,7 @@ import {
 
 export type Locale = 'pl' | 'en';
 
-type Dictionary = Record<string, any>;
+type Dictionary = Record<string, unknown>;
 
 type LocaleContextType = {
 	locale: Locale;
@@ -54,11 +54,11 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({ children }) => {
 	const t = (key: string): string => {
 		// Support nested keys using dot notation (e.g., "nav.vehicles")
 		const keys = key.split('.');
-		let value: any = dictionary;
+		let value: unknown = dictionary;
 
 		for (const k of keys) {
 			if (value && typeof value === 'object' && k in value) {
-				value = value[k];
+				value = (value as Record<string, unknown>)[k];
 			} else {
 				// Graceful degradation: return key if not found
 				return key;

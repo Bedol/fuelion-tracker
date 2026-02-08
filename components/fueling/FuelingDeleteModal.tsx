@@ -1,6 +1,5 @@
 import { Button, Dialog, Portal, Text } from '@chakra-ui/react';
 import { useDeleteFueling } from '../../hooks';
-import { toaster } from '../ui/toaster';
 
 interface FuelingDeleteModalProps {
 	isOpen: boolean;

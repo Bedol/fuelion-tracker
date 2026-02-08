@@ -1,8 +1,9 @@
-import { Fueling, Prisma } from '@prisma/client';
+import type { Fueling } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 import prisma from '../../../lib/prisma';
 import { requireSessionUserId } from '../_shared/auth';
 import { sendForbidden } from '../_shared/errors';
+import type { ApiErrorEnvelope } from '../_shared/errors';
 import { ensureOwnedVehicle, getOwnedFuelingWhere } from '../_shared/ownership';
 
 const handleGet = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -121,7 +122,7 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<Prisma.PrismaPromise<Fueling[]> | {}>
+	res: NextApiResponse<Fueling | Fueling[] | ApiErrorEnvelope>
 ) {
 	switch (req.method) {
 		case 'GET':
