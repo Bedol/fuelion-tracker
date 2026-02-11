@@ -357,8 +357,8 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 
 **Plans:**
 
-- [ ] 11-01-PLAN.md — Add dashboard/home link in navigation and stats page
-- [ ] 11-02-PLAN.md — Verify stats to dashboard path end-to-end
+- [x] 11-01-PLAN.md — Add dashboard/home link in navigation and stats page
+- [x] 11-02-PLAN.md — Verify stats to dashboard path end-to-end
 
 ---
 
@@ -376,7 +376,7 @@ Fuelion v1 delivers a complete vehicle expense tracking app for Polish users. Th
 | 8     | Stats Window & DoD Verification Closure | 8            | Complete (2026-02-06) |
 | 9     | Vehicle Auth Protection                 | 1            | Complete (2026-02-06) |
 | 10    | Fueling Last Ownership Guard            | 0            | Complete (2026-02-08) |
-| 11    | Dashboard Navigation Link               | 0            | Planned               |
+| 11    | Dashboard Navigation Link               | 0            | Complete (2026-02-11) |
 
 **Total:** 26 requirements across 11 phases (26 satisfied, 0 partial)
 
@@ -401,4 +401,4 @@ All phases are sequential. Gap-closure phases (6-11) finalize security, integrat
 ---
 
 _Roadmap created: 2026-01-30_
-_Last updated: 2026-02-08 (phase 10 verification complete)_
+_Last updated: 2026-02-11 (phase 11 complete)_
