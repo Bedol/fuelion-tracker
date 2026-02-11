@@ -1,9 +1,13 @@
 {
 	"nav": {
+		"dashboard": "Dashboard",
 		"vehicles": "Vehicles",
 		"statistics": "Statistics",
 		"signOut": "Sign Out",
 		"signIn": "Sign In"
+	},
+	"statistics": {
+		"goToDashboard": "Go to Dashboard"
 	},
 	"auth": {
 		"signInWithGoogle": "Sign in with Google",

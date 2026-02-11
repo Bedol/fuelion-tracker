@@ -55,7 +55,7 @@ const Navigation: React.FC = () => {
 									size='sm'
 								>
 									<FaHome />
-									Dashboard
+									{t('nav.dashboard')}
 								</Button>
 							</Link>
 
@@ -146,7 +146,7 @@ const Navigation: React.FC = () => {
 						>
 							<FaHome size={20} />
 							<Box fontSize='xs' mt='1'>
-								Dashboard
+								{t('nav.dashboard')}
 							</Box>
 						</Button>
 					</Link>

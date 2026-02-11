@@ -1,9 +1,13 @@
 {
 	"nav": {
+		"dashboard": "Pulpit",
 		"vehicles": "Pojazdy",
 		"statistics": "Statystyki",
 		"signOut": "Wyloguj",
 		"signIn": "Zaloguj"
+	},
+	"statistics": {
+		"goToDashboard": "Przejdź do pulpitu"
 	},
 	"auth": {
 		"signInWithGoogle": "Zaloguj przez Google",
