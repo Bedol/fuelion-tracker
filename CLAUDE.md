@@ -9,6 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### Core Development
+
 - `npm run dev` - Start development server at http://localhost:3000
 - `npm run build` - Build for production
 - `npm run start` - Start production server
@@ -16,6 +17,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run prettier` - Format code with Prettier
 
 ### Database Management
+
 - `npx prisma generate` - Generate Prisma client after schema changes
 - `npx prisma db push` - Push schema changes to database
 - `npx prisma migrate dev` - Create and apply new migration
@@ -23,6 +25,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `docker-compose up -d` - Start PostgreSQL and pgAdmin containers
 
 ### Testing and Quality
+
 - Code is automatically linted and formatted on commit via lint-staged
 - Always run `npm run lint` after making changes to ensure code quality
 - Use conventional commit messages (enforced by commitlint)
@@ -30,6 +33,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Architecture Overview
 
 ### Technology Stack
+
 - **Frontend**: Next.js 15 with React 19, TypeScript, Chakra UI, Tailwind CSS
 - **Backend**: Next.js API routes with NextAuth.js authentication
 - **Database**: PostgreSQL with Prisma ORM
@@ -39,7 +43,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Project Structure
 
 #### Database Schema (Prisma)
+
 Core entities with relationships:
+
 - **User** - Authentication and preferences (1:N with Vehicle)
 - **Vehicle** - Vehicle information (1:N with Fueling, Expense)
 - **Fueling** - Fuel purchase records with consumption data
@@ -47,6 +53,7 @@ Core entities with relationships:
 - **Account/Session** - NextAuth.js authentication tables
 
 #### Pages Structure (Next.js Pages Router)
+
 ```
 pages/
 ├── _app.tsx               # App wrapper with Chakra UI and auth providers
@@ -61,6 +68,7 @@ pages/
 ```
 
 #### Component Organization
+
 - **Layout.tsx** - Main app layout with header/sidebar
 - **components/vehicles/** - Vehicle-specific components
 - **components/fueling/** - Fuel tracking components
@@ -68,6 +76,7 @@ pages/
 - **components/Form/** - Reusable form components
 
 ### Key Configuration Files
+
 - **prisma/schema.prisma** - Database schema definition
 - **pages/api/auth/[...nextauth].ts** - Authentication configuration
 - **lib/prisma.ts** - Prisma client setup
@@ -76,24 +85,28 @@ pages/
 ## Development Patterns
 
 ### Database Operations
+
 - Use Prisma Client for all database operations
 - Always include proper error handling for database queries
 - Use transactions for multi-table operations
 - Follow cascade delete patterns defined in schema
 
 ### API Routes
+
 - Validate request methods (GET, POST, PUT, DELETE)
 - Use proper HTTP status codes
 - Include error handling and validation
 - Return consistent JSON response formats
 
 ### Component Development
+
 - Use Chakra UI components for consistency
 - Implement proper loading and error states
 - Use React Query for data fetching with caching
 - Follow existing form validation patterns with Formik
 
 ### Authentication
+
 - Check authentication status using NextAuth hooks
 - Protect API routes with session validation
 - Handle unauthorized access gracefully

@@ -30,7 +30,11 @@ const Navigation = () => {
 									</Button>
 								</NextLink>
 							) : (
-								<Button variant='solid' colorPalette='red' onClick={() => signOut()}>
+								<Button
+									variant='solid'
+									colorPalette='red'
+									onClick={() => signOut()}
+								>
 									Sign Out
 								</Button>
 							)}

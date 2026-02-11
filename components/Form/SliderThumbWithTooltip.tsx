@@ -22,13 +22,13 @@ export const SliderThumbWithTooltip: React.FC<SliderThumbWithTooltipProps> = ({
 				<Box>100%</Box>
 			</Box>
 			<Input
-				type="range"
+				type='range'
 				name={name}
 				value={value}
 				onChange={(e) => setValue(Number(e.target.value))}
 				min={0}
 				max={100}
-				width="100%"
+				width='100%'
 			/>
 		</Box>
 	);

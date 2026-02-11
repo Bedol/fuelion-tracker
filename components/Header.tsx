@@ -17,22 +17,22 @@ const Header: React.FC = () => {
 
 	return (
 		<Box
-			as="header"
-			bg="white"
-			borderBottom="1px"
-			borderBottomColor="gray.200"
+			as='header'
+			bg='white'
+			borderBottom='1px'
+			borderBottomColor='gray.200'
 			px={6}
 			py={4}
-			shadow="sm"
+			shadow='sm'
 		>
-			<Flex alignItems="center">
+			<Flex alignItems='center'>
 				{/* Logo and App Name */}
-				<Link href="/" style={{ textDecoration: 'none' }}>
-					<HStack gap={2} cursor="pointer">
-						<Box color="blue.500">
+				<Link href='/' style={{ textDecoration: 'none' }}>
+					<HStack gap={2} cursor='pointer'>
+						<Box color='blue.500'>
 							<FaGasPump size={24} />
 						</Box>
-						<Heading size="md" color="blue.600">
+						<Heading size='md' color='blue.600'>
 							Fuelion Tracker
 						</Heading>
 					</HStack>
@@ -45,13 +45,13 @@ const Header: React.FC = () => {
 					{/* User info and actions */}
 					{session ? (
 						<HStack gap={4}>
-							<Text fontSize="sm" fontWeight="medium">
+							<Text fontSize='sm' fontWeight='medium'>
 								Welcome, {session.user?.name || 'User'}!
 							</Text>
 							<Button
-								colorPalette="red"
-								variant="outline"
-								size="sm"
+								colorPalette='red'
+								variant='outline'
+								size='sm'
 								onClick={() => signOut()}
 							>
 								Sign Out
@@ -59,9 +59,9 @@ const Header: React.FC = () => {
 						</HStack>
 					) : (
 						<Button
-							colorPalette="blue"
-							variant="solid"
-							size="sm"
+							colorPalette='blue'
+							variant='solid'
+							size='sm'
 							onClick={() => signIn()}
 						>
 							Sign In

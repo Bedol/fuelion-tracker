@@ -15,17 +15,18 @@ affects: [08-04-verification, dashboard-summary]
 # Tech tracking
 tech-stack:
   added: []
-  patterns: ["Fallback distance uses positive mileage deltas when intervals missing"]
+  patterns:
+    ['Fallback distance uses positive mileage deltas when intervals missing']
 
 key-files:
   created: []
   modified: [lib/statistics/aggregation.ts]
 
 key-decisions:
-  - "None - followed plan as specified"
+  - 'None - followed plan as specified'
 
 patterns-established:
-  - "Dashboard summary uses interval distance when available, mileage deltas otherwise"
+  - 'Dashboard summary uses interval distance when available, mileage deltas otherwise'
 
 # Metrics
 duration: 0 min
@@ -45,6 +46,7 @@ completed: 2026-02-06
 - **Files modified:** 1
 
 ## Accomplishments
+
 - Added mileage-delta fallback for total distance in dashboard summaries
 - Kept average consumption derived only from full-to-full intervals
 - Preserved total spent as sum of all fueling costs
@@ -58,9 +60,11 @@ Each task was committed atomically:
 **Plan metadata:** (this commit)
 
 ## Files Created/Modified
+
 - `lib/statistics/aggregation.ts` - Added fallback mileage delta distance for all-time summary
 
 ## Decisions Made
+
 None - followed plan as specified.
 
 ## Deviations from Plan
@@ -68,14 +72,18 @@ None - followed plan as specified.
 None - plan executed exactly as written.
 
 ## Issues Encountered
+
 None.
 
 ## User Setup Required
+
 None - no external service configuration required.
 
 ## Next Phase Readiness
+
 Ready for 08-04-PLAN.md.
 
 ---
-*Phase: 08-stats-window-and-dod-verification-closure*
-*Completed: 2026-02-06*
+
+_Phase: 08-stats-window-and-dod-verification-closure_
+_Completed: 2026-02-06_

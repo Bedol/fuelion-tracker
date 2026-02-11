@@ -13,35 +13,41 @@ Verify that Phase 1 authentication and app shell work correctly through comprehe
 All Phase 1 requirements successfully validated:
 
 ### ✓ AUTH-01: Google OAuth Sign-In
+
 - Custom sign-in page displays with Fuelion branding
 - "Sign in with Google" button triggers OAuth flow
 - Successfully redirects back to home after authentication
 - User name displayed in welcome message
 
 ### ✓ AUTH-02: Session Persistence
+
 - Session persists across browser close/reopen
 - JWT cookie works correctly
 - No re-authentication required after browser restart
 
 ### ✓ AUTH-03 & AUTH-04: Sign Out and Route Protection
+
 - Avatar menu shows "Wyloguj" (Polish) / "Sign Out" (English)
 - Sign out redirects to sign-in page
 - Unauthenticated users accessing home are redirected to sign-in
 - Session properly cleared after sign-out
 
 ### ✓ UIUX-01: Responsive Navigation
+
 - **Desktop:** Top bar with Fuelion logo, "Pojazdy" & "Statystyki" buttons, language toggle, avatar menu
 - **Mobile (< 768px):** Bottom bar with icon-based navigation (car & chart icons)
 - Navigation adapts smoothly between breakpoints
 - Active page highlighting works
 
 ### ✓ Internationalization (i18n)
+
 - Language toggle switches between Polish (PL) and English (EN)
 - All interface text translates correctly (navigation, auth, welcome message)
 - Language preference persists in localStorage across page refreshes
 - Button displays current locale (PL/EN)
 
 ### ✓ UIUX-06: Loading & Error States
+
 - SkeletonLoader displays during index page session loading
 - Page skeleton prevents layout shift
 - Components built without TypeScript errors
