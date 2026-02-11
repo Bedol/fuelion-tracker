@@ -2,123 +2,94 @@
 
 ## What This Is
 
-Aplikacja webowa do śledzenia kosztów eksploatacji pojazdów. Użytkownicy mogą rejestrować tankowania, wydatki serwisowe, ubezpieczenia i inne opłaty związane z pojazdami. Aplikacja pokazuje statystyki i wykresy pomagające zrozumieć ile kosztuje utrzymanie auta.
+Aplikacja webowa do sledzenia kosztow eksploatacji pojazdow.
+Wersja v1.0 dostarcza komplet: logowanie Google, zarzadzanie pojazdami,
+tankowania, statystyki oraz dashboard z ostatnia aktywnoscia.
 
-Publiczna aplikacja — każdy może się zarejestrować przez Google OAuth.
+Publiczna aplikacja - kazdy moze sie zarejestrowac przez Google OAuth.
+
+## Current State
+
+- Shipped version: **v1.0 MVP** (2026-02-11)
+- Milestone coverage: **26/26 v1 requirements complete**
+- Delivery scope: **11 phases, 41 plans, 87 tasks**
+- Planning archives:
+  - `.planning/milestones/v1.0-ROADMAP.md`
+  - `.planning/milestones/v1.0-REQUIREMENTS.md`
+  - `.planning/milestones/v1.0-MILESTONE-AUDIT.md`
 
 ## Core Value
 
-**Szybkie dodawanie wpisów** — jeśli dodanie tankowania zajmuje więcej niż 30 sekund, użytkownik przestanie używać aplikacji.
+**Szybkie dodawanie wpisow** - jesli dodanie tankowania zajmuje wiecej niz
+30 sekund, uzytkownik przestanie uzywac aplikacji.
 
 ## Requirements
 
 ### Validated
 
-<!-- Inferred from existing codebase -->
+- ✓ AUTH-01..AUTH-04 - pelny przeplyw autoryzacji i redirectow (v1.0)
+- ✓ VEHI-01..VEHI-06 - pelny CRUD pojazdow i widok szczegolow (v1.0)
+- ✓ FUEL-01..FUEL-06 - pelny CRUD tankowan + smart defaults (v1.0)
+- ✓ STAT-01..STAT-04 - statystyki spalania, kosztow i podsumowan (v1.0)
+- ✓ UIUX-01..UIUX-06 - nawigacja, dashboard, feedback i stany ladowania (v1.0)
 
-- ✓ Autoryzacja Google OAuth — existing (NextAuth configured)
-- ✓ Podstawowa struktura Next.js Pages Router — existing
-- ✓ Połączenie z bazą PostgreSQL przez Prisma — existing
-- ✓ Schema dla Vehicle i Fueling — existing
+### Active (next milestone candidates)
 
-### Active
+- [ ] PHOT-01/PHOT-02 - dodawanie i wyswietlanie zdjec pojazdu
+- [ ] EXPN-01..EXPN-04 - wydatki serwisowe, ubezpieczenia i inne oplaty
+- [ ] ADVS-01/ADVS-02/ADVS-03 - zaawansowane statystyki i eksport CSV
+- [ ] RESP-01/RESP-02 - dopracowanie mobile UX i touch controls
+- [ ] SMRT-01..SMRT-03 - bardziej inteligentne domyslne wartosci i przypomnienia
 
-<!-- Current scope. Building toward these. -->
+### Out of Scope (still valid)
 
-**Pojazdy:**
+- Wiele walut - tylko PLN
+- Jednostki imperialne - tylko metryczne (km, litry)
+- API publiczne - tylko wewnetrzne API
+- GPS tracking / OBD-II / OCR paragonow - zbyt duza zlozonosc na obecny etap
 
-- [ ] Tworzenie pojazdu z danymi podstawowymi (marka, model, rok, rejestracja)
-- [ ] Tworzenie pojazdu z danymi technicznymi (pojemność, moc, typ paliwa)
-- [ ] Dodawanie zdjęcia pojazdu
-- [ ] Lista pojazdów użytkownika
-- [ ] Edycja i usuwanie pojazdu
+## Next Milestone Goals
 
-**Wydatki — Tankowania:**
-
-- [ ] Dodawanie tankowania (ilość, cena, przebieg, data)
-- [ ] Lista tankowań dla pojazdu
-- [ ] Edycja i usuwanie tankowania
-
-**Wydatki — Serwis/naprawy:**
-
-- [ ] Dodawanie wydatku serwisowego (typ, koszt, przebieg, data, opis)
-- [ ] Lista wydatków serwisowych
-- [ ] Edycja i usuwanie
-
-**Wydatki — Ubezpieczenia:**
-
-- [ ] Dodawanie ubezpieczenia (typ, koszt, okres ważności)
-- [ ] Lista ubezpieczeń
-- [ ] Przypomnienie o wygasającym ubezpieczeniu (v2?)
-
-**Wydatki — Inne opłaty:**
-
-- [ ] Dodawanie innych opłat (przegląd, parking, myjnia, opłaty drogowe)
-- [ ] Lista innych opłat
-
-**Statystyki i wykresy:**
-
-- [ ] Wykres przebiegu miesięcznego
-- [ ] Wykres kosztów tankowania i trendu cen paliwa
-- [ ] Wykres zużycia paliwa (L/100km w czasie)
-- [ ] Podsumowanie wszystkich kosztów per pojazd/miesiąc
-
-**UI/UX:**
-
-- [ ] Czytelna nawigacja między sekcjami
-- [ ] Dashboard z podsumowaniem
-- [ ] Proste, szybkie formularze
-- [ ] Responsywność (mobile-first)
-
-### Out of Scope
-
-- Wiele walut — tylko PLN, upraszcza implementację
-- Jednostki imperialne — tylko metryczne (km, litry)
-- Eksport danych — może w przyszłości
-- Powiadomienia push — zbyt skomplikowane na start
-- Notatki tekstowe przy pojazdach — zdjęcie wystarczy
-- API publiczne — tylko wewnętrzne API
+1. Zdefiniowac nowy zakres biznesowy (`/gsd-new-milestone`).
+2. Ustalic nowe `.planning/REQUIREMENTS.md` pod kolejna wersje.
+3. Przeanalizowac tech debt z audytu v1.0 i zdecydowac co wlaczyc do v1.1.
 
 ## Context
 
-**Stan istniejącego kodu:**
+**Stan kodu po v1.0:**
 
-- Next.js 16.1.4 (Pages Router), TypeScript 5.9, React 19
-- Chakra UI 3.x + Tailwind CSS 4.x (oba używane)
-- TanStack React Query 5.x, Formik 2.x
-- Prisma 7.x z PostgreSQL
-- NextAuth 4.x z Google OAuth (skonfigurowane)
-- Podstawowa struktura API dla vehicles i fueling istnieje
-- Brak testów
+- Next.js 16.1.4 (Pages Router), TypeScript, React 19
+- Chakra UI 3.x + Tailwind CSS 4.x
+- TanStack Query + Formik
+- Prisma + PostgreSQL
+- NextAuth (Google OAuth)
+- Brak frameworka testowego (manual verification artifacts used)
 
-**Podejście:**
+**Known non-blocking debt after v1.0:**
 
-- Zachowujemy setup (Next.js, Prisma, Auth)
-- Logikę biznesową i UI budujemy od nowa
-- Priorytet: UX dodawania wpisów musi być szybki i prosty
-
-**Użytkownicy:**
-
-- Typowy użytkownik: 3-5 pojazdów
-- Publiczna aplikacja (każdy może się zarejestrować)
+- Ujednolicenie error envelope API
+- Dodatkowe invalidation dla `['lastFueling', vehicleId]`
+- Finalny runtime matrix (2 konta) dla ownership edge cases
+- Cleanup legacy pustych katalogow faz
 
 ## Constraints
 
-- **Waluta**: Tylko PLN — uproszczenie v1
-- **Jednostki**: Tylko metryczne (km, litry) — docelowy rynek: Polska
-- **Stack**: Zachowujemy istniejący (Next.js, Chakra, Prisma, NextAuth)
-- **Auth**: Tylko Google OAuth — bez email/password
-- **Hosting**: Vercel-compatible (domyślny setup Next.js)
+- **Waluta**: Tylko PLN
+- **Jednostki**: Tylko metryczne (km, litry)
+- **Stack**: Next.js + Chakra + Prisma + NextAuth
+- **Auth**: Tylko Google OAuth
+- **Hosting**: Vercel-compatible
 
 ## Key Decisions
 
-| Decision                   | Rationale                             | Outcome   |
-| -------------------------- | ------------------------------------- | --------- |
-| Tylko Google OAuth         | Prostsze, bezpieczniejsze, mniej kodu | — Pending |
-| Chakra UI + Tailwind razem | Już skonfigurowane, działające        | — Pending |
-| Brak testów w v1           | Szybszy development, mała skala       | — Pending |
-| PLN jako jedyna waluta     | Docelowy rynek: Polska                | — Pending |
+| Decision                      | Rationale                                             | Outcome          |
+| ----------------------------- | ----------------------------------------------------- | ---------------- |
+| Google OAuth only             | Prostota i mniejsza powierzchnia bezpieczenstwa       | ✓ Good (v1.0)    |
+| Chakra UI + Tailwind razem    | Szybsza iteracja UI w istniejacym stacku              | ✓ Good (v1.0)    |
+| Fueling UX priorytetem        | Core value oparty o czas wpisu do 30 sekund           | ✓ Good (v1.0)    |
+| Gap-closure phases 6-11       | Bezpieczne domkniecie audytow bez destabilizacji core | ✓ Good (v1.0)    |
+| Manual verification artifacts | Brak test harnessu, potrzeba dowodow runtime          | ⚠ Revisit (v1.1) |
 
 ---
 
-_Last updated: 2026-01-30 after initialization_
+_Last updated: 2026-02-11 after v1.0 milestone completion_
