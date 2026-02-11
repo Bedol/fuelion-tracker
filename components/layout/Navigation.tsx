@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Flex, Heading, Button, HStack } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/react';
 import { Menu } from '@chakra-ui/react';
-import { FaCar, FaChartBar } from 'react-icons/fa';
+import { FaCar, FaChartBar, FaHome } from 'react-icons/fa';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useLocale } from '../../contexts/LocaleContext';
@@ -41,11 +41,24 @@ const Navigation: React.FC = () => {
 				>
 					{/* Left side: Logo + Nav Links */}
 					<HStack gap='6'>
-						<Heading size='md' color='blue.600'>
-							Fuelion
-						</Heading>
+						<Link href='/'>
+							<Heading size='md' color='blue.600' cursor='pointer'>
+								Fuelion
+							</Heading>
+						</Link>
 
 						<HStack gap='2'>
+							<Link href='/'>
+								<Button
+									variant={isActive('/') ? 'solid' : 'ghost'}
+									colorPalette={isActive('/') ? 'blue' : 'gray'}
+									size='sm'
+								>
+									<FaHome />
+									Dashboard
+								</Button>
+							</Link>
+
 							<Link href='/vehicles'>
 								<Button
 									variant={isActive('/vehicles') ? 'solid' : 'ghost'}
@@ -122,6 +135,22 @@ const Navigation: React.FC = () => {
 				display={{ base: 'block', md: 'none' }}
 			>
 				<Flex justify='space-around' py='3'>
+					{/* Dashboard Button */}
+					<Link href='/'>
+						<Button
+							variant={isActive('/') ? 'solid' : 'ghost'}
+							colorPalette={isActive('/') ? 'blue' : 'gray'}
+							flexDirection='column'
+							height='auto'
+							py='2'
+						>
+							<FaHome size={20} />
+							<Box fontSize='xs' mt='1'>
+								Dashboard
+							</Box>
+						</Button>
+					</Link>
+
 					{/* Vehicles Button */}
 					<Link href='/vehicles'>
 						<Button
