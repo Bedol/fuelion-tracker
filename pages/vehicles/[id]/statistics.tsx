@@ -1,21 +1,25 @@
 import { Box, Button, Heading, Stack, Text, chakra } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { Vehicle } from '@prisma/client';
 import { useState } from 'react';
+import { FaHome } from 'react-icons/fa';
 import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../components/Loading';
 import {
 	ChartsSection,
 	StatisticsSummary,
 } from '../../../components/statistics';
+import { useLocale } from '../../../contexts/LocaleContext';
 import { useVehicleStatistics } from '../../../hooks/useVehicleStatistics';
 
 const VehicleStatisticsPage: React.FC = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const { status } = useSession({ required: true });
+	const { t } = useLocale();
 
 	const vehicleId = id ? Number(id) : undefined;
 	const [selectedYear, setSelectedYear] = useState<number | null>(null);
@@ -86,6 +90,13 @@ const VehicleStatisticsPage: React.FC = () => {
 			</Stack>
 
 			<Stack direction='row' mb='6' gap='4'>
+				<Link href='/'>
+					<Button variant='outline'>
+						<FaHome />
+						{t('statistics.goToDashboard')}
+					</Button>
+				</Link>
+
 				<Button colorPalette='blue' onClick={handleAddFueling} cursor='pointer'>
 					Add Fueling
 				</Button>
