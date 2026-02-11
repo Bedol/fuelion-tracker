@@ -8,34 +8,40 @@ import {
 	HStack,
 	Separator,
 } from '@chakra-ui/react';
-import { 
-	FaHome, 
-	FaCar, 
-	FaGasPump, 
-	FaMoneyBillWave, 
-	FaChartLine, 
+import type { IconType } from 'react-icons';
+import {
+	FaHome,
+	FaCar,
+	FaGasPump,
+	FaMoneyBillWave,
+	FaChartLine,
 	FaPlus,
-	FaCog 
+	FaCog,
 } from 'react-icons/fa';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 interface NavItemProps {
-	icon: any;
+	icon: IconType;
 	children: React.ReactNode;
 	href: string;
 	isActive?: boolean;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ icon, children, href, isActive }) => {
+const NavItem: React.FC<NavItemProps> = ({
+	icon,
+	children,
+	href,
+	isActive,
+}) => {
 	return (
 		<Link href={href} style={{ textDecoration: 'none', width: '100%' }}>
 			<Button
 				variant={isActive ? 'solid' : 'ghost'}
-				colorScheme={isActive ? 'blue' : 'gray'}
-				justifyContent="flex-start"
-				w="100%"
-				size="sm"
+				colorPalette={isActive ? 'blue' : 'gray'}
+				justifyContent='flex-start'
+				w='100%'
+				size='sm'
 				py={2}
 			>
 				<HStack gap={2}>
@@ -49,7 +55,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, children, href, isActive }) => 
 
 const Sidebar: React.FC = () => {
 	const router = useRouter();
-	
+
 	const navItems = [
 		{ icon: FaHome, label: 'Dashboard', href: '/' },
 		{ icon: FaCar, label: 'My Vehicles', href: '/vehicles' },
@@ -66,22 +72,22 @@ const Sidebar: React.FC = () => {
 
 	return (
 		<Box
-			as="aside"
-			w="280px"
-			h="calc(100vh - 73px)"
-			bg="gray.50"
-			borderRight="1px"
-			borderRightColor="gray.200"
+			as='aside'
+			w='280px'
+			h='calc(100vh - 73px)'
+			bg='gray.50'
+			borderRight='1px'
+			borderRightColor='gray.200'
 			p={4}
-			overflowY="auto"
+			overflowY='auto'
 		>
-			<VStack gap={4} align="stretch">
+			<VStack gap={4} align='stretch'>
 				{/* Main Navigation */}
 				<Box>
-					<Text fontSize="xs" fontWeight="bold" color="gray.500" mb={2} px={2}>
+					<Text fontSize='xs' fontWeight='bold' color='gray.500' mb={2} px={2}>
 						NAVIGATION
 					</Text>
-					<VStack gap={1} align="stretch">
+					<VStack gap={1} align='stretch'>
 						{navItems.map((item) => (
 							<NavItem
 								key={item.href}
@@ -99,10 +105,10 @@ const Sidebar: React.FC = () => {
 
 				{/* Quick Actions */}
 				<Box>
-					<Text fontSize="xs" fontWeight="bold" color="gray.500" mb={2} px={2}>
+					<Text fontSize='xs' fontWeight='bold' color='gray.500' mb={2} px={2}>
 						QUICK ACTIONS
 					</Text>
-					<VStack gap={1} align="stretch">
+					<VStack gap={1} align='stretch'>
 						{quickActions.map((item) => (
 							<NavItem
 								key={item.href}
@@ -122,7 +128,7 @@ const Sidebar: React.FC = () => {
 				<Box>
 					<NavItem
 						icon={FaCog}
-						href="/profiles"
+						href='/profiles'
 						isActive={router.pathname === '/profiles'}
 					>
 						Settings
@@ -131,17 +137,17 @@ const Sidebar: React.FC = () => {
 
 				{/* Fuel Tracking Tips */}
 				<Box
-					bg="blue.50"
+					bg='blue.50'
 					p={3}
-					borderRadius="md"
-					border="1px"
-					borderColor="blue.200"
+					borderRadius='md'
+					border='1px'
+					borderColor='blue.200'
 					mt={4}
 				>
-					<Text fontSize="xs" fontWeight="bold" color="blue.800" mb={1}>
+					<Text fontSize='xs' fontWeight='bold' color='blue.800' mb={1}>
 						💡 Tip
 					</Text>
-					<Text fontSize="xs" color="blue.700">
+					<Text fontSize='xs' color='blue.700'>
 						Track every fill-up to get accurate fuel consumption analytics!
 					</Text>
 				</Box>

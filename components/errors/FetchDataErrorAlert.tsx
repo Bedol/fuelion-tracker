@@ -1,12 +1,13 @@
-import { Alert, AlertIcon, Center } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
+import { Alert } from '@chakra-ui/react';
 
 const FetchDataErrorAlert = ({ errorMessage }) => {
 	return (
 		<Center>
-			<Alert status='error'>
-				<AlertIcon />
-				{errorMessage}
-			</Alert>
+			<Alert.Root status='error'>
+				<Alert.Indicator />
+				<Alert.Title>{errorMessage}</Alert.Title>
+			</Alert.Root>
 		</Center>
 	);
 };

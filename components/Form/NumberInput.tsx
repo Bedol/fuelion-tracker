@@ -1,30 +1,31 @@
 import {
-	FormControl,
-	FormLabel,
-	NumberDecrementStepper,
-	NumberIncrementStepper,
-	NumberInput as ChakraNumberInput,
-	NumberInputField,
-	NumberInputProps as ChakraNumberInputProps,
-	NumberInputStepper,
+	NumberInputRoot,
+	NumberInputInput,
+	NumberInputRootProps,
+	Box,
 } from '@chakra-ui/react';
 
-export interface NumberInputProps extends ChakraNumberInputProps {
+export interface NumberInputProps extends NumberInputRootProps {
 	name: string;
 	label: string;
+	isRequired?: boolean;
 }
 
-export const NumberInput = (props: NumberInputProps): JSX.Element => {
+export const NumberInput = (props: NumberInputProps) => {
+	const { name, label, isRequired, ...rest } = props;
 	return (
-		<FormControl id={props.name} isRequired={props.isRequired} mb='2'>
-			<FormLabel htmlFor={props.name}>{props.label}</FormLabel>
-			<ChakraNumberInput {...props}>
-				<NumberInputField id={props.name} name={props.name} />
-				<NumberInputStepper>
-					<NumberIncrementStepper />
-					<NumberDecrementStepper />
-				</NumberInputStepper>
-			</ChakraNumberInput>
-		</FormControl>
+		<Box mb='2'>
+			<Box as='label' fontWeight='medium' fontSize='sm' display='block' mb='1'>
+				{label}
+				{isRequired && (
+					<Box as='span' color='red.500' ml='1'>
+						*
+					</Box>
+				)}
+			</Box>
+			<NumberInputRoot {...rest} name={name}>
+				<NumberInputInput />
+			</NumberInputRoot>
+		</Box>
 	);
 };

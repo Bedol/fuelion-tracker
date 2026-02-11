@@ -1,0 +1,42 @@
+{
+	"nav": {
+		"dashboard": "Pulpit",
+		"vehicles": "Pojazdy",
+		"statistics": "Statystyki",
+		"signOut": "Wyloguj",
+		"signIn": "Zaloguj"
+	},
+	"statistics": {
+		"goToDashboard": "Przejdź do pulpitu"
+	},
+	"auth": {
+		"signInWithGoogle": "Zaloguj przez Google",
+		"welcome": "Witaj w Fuelion"
+	},
+	"errors": {
+		"generic": "Wystąpił błąd",
+		"tryAgain": "Spróbuj ponownie",
+		"showDetails": "Pokaż szczegóły",
+		"hideDetails": "Ukryj szczegóły"
+	},
+	"loading": {
+		"pleaseWait": "Proszę czekać..."
+	},
+	"dashboard": {
+		"title": "Twoje podsumowanie",
+		"subtitle": "Szybki podgląd pojazdów i ostatnich tankowań.",
+		"vehiclesTitle": "Pojazdy",
+		"activityTitle": "Ostatnia aktywność",
+		"totalSpent": "Suma wydatków",
+		"averageConsumption": "Średnie spalanie",
+		"totalDistance": "Łączny dystans",
+		"lastFueling": "Ostatnie tankowanie",
+		"viewVehicle": "Zobacz pojazd",
+		"quickAdd": "Szybkie tankowanie",
+		"emptyVehiclesTitle": "Brak pojazdów",
+		"emptyVehiclesDescription": "Dodaj pierwszy pojazd, aby zacząć śledzić koszty.",
+		"emptyVehiclesCta": "Dodaj pojazd",
+		"emptyActivityTitle": "Brak aktywności",
+		"emptyActivityDescription": "Dodaj tankowanie, aby zobaczyć je tutaj."
+	}
+}

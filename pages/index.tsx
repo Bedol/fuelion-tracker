@@ -1,210 +1,152 @@
-import React from 'react';
 import {
 	Box,
-	Heading,
-	Text,
-	Grid,
-	GridItem,
-	Stat,
-	StatLabel,
-	StatNumber,
-	StatHelpText,
 	Button,
-	VStack,
-	HStack,
-	Icon,
+	CardBody,
+	CardRoot,
+	Heading,
+	SimpleGrid,
+	Spinner,
+	Stack,
+	Text,
 } from '@chakra-ui/react';
-import {
-	FaCar,
-	FaGasPump,
-	FaMoneyBillWave,
-	FaChartLine,
-	FaPlus,
-} from 'react-icons/fa';
-import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-
-const StatCard = ({ title, value, helpText, icon, color = 'blue' }) => (
-	<Box
-		p={6}
-		bg="white"
-		borderRadius="lg"
-		border="1px"
-		borderColor="gray.200"
-		shadow="sm"
-	>
-		<HStack justify="space-between" mb={4}>
-			<Box>
-				<Text fontSize="sm" color="gray.600" mb={1}>
-					{title}
-				</Text>
-				<Text fontSize="2xl" fontWeight="bold">
-					{value}
-				</Text>
-				{helpText && (
-					<Text fontSize="sm" color="gray.500">
-						{helpText}
-					</Text>
-				)}
-			</Box>
-			<Box color={`${color}.500`}>
-				<Icon as={icon} boxSize={8} />
-			</Box>
-		</HStack>
-	</Box>
-);
-
-const QuickActionCard = ({ title, description, href, icon, color = 'blue' }) => (
-	<Link href={href} style={{ textDecoration: 'none' }}>
-		<Box
-			p={6}
-			bg="white"
-			borderRadius="lg"
-			border="1px"
-			borderColor="gray.200"
-			shadow="sm"
-			cursor="pointer"
-			transition="all 0.2s"
-			_hover={{
-				shadow: 'md',
-				borderColor: `${color}.300`,
-				transform: 'translateY(-2px)',
-			}}
-		>
-			<VStack spacing={4} align="center">
-				<Box color={`${color}.500`}>
-					<Icon as={icon} boxSize={12} />
-				</Box>
-				<Box textAlign="center">
-					<Text fontWeight="bold" mb={2}>
-						{title}
-					</Text>
-					<Text fontSize="sm" color="gray.600">
-						{description}
-					</Text>
-				</Box>
-			</VStack>
-		</Box>
-	</Link>
-);
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
+import DashboardSkeleton from '../components/dashboard/DashboardSkeleton';
+import RecentActivityList from '../components/dashboard/RecentActivityList';
+import VehicleSummaryCard from '../components/dashboard/VehicleSummaryCard';
+import FetchDataErrorAlert from '../components/errors/FetchDataErrorAlert';
+import { toaster } from '../components/ui/toaster';
+import { useDashboardData } from '../hooks/useDashboardData';
+import { useLocale } from '../contexts/LocaleContext';
 
 const HomePage = () => {
-	const { data: session } = useSession();
+	const router = useRouter();
+	const { status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/auth/signin');
+		},
+	});
+	const { t } = useLocale();
+	const { data, isPending, isError, isFetching } = useDashboardData();
+	const refreshErrorShown = useRef(false);
 
-	if (!session) {
-		return (
-			<Box textAlign="center" py={20}>
-				<VStack spacing={6}>
-					<Icon as={FaGasPump} boxSize={16} color="blue.500" />
-					<Heading size="lg">Welcome to Fuelion Tracker</Heading>
-					<Text color="gray.600" maxW="md">
-						Track your vehicle's fuel consumption, maintenance costs, and get
-						insights into your driving patterns. Please sign in to get started.
-					</Text>
-					<Button colorScheme="blue" size="lg">
-						Get Started
-					</Button>
-				</VStack>
-			</Box>
-		);
+	useEffect(() => {
+		if (isError && data && !refreshErrorShown.current) {
+			toaster.create({
+				title: 'Failed to refresh dashboard',
+				type: 'error',
+			});
+			refreshErrorShown.current = true;
+		}
+
+		if (!isError) {
+			refreshErrorShown.current = false;
+		}
+	}, [data, isError]);
+
+	if (status === 'loading' || isPending) {
+		return <DashboardSkeleton />;
 	}
 
+	if (isError && !data) {
+		return <FetchDataErrorAlert errorMessage={t('errors.generic')} />;
+	}
+
+	if (!data) {
+		return <DashboardSkeleton />;
+	}
+
+	const { vehicles, recentActivity } = data;
+	const hasVehicles = vehicles.length > 0;
+	const hasActivity = recentActivity.length > 0;
+
 	return (
-		<Box>
-			{/* Welcome Section */}
-			<Box mb={8}>
-				<Heading size="lg" mb={2}>
-					Welcome back, {session.user?.name}! 👋
-				</Heading>
-				<Text color="gray.600">
-					Here's your fuel tracking overview and quick actions.
-				</Text>
-			</Box>
+		<Box
+			maxW='1200px'
+			mx='auto'
+			px={{ base: '4', md: '6' }}
+			py={{ base: '6', md: '8' }}
+		>
+			<Stack gap={{ base: '6', md: '8' }}>
+				<Stack gap='2'>
+					<Stack direction='row' align='center' gap='3'>
+						<Heading size='xl'>{t('dashboard.title')}</Heading>
+						{isFetching && data && <Spinner size='sm' color='gray.500' />}
+					</Stack>
+					<Text color='gray.600'>{t('dashboard.subtitle')}</Text>
+				</Stack>
 
-			{/* Stats Grid */}
-			<Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={6} mb={8}>
-				<StatCard
-					title="Total Vehicles"
-					value="3"
-					helpText="Active vehicles"
-					icon={FaCar}
-					color="blue"
-				/>
-				<StatCard
-					title="This Month's Fuel"
-					value="€245.80"
-					helpText="12 fill-ups"
-					icon={FaGasPump}
-					color="green"
-				/>
-				<StatCard
-					title="Average Consumption"
-					value="7.2 L/100km"
-					helpText="Last 30 days"
-					icon={FaChartLine}
-					color="orange"
-				/>
-				<StatCard
-					title="Total Expenses"
-					value="€1,240.50"
-					helpText="This year"
-					icon={FaMoneyBillWave}
-					color="red"
-				/>
-			</Grid>
+				<Stack gap={{ base: '6', md: '8' }}>
+					<CardRoot variant='outline' order={{ base: 1, lg: 2 }}>
+						<CardBody>
+							<Stack gap='4'>
+								<Heading size='md'>{t('dashboard.activityTitle')}</Heading>
+								{hasActivity ? (
+									<RecentActivityList items={recentActivity} />
+								) : (
+									<Box textAlign='center' py='10'>
+										<Text fontSize='4xl' mb='4'>
+											🧾
+										</Text>
+										<Heading size='md' mb='2'>
+											{t('dashboard.emptyActivityTitle')}
+										</Heading>
+										<Text color='gray.500'>
+											{t('dashboard.emptyActivityDescription')}
+										</Text>
+									</Box>
+								)}
+							</Stack>
+						</CardBody>
+					</CardRoot>
 
-			{/* Quick Actions */}
-			<Box mb={8}>
-				<Heading size="md" mb={4}>
-					Quick Actions
-				</Heading>
-				<Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap={4}>
-					<QuickActionCard
-						title="Add Vehicle"
-						description="Register a new vehicle to start tracking"
-						href="/vehicles/new"
-						icon={FaCar}
-						color="blue"
-					/>
-					<QuickActionCard
-						title="Record Fueling"
-						description="Log your latest fuel purchase"
-						href="/vehicles"
-						icon={FaGasPump}
-						color="green"
-					/>
-					<QuickActionCard
-						title="Add Expense"
-						description="Track maintenance and other costs"
-						href="/expenses/new"
-						icon={FaMoneyBillWave}
-						color="orange"
-					/>
-				</Grid>
-			</Box>
-
-			{/* Recent Activity Placeholder */}
-			<Box>
-				<Heading size="md" mb={4}>
-					Recent Activity
-				</Heading>
-				<Box
-					p={8}
-					bg="gray.50"
-					borderRadius="lg"
-					border="2px dashed"
-					borderColor="gray.300"
-					textAlign="center"
-				>
-					<Icon as={FaChartLine} boxSize={12} color="gray.400" mb={4} />
-					<Text color="gray.500" mb={2}>
-						No recent activity yet
-					</Text>
-					<Text fontSize="sm" color="gray.400">
-						Start by adding a vehicle and recording your first fuel purchase
-					</Text>
-				</Box>
-			</Box>
+					<CardRoot variant='outline' order={{ base: 2, lg: 1 }}>
+						<CardBody>
+							<Stack gap='4'>
+								<Heading size='md'>{t('dashboard.vehiclesTitle')}</Heading>
+								{hasVehicles ? (
+									<SimpleGrid columns={{ base: 1, lg: 2 }} gap='4'>
+										{vehicles.map((vehicle) => (
+											<VehicleSummaryCard
+												key={vehicle.id}
+												vehicle={vehicle}
+												labels={{
+													totalSpent: t('dashboard.totalSpent'),
+													averageConsumption: t('dashboard.averageConsumption'),
+													totalDistance: t('dashboard.totalDistance'),
+													lastFueling: t('dashboard.lastFueling'),
+													viewVehicle: t('dashboard.viewVehicle'),
+													quickAdd: t('dashboard.quickAdd'),
+												}}
+											/>
+										))}
+									</SimpleGrid>
+								) : (
+									<Box textAlign='center' py='10'>
+										<Text fontSize='4xl' mb='4'>
+											🚗
+										</Text>
+										<Heading size='md' mb='2'>
+											{t('dashboard.emptyVehiclesTitle')}
+										</Heading>
+										<Text color='gray.500' mb='6'>
+											{t('dashboard.emptyVehiclesDescription')}
+										</Text>
+										<NextLink href='/vehicles/new' passHref legacyBehavior>
+											<Button as='a' colorPalette='blue'>
+												{t('dashboard.emptyVehiclesCta')}
+											</Button>
+										</NextLink>
+									</Box>
+								)}
+							</Stack>
+						</CardBody>
+					</CardRoot>
+				</Stack>
+			</Stack>
 		</Box>
 	);
 };
