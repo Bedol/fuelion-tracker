@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Heading, Button, HStack } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button, HStack, Badge } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/react';
 import { Menu } from '@chakra-ui/react';
 import { useSession, signOut } from 'next-auth/react';
@@ -32,12 +32,15 @@ const Navigation: React.FC = () => {
 				align='center'
 			>
 				{/* Left side: Logo */}
-				<HStack>
+				<HStack gap='2'>
 					<Link href='/'>
 						<Heading size='md' color='blue.600' cursor='pointer'>
 							Fuelion
 						</Heading>
 					</Link>
+					<Badge colorPalette='orange' variant='subtle' fontSize='xs'>
+						Alpha
+					</Badge>
 				</HStack>
 
 				{/* Right side: Language Toggle + User Menu */}

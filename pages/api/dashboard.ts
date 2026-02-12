@@ -31,7 +31,7 @@ const handleGet = async (
 			fuel_type: true,
 			currency: true,
 		},
-		orderBy: [{ brand_name: 'asc' }, { model_name: 'asc' }],
+		orderBy: [{ updated_at: 'desc' }, { created_at: 'desc' }, { id: 'desc' }],
 	});
 
 	if (vehicles.length === 0) {
@@ -107,6 +107,7 @@ const handleGet = async (
 					brand_name: true,
 					model_name: true,
 					registration_number: true,
+					currency: true,
 				},
 			},
 		},
@@ -119,6 +120,7 @@ const handleGet = async (
 			vehicleId: fueling.vehicle_id,
 			vehicleLabel: `${fueling.vehicle.brand_name} ${fueling.vehicle.model_name}`,
 			registrationNumber: fueling.vehicle.registration_number,
+			currency: fueling.vehicle.currency,
 			date: fueling.date ? fueling.date.toISOString() : null,
 			cost: fueling.cost,
 			quantity: fueling.quantity,

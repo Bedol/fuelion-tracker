@@ -1,7 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useFormik } from 'formik';
-import { Box, Button, ButtonGroup, Input, Text } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	ButtonGroup,
+	CardBody,
+	CardRoot,
+	createListCollection,
+	Input,
+	Select,
+	Stack,
+	Text,
+} from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { useLocale } from '../../contexts/LocaleContext';
 import {
 	useFuelingDraft,
 	useLastFuelingData,
@@ -9,6 +21,7 @@ import {
 	useUpdateFueling,
 } from '../../hooks';
 import { FuelingData, FuelingFormValues, VehicleData } from '../../types';
+import { fuelTypes } from '../../types/vehicle_types';
 
 interface FuelingFormProps {
 	vehicle: VehicleData;
@@ -23,12 +36,13 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 	mode,
 	onSubmitSuccess,
 }) => {
+	const { locale, t } = useLocale();
 	const createMutation = useCreateFueling();
 	const updateMutation = useUpdateFueling();
 	const { loadDraft, saveDraft, clearDraft } = useFuelingDraft(vehicle.id);
 	const { data: lastFueling } = useLastFuelingData(vehicle.id);
+	const localeCode = locale === 'pl' ? 'pl-PL' : 'en-US';
 
-	// Calculate cost_per_unit from cost and quantity
 	const calculateCostPerUnit = (
 		cost: string | number,
 		quantity: string | number
@@ -42,8 +56,6 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		return 0;
 	};
 
-	// Memoize initial values to prevent infinite re-renders with enableReinitialize
-	// Load draft once on mount for create mode
 	const [mountDraft] = useState(() => {
 		if (mode === 'create') {
 			return loadDraft();
@@ -58,7 +70,7 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 				quantity: initialData.quantity.toString(),
 				cost_per_unit: initialData.cost_per_unit,
 				mileage: initialData.mileage.toString(),
-				date: initialData.date,
+				date: format(new Date(initialData.date), 'yyyy-MM-dd'),
 				full_tank: initialData.full_tank,
 				fuel_type: initialData.fuel_type,
 				vehicle_id: vehicle.id,
@@ -66,7 +78,6 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 			};
 		}
 
-		// In create mode, use draft if available, otherwise smart defaults
 		if (mountDraft) {
 			return mountDraft as FuelingFormValues;
 		}
@@ -82,24 +93,24 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 			vehicle_id: vehicle.id,
 			last_odometer: lastFueling?.mileage || vehicle.mileage,
 		};
-		// Only recreate if these key values change
 	}, [
 		mode,
 		initialData?.id,
+		initialData?.date,
 		vehicle.id,
 		vehicle.fuel_type,
 		vehicle.mileage,
+		lastFueling?.fuel_type,
 		lastFueling?.mileage,
 	]);
 
-	// Validation function
 	const validate = (values: FuelingFormValues) => {
 		const errors: Partial<Record<keyof FuelingFormValues, string>> = {};
 
 		const costNum =
 			typeof values.cost === 'string' ? parseFloat(values.cost) : values.cost;
 		if (!values.cost || costNum <= 0) {
-			errors.cost = 'Total cost must be greater than 0';
+			errors.cost = t('fuelings.form.validation.costGreaterThanZero');
 		}
 
 		const quantityNum =
@@ -107,7 +118,7 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 				? parseFloat(values.quantity)
 				: values.quantity;
 		if (!values.quantity || quantityNum <= 0) {
-			errors.quantity = 'Quantity must be greater than 0';
+			errors.quantity = t('fuelings.form.validation.quantityGreaterThanZero');
 		}
 
 		const mileageNum =
@@ -115,21 +126,23 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 				? parseFloat(values.mileage)
 				: values.mileage;
 		if (!values.mileage || mileageNum <= 0) {
-			errors.mileage = 'Odometer reading must be greater than 0';
+			errors.mileage = t('fuelings.form.validation.mileageGreaterThanZero');
 		}
 
-		// Only validate against last odometer in CREATE mode
-		// In EDIT mode, user might be editing an older record with lower mileage
 		if (
 			mode === 'create' &&
 			values.last_odometer &&
 			mileageNum <= values.last_odometer
 		) {
-			errors.mileage = `Odometer must be greater than last reading (${values.last_odometer})`;
+			errors.mileage = `${t('fuelings.form.validation.mileageAboveLastPrefix')} (${values.last_odometer.toLocaleString(localeCode)})`;
+		}
+
+		if (!values.fuel_type || !values.fuel_type.trim()) {
+			errors.fuel_type = t('fuelings.form.validation.fuelTypeRequired');
 		}
 
 		if (!values.date) {
-			errors.date = 'Date is required';
+			errors.date = t('fuelings.form.validation.dateRequired');
 		}
 
 		return errors;
@@ -188,7 +201,6 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		},
 	});
 
-	// Handle cost change with live calculation
 	const handleCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		formik.setFieldValue('cost', value);
@@ -196,7 +208,6 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		formik.setFieldValue('cost_per_unit', newCostPerUnit);
 	};
 
-	// Handle quantity change with live calculation
 	const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		formik.setFieldValue('quantity', value);
@@ -204,257 +215,337 @@ const FuelingForm: React.FC<FuelingFormProps> = ({
 		formik.setFieldValue('cost_per_unit', newCostPerUnit);
 	};
 
-	// Auto-save draft in create mode
 	useEffect(() => {
 		if (mode === 'create' && formik.dirty) {
 			saveDraft(formik.values);
 		}
-		// saveDraft is memoized with useMemo, so it's stable
-	}, [formik.values, formik.dirty, mode]);
+	}, [formik.dirty, formik.values, mode, saveDraft]);
 
 	const isLoading = createMutation.isPending || updateMutation.isPending;
+	const hasCostError = Boolean(formik.touched.cost && formik.errors.cost);
+	const hasQuantityError = Boolean(
+		formik.touched.quantity && formik.errors.quantity
+	);
+	const hasMileageError = Boolean(
+		formik.touched.mileage && formik.errors.mileage
+	);
+	const hasDateError = Boolean(formik.touched.date && formik.errors.date);
+	const hasFuelTypeError = Boolean(
+		formik.touched.fuel_type && formik.errors.fuel_type
+	);
+	const hasLastOdometer =
+		typeof formik.values.last_odometer === 'number' &&
+		formik.values.last_odometer > 0;
+
+	const fuelTypeCollection = createListCollection({
+		items: fuelTypes.map((option) => ({
+			label: t(`vehicles.fuelTypes.${option.value}`),
+			value: option.value,
+		})),
+	});
+
+	const handleTankTypeSelect = (fullTank: boolean) => {
+		formik.setFieldValue('full_tank', fullTank);
+	};
 
 	return (
-		<Box maxW='600px'>
-			<form onSubmit={formik.handleSubmit}>
-				{/* Total Price Paid */}
-				<Box mb='4'>
-					<label
-						style={{
-							display: 'block',
-							marginBottom: '0.5rem',
-							fontSize: '0.875rem',
-							fontWeight: '500',
-						}}
-					>
-						Total Price Paid *
-					</label>
-					<Input
-						name='cost'
-						type='number'
-						step='0.01'
-						min='0'
-						value={formik.values.cost}
-						onChange={handleCostChange}
-						onBlur={formik.handleBlur}
-						placeholder='0.00'
-						borderColor={
-							formik.errors.cost && formik.touched.cost ? 'red.500' : undefined
-						}
-					/>
-					{formik.errors.cost && formik.touched.cost && (
-						<Text color='red.500' fontSize='sm' mt='1'>
-							{formik.errors.cost}
+		<CardRoot variant='outline' w='full'>
+			<CardBody>
+				<form onSubmit={formik.handleSubmit}>
+					<Box mb='6'>
+						<Text fontSize='lg' fontWeight='semibold' mb='4'>
+							{t('fuelings.form.sections.fuelingDetails')}
 						</Text>
-					)}
-				</Box>
 
-				{/* Liters */}
-				<Box mb='4'>
-					<label
-						style={{
-							display: 'block',
-							marginBottom: '0.5rem',
-							fontSize: '0.875rem',
-							fontWeight: '500',
-						}}
-					>
-						Liters *
-					</label>
-					<Input
-						name='quantity'
-						type='number'
-						step='0.01'
-						min='0'
-						value={formik.values.quantity}
-						onChange={handleQuantityChange}
-						onBlur={formik.handleBlur}
-						placeholder='0.00'
-						borderColor={
-							formik.errors.quantity && formik.touched.quantity
-								? 'red.500'
-								: undefined
-						}
-					/>
-					{formik.errors.quantity && formik.touched.quantity && (
-						<Text color='red.500' fontSize='sm' mt='1'>
-							{formik.errors.quantity}
+						<Stack direction={{ base: 'column', md: 'row' }} gap='4' mb='4'>
+							<Box flex='1'>
+								<Box
+									as='label'
+									fontSize='sm'
+									fontWeight='medium'
+									mb='2'
+									display='block'
+								>
+									{t('fuelings.form.fields.totalCost')} *
+								</Box>
+								<Input
+									name='cost'
+									id='cost'
+									type='number'
+									step='0.01'
+									min='0'
+									value={formik.values.cost}
+									onChange={handleCostChange}
+									onBlur={formik.handleBlur}
+									placeholder='0.00'
+									borderColor={hasCostError ? 'red.500' : undefined}
+									aria-invalid={hasCostError || undefined}
+									required
+								/>
+								{hasCostError && (
+									<Text color='red.500' fontSize='xs' mt='1'>
+										{formik.errors.cost}
+									</Text>
+								)}
+							</Box>
+
+							<Box flex='1'>
+								<Box
+									as='label'
+									fontSize='sm'
+									fontWeight='medium'
+									mb='2'
+									display='block'
+								>
+									{t('fuelings.form.fields.quantity')} *
+								</Box>
+								<Input
+									name='quantity'
+									id='quantity'
+									type='number'
+									step='0.01'
+									min='0'
+									value={formik.values.quantity}
+									onChange={handleQuantityChange}
+									onBlur={formik.handleBlur}
+									placeholder='0.00'
+									borderColor={hasQuantityError ? 'red.500' : undefined}
+									aria-invalid={hasQuantityError || undefined}
+									required
+								/>
+								{hasQuantityError && (
+									<Text color='red.500' fontSize='xs' mt='1'>
+										{formik.errors.quantity}
+									</Text>
+								)}
+							</Box>
+						</Stack>
+
+						<Box mb='4'>
+							<Box
+								as='label'
+								fontSize='sm'
+								fontWeight='medium'
+								mb='2'
+								display='block'
+							>
+								{t('fuelings.form.fields.costPerUnit')}
+							</Box>
+							<Input
+								name='cost_per_unit'
+								id='cost_per_unit'
+								type='number'
+								step='0.001'
+								value={formik.values.cost_per_unit.toFixed(3)}
+								readOnly
+								bg='gray.50'
+							/>
+							<Text fontSize='xs' color='gray.500' mt='1'>
+								{vehicle.currency}/L • {t('fuelings.form.hints.autoCalculated')}
+							</Text>
+						</Box>
+
+						<Box>
+							<Box
+								as='label'
+								fontSize='sm'
+								fontWeight='medium'
+								mb='2'
+								display='block'
+							>
+								{t('fuelings.form.fields.fuelType')} *
+							</Box>
+							{/* @ts-ignore */}
+							<Select.Root
+								collection={fuelTypeCollection}
+								value={formik.values.fuel_type ? [formik.values.fuel_type] : []}
+								onValueChange={(details) => {
+									formik.setFieldValue('fuel_type', details.value[0] || '');
+									formik.setFieldTouched('fuel_type', true, true);
+								}}
+								positioning={{
+									placement: 'bottom-start',
+									flip: false,
+									sameWidth: true,
+								}}
+							>
+								{/* @ts-ignore */}
+								<Select.HiddenSelect name='fuel_type' id='fuel_type' />
+								{/* @ts-ignore */}
+								<Select.Control>
+									{/* @ts-ignore */}
+									<Select.Trigger
+										borderColor={hasFuelTypeError ? 'red.500' : undefined}
+										aria-invalid={hasFuelTypeError || undefined}
+										_focusVisible={
+											hasFuelTypeError ? { borderColor: 'red.500' } : undefined
+										}
+									>
+										{/* @ts-ignore */}
+										<Select.ValueText />
+										{/* @ts-ignore */}
+										<Select.IndicatorGroup>
+											{/* @ts-ignore */}
+											<Select.Indicator />
+										</Select.IndicatorGroup>
+									</Select.Trigger>
+								</Select.Control>
+								{/* @ts-ignore */}
+								<Select.Positioner>
+									{/* @ts-ignore */}
+									<Select.Content>
+										{fuelTypeCollection.items.map((item) => (
+											/* @ts-ignore */
+											<Select.Item key={item.value} item={item}>
+												{/* @ts-ignore */}
+												<Select.ItemText>{item.label}</Select.ItemText>
+											</Select.Item>
+										))}
+									</Select.Content>
+								</Select.Positioner>
+							</Select.Root>
+							{hasFuelTypeError && (
+								<Text color='red.500' fontSize='xs' mt='1'>
+									{formik.errors.fuel_type}
+								</Text>
+							)}
+						</Box>
+					</Box>
+
+					<Box mb='6'>
+						<Text fontSize='lg' fontWeight='semibold' mb='4'>
+							{t('fuelings.form.sections.tripDetails')}
 						</Text>
-					)}
-				</Box>
 
-				{/* Price per Liter (read-only) */}
-				<Box mb='4'>
-					<label
-						style={{
-							display: 'block',
-							marginBottom: '0.5rem',
-							fontSize: '0.875rem',
-							fontWeight: '500',
-						}}
-					>
-						Price per Liter
-					</label>
-					<Input
-						name='cost_per_unit'
-						type='number'
-						step='0.001'
-						value={formik.values.cost_per_unit.toFixed(3)}
-						readOnly
-						bg='gray.50'
-					/>
-					<Text fontSize='sm' color='gray.500' mt='1'>
-						{vehicle.currency}/L (auto-calculated)
-					</Text>
-				</Box>
+						<Stack direction={{ base: 'column', md: 'row' }} gap='4' mb='4'>
+							<Box flex='1'>
+								<Box
+									as='label'
+									fontSize='sm'
+									fontWeight='medium'
+									mb='2'
+									display='block'
+								>
+									{t('fuelings.form.fields.mileage')} *
+								</Box>
+								<Input
+									name='mileage'
+									id='mileage'
+									type='number'
+									step='1'
+									min='0'
+									value={formik.values.mileage}
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									placeholder={
+										hasLastOdometer
+											? formik.values.last_odometer?.toString()
+											: ''
+									}
+									borderColor={hasMileageError ? 'red.500' : undefined}
+									aria-invalid={hasMileageError || undefined}
+									required
+								/>
+								{hasMileageError && (
+									<Text color='red.500' fontSize='xs' mt='1'>
+										{formik.errors.mileage}
+									</Text>
+								)}
+								{hasLastOdometer && (
+									<Text fontSize='xs' color='gray.500' mt='1'>
+										{t('fuelings.form.hints.lastRecorded')}{' '}
+										{formik.values.last_odometer.toLocaleString(localeCode)}{' '}
+										{vehicle.mileage_unit}
+									</Text>
+								)}
+							</Box>
 
-				{/* Full Tank Toggle */}
-				<Box mb='4'>
-					<label
-						style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-					>
-						<input
-							type='checkbox'
-							name='full_tank'
-							checked={formik.values.full_tank}
-							onChange={(e) =>
-								formik.setFieldValue('full_tank', e.target.checked)
+							<Box flex='1'>
+								<Box
+									as='label'
+									fontSize='sm'
+									fontWeight='medium'
+									mb='2'
+									display='block'
+								>
+									{t('fuelings.form.fields.date')} *
+								</Box>
+								<Input
+									name='date'
+									id='date'
+									type='date'
+									value={formik.values.date}
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									borderColor={hasDateError ? 'red.500' : undefined}
+									aria-invalid={hasDateError || undefined}
+									required
+								/>
+								{hasDateError && (
+									<Text color='red.500' fontSize='xs' mt='1'>
+										{formik.errors.date}
+									</Text>
+								)}
+							</Box>
+						</Stack>
+
+						<Box>
+							<Text fontSize='sm' fontWeight='medium' mb='2'>
+								{t('fuelings.form.fields.tankType')}
+							</Text>
+							<ButtonGroup size='sm' variant='outline' mb='2'>
+								<Button
+									type='button'
+									variant={formik.values.full_tank ? 'solid' : 'outline'}
+									colorPalette='blue'
+									onClick={() => handleTankTypeSelect(true)}
+								>
+									{t('fuelings.form.tankType.full')}
+								</Button>
+								<Button
+									type='button'
+									variant={formik.values.full_tank ? 'outline' : 'solid'}
+									colorPalette='blue'
+									onClick={() => handleTankTypeSelect(false)}
+								>
+									{t('fuelings.form.tankType.partial')}
+								</Button>
+							</ButtonGroup>
+							<Text fontSize='xs' color='gray.500'>
+								{formik.values.full_tank
+									? t('fuelings.form.hints.fullTankSelected')
+									: t('fuelings.form.hints.partialTankSelected')}
+							</Text>
+						</Box>
+					</Box>
+
+					<ButtonGroup mt='4' gap='3'>
+						<Button
+							type='submit'
+							colorPalette='blue'
+							loading={isLoading}
+							loadingText={
+								mode === 'create'
+									? t('fuelings.form.actions.adding')
+									: t('fuelings.form.actions.saving')
 							}
-							style={{ marginRight: '0.5rem', cursor: 'pointer' }}
-						/>
-						<span style={{ fontSize: '0.875rem' }}>
-							Full Tank:{' '}
-							{formik.values.full_tank
-								? 'Yes - Full tank fill'
-								: 'No - Partial fill'}
-						</span>
-					</label>
-				</Box>
-
-				{/* Odometer */}
-				<Box mb='4'>
-					<label
-						style={{
-							display: 'block',
-							marginBottom: '0.5rem',
-							fontSize: '0.875rem',
-							fontWeight: '500',
-						}}
-					>
-						Odometer Reading *
-					</label>
-					<Input
-						name='mileage'
-						type='number'
-						step='1'
-						min='0'
-						value={formik.values.mileage}
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						placeholder={formik.values.last_odometer?.toString()}
-						borderColor={
-							formik.errors.mileage && formik.touched.mileage
-								? 'red.500'
-								: undefined
-						}
-					/>
-					{formik.errors.mileage && formik.touched.mileage && (
-						<Text color='red.500' fontSize='sm' mt='1'>
-							{formik.errors.mileage}
-						</Text>
-					)}
-					{formik.values.last_odometer && (
-						<Text fontSize='sm' color='gray.500' mt='1'>
-							Last recorded: {formik.values.last_odometer.toLocaleString()}{' '}
-							{vehicle.mileage_unit}
-						</Text>
-					)}
-				</Box>
-
-				{/* Date */}
-				<Box mb='4'>
-					<label
-						style={{
-							display: 'block',
-							marginBottom: '0.5rem',
-							fontSize: '0.875rem',
-							fontWeight: '500',
-						}}
-					>
-						Date *
-					</label>
-					<Input
-						name='date'
-						type='date'
-						value={formik.values.date}
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						borderColor={
-							formik.errors.date && formik.touched.date ? 'red.500' : undefined
-						}
-					/>
-					{formik.errors.date && formik.touched.date && (
-						<Text color='red.500' fontSize='sm' mt='1'>
-							{formik.errors.date}
-						</Text>
-					)}
-				</Box>
-
-				{/* Fuel Type */}
-				<Box mb='4'>
-					<label
-						style={{
-							display: 'block',
-							marginBottom: '0.5rem',
-							fontSize: '0.875rem',
-							fontWeight: '500',
-						}}
-					>
-						Fuel Type *
-					</label>
-					<select
-						name='fuel_type'
-						value={formik.values.fuel_type}
-						onChange={formik.handleChange}
-						style={{
-							width: '100%',
-							padding: '0.5rem',
-							borderWidth: '1px',
-							borderRadius: '0.375rem',
-							fontSize: '1rem',
-						}}
-					>
-						<option value='gasoline'>Gasoline</option>
-						<option value='diesel'>Diesel</option>
-						<option value='lpg'>LPG</option>
-						<option value='electric'>Electric</option>
-						<option value='hybrid'>Hybrid</option>
-					</select>
-				</Box>
-
-				{/* Submit Buttons */}
-				<ButtonGroup mt='6' gap='3'>
-					<Button
-						type='submit'
-						colorPalette='blue'
-						loading={isLoading}
-						loadingText={mode === 'create' ? 'Adding...' : 'Saving...'}
-						cursor='pointer'
-					>
-						{mode === 'create' ? 'Add Fueling' : 'Save Changes'}
-					</Button>
-					<Button
-						type='button'
-						variant='outline'
-						onClick={onSubmitSuccess}
-						disabled={isLoading}
-						cursor='pointer'
-					>
-						Cancel
-					</Button>
-				</ButtonGroup>
-			</form>
-		</Box>
+						>
+							{mode === 'create'
+								? t('fuelings.form.actions.addFueling')
+								: t('fuelings.form.actions.saveChanges')}
+						</Button>
+						<Button
+							type='button'
+							variant='outline'
+							onClick={onSubmitSuccess}
+							disabled={isLoading}
+						>
+							{t('fuelings.form.actions.cancel')}
+						</Button>
+					</ButtonGroup>
+				</form>
+			</CardBody>
+		</CardRoot>
 	);
 };
 

@@ -25,18 +25,276 @@
 	"dashboard": {
 		"title": "Your dashboard",
 		"subtitle": "Quick overview of vehicles and recent fuelings.",
+		"refreshFailed": "Failed to refresh dashboard",
 		"vehiclesTitle": "Vehicles",
 		"activityTitle": "Recent activity",
+		"fuelTypeLabel": "Fuel type",
+		"noRegistration": "No registration",
 		"totalSpent": "Total spent",
 		"averageConsumption": "Average consumption",
 		"totalDistance": "Total distance",
 		"lastFueling": "Last fueling",
 		"viewVehicle": "View vehicle",
 		"quickAdd": "Quick add",
+		"loadMoreVehicles": "Show 2 more vehicles",
+		"viewAllVehicles": "Vehicle list",
 		"emptyVehiclesTitle": "No vehicles yet",
 		"emptyVehiclesDescription": "Add your first vehicle to start tracking costs.",
 		"emptyVehiclesCta": "Add vehicle",
 		"emptyActivityTitle": "No activity yet",
 		"emptyActivityDescription": "Add a fueling to see it here."
+	},
+	"vehicles": {
+		"last10Fuelings": "Last 10 Fuelings",
+		"list": {
+			"subtitle": "Manage your vehicles and quickly jump to details.",
+			"yourGarage": "Your garage",
+			"countLabel": "vehicles"
+		},
+		"detail": {
+			"errors": {
+				"loadVehicleDetails": "Failed to load vehicle details.",
+				"loadRecentFuelings": "Failed to load recent fueling records."
+			},
+			"actions": {
+				"viewStatistics": "View statistics",
+				"editVehicle": "Edit Vehicle",
+				"deleteVehicle": "Delete Vehicle",
+				"addFueling": "Add Fueling",
+				"viewAllFuelings": "View All Fuelings"
+			},
+			"sections": {
+				"basicInformation": "Basic Information",
+				"technicalSpecifications": "Technical Specifications",
+				"vehicleStatus": "Vehicle Status"
+			},
+			"fields": {
+				"brand": "Brand",
+				"model": "Model",
+				"productionYear": "Production Year",
+				"fuelType": "Fuel Type",
+				"registration": "Registration",
+				"engineCapacity": "Engine Capacity",
+				"enginePower": "Engine Power",
+				"transmission": "Transmission",
+				"currentMileage": "Current Mileage",
+				"currency": "Currency",
+				"addedOn": "Added On",
+				"lastUpdated": "Last Updated"
+			},
+			"values": {
+				"notRegistered": "Not registered",
+				"manual": "Manual",
+				"automatic": "Automatic"
+			},
+			"messages": {
+				"loadingRecentFuelings": "Loading recent fuelings...",
+				"emptyRecentFuelings": "No fueling records yet. Add your first fueling to start tracking."
+			}
+		},
+		"fuelTypes": {
+			"gasoline": "Gasoline",
+			"diesel": "Diesel",
+			"lpg": "LPG",
+			"electric": "Electric",
+			"hybrid": "Hybrid"
+		},
+		"form": {
+			"titles": {
+				"addNewVehicle": "Add New Vehicle",
+				"editVehicle": "Edit Vehicle"
+			},
+			"sections": {
+				"basicInformation": "Basic Information",
+				"technicalSpecifications": "Technical Specifications"
+			},
+			"fields": {
+				"brand": "Brand",
+				"model": "Model",
+				"productionYear": "Production Year",
+				"fuelType": "Fuel Type",
+				"registrationNumberOptional": "Registration Number (optional)",
+				"engineCapacityOptional": "Engine Capacity (cc, optional)",
+				"enginePowerOptional": "Engine Power (optional)",
+				"powerUnitOptional": "Power Unit (optional)",
+				"transmissionOptional": "Transmission (optional)"
+			},
+			"placeholders": {
+				"brandExample": "e.g., Toyota",
+				"modelExample": "e.g., Corolla",
+				"registrationExample": "e.g., ABC 1234",
+				"engineCapacityExample": "e.g., 2000",
+				"enginePowerExample": "e.g., 150",
+				"selectUnit": "Select unit...",
+				"selectTransmission": "Select transmission..."
+			},
+			"technicalToggle": {
+				"show": "+ Add technical data",
+				"hide": "- Hide technical data"
+			},
+			"options": {
+				"powerUnitHp": "Horsepower (HP)",
+				"powerUnitKw": "Kilowatts (kW)"
+			},
+			"actions": {
+				"createVehicle": "Create Vehicle",
+				"saveChanges": "Save Changes",
+				"cancel": "Cancel",
+				"submitting": "Submitting"
+			},
+			"errors": {
+				"generic": "An error occurred.",
+				"loadVehicleData": "An error occurred while fetching vehicle data.",
+				"userNotAuthenticated": "User not authenticated",
+				"createFailed": "Failed to create vehicle",
+				"updateFailed": "Failed to update vehicle"
+			},
+			"validation": {
+				"brandRequired": "Brand is required",
+				"modelRequired": "Model is required",
+				"fuelTypeRequired": "Fuel type is required",
+				"productionYearRequired": "Production year is required",
+				"productionYearInvalid": "Production year must be a valid number",
+				"productionYearRange": "Production year must be between 1900 and next year",
+				"engineCapacityInvalid": "Engine capacity must be a positive whole number",
+				"enginePowerInvalid": "Engine power must be a positive whole number"
+			},
+			"toasts": {
+				"createSuccess": "Vehicle created successfully",
+				"updateSuccess": "Vehicle updated successfully",
+				"createError": "Failed to create vehicle",
+				"updateError": "Failed to update vehicle"
+			}
+		},
+		"deleteModal": {
+			"title": "Delete Vehicle?",
+			"confirmPrefix": "Are you sure you want to delete",
+			"warning": "This vehicle and all its fueling records will be permanently deleted. This action cannot be undone.",
+			"cancel": "Cancel",
+			"confirm": "Delete Vehicle",
+			"deleting": "Deleting...",
+			"errors": {
+				"deleteFailed": "Failed to delete vehicle"
+			},
+			"toasts": {
+				"successTitle": "Vehicle deleted successfully",
+				"successDescriptionSuffix": "has been removed.",
+				"errorTitle": "Failed to delete vehicle",
+				"errorDescription": "Please try again later."
+			}
+		}
+	},
+	"fuelings": {
+		"errors": {
+			"loadVehicleDetails": "Failed to load vehicle details.",
+			"loadFuelings": "Failed to load fuelings"
+		},
+		"actions": {
+			"addFueling": "Add Fueling",
+			"addFirstFueling": "Add First Fueling",
+			"backToVehicle": "Back to Vehicle",
+			"editFueling": "Edit fueling",
+			"deleteFueling": "Delete fueling"
+		},
+		"form": {
+			"titles": {
+				"addFueling": "Add Fueling",
+				"editFueling": "Edit Fueling"
+			},
+			"sections": {
+				"fuelingDetails": "Fueling details",
+				"tripDetails": "Trip details"
+			},
+			"fields": {
+				"totalCost": "Total cost",
+				"quantity": "Fuel quantity (L)",
+				"costPerUnit": "Price per liter",
+				"fuelType": "Fuel type",
+				"mileage": "Odometer",
+				"date": "Date",
+				"tankType": "Tank type"
+			},
+			"tankType": {
+				"full": "Full tank",
+				"partial": "Partial tank"
+			},
+			"hints": {
+				"autoCalculated": "calculated automatically",
+				"lastRecorded": "Last recorded:",
+				"fullTankSelected": "Full tank fueling - used in fuel consumption statistics.",
+				"partialTankSelected": "Partial fueling - useful for tracking expenses."
+			},
+			"validation": {
+				"costGreaterThanZero": "Total cost must be greater than 0",
+				"quantityGreaterThanZero": "Fuel quantity must be greater than 0",
+				"mileageGreaterThanZero": "Odometer reading must be greater than 0",
+				"mileageAboveLastPrefix": "Odometer must be greater than last reading",
+				"dateRequired": "Date is required",
+				"fuelTypeRequired": "Fuel type is required"
+			},
+			"actions": {
+				"addFueling": "Add Fueling",
+				"saveChanges": "Save Changes",
+				"cancel": "Cancel",
+				"adding": "Adding...",
+				"saving": "Saving..."
+			}
+		},
+		"list": {
+			"title": "Fueling History",
+			"recordsLabel": "records",
+			"emptyTitle": "No fuelings yet",
+			"emptyDescription": "Start tracking your fuel expenses by adding your first fueling record.",
+			"loadingMore": "Loading more...",
+			"scrollForMore": "Scroll for more",
+			"endOfHistory": "- End of history -"
+		},
+		"filters": {
+			"dateFrom": "Date from",
+			"dateTo": "Date to",
+			"tankType": "Tank type",
+			"fuelType": "Fuel type",
+			"clear": "Clear filters",
+			"emptyTitle": "No records for selected filters",
+			"emptyDescription": "Try changing filters or clear them to see all records.",
+			"options": {
+				"all": "All",
+				"fullTank": "Full tank",
+				"partialTank": "Partial tank"
+			}
+		},
+		"summary": {
+			"title": "Summary for visible records",
+			"fuelings": "Fuelings",
+			"totalCost": "Total cost",
+			"avgPricePerLiter": "Average price per liter",
+			"perLiterSuffix": "/L"
+		},
+		"density": {
+			"comfortable": "Comfortable",
+			"compact": "Compact"
+		},
+		"item": {
+			"partialTank": "Partial Tank",
+			"fullTank": "Full Tank",
+			"odometer": "Odo"
+		},
+		"deleteModal": {
+			"title": "Delete Fueling Record?",
+			"confirmPrefix": "Are you sure you want to delete the fueling record from",
+			"warning": "This action cannot be undone. Vehicle statistics will be recalculated.",
+			"cancel": "Cancel",
+			"confirm": "Delete",
+			"deleting": "Deleting...",
+			"errors": {
+				"deleteFailed": "Failed to delete fueling"
+			}
+		},
+		"toasts": {
+			"deleteSuccessTitle": "Fueling deleted",
+			"deleteSuccessDescription": "Record removed.",
+			"deleteErrorTitle": "Failed to delete",
+			"deleteErrorDescription": "Please try again."
+		}
 	}
 }
