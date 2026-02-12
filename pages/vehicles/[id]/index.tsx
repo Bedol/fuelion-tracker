@@ -123,10 +123,11 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 			</Box>
 
 			{/* Section 2: Action Buttons */}
-			<ButtonGroup mb='8' gap='4'>
+			<Stack direction={{ base: 'column', md: 'row' }} mb='8' gap='4' w='full'>
 				<Button
 					colorPalette='blue'
 					variant='solid'
+					w={{ base: 'full', md: 'auto' }}
 					onClick={() => router.push(`/vehicles/${vehicleId}/statistics`)}
 				>
 					View statistics
@@ -134,6 +135,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				<Button
 					colorPalette='blue'
 					variant='outline'
+					w={{ base: 'full', md: 'auto' }}
 					onClick={() => router.push(`/vehicles/${vehicleId}/edit`)}
 				>
 					Edit Vehicle
@@ -141,14 +143,12 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				<Button
 					colorPalette='red'
 					variant='outline'
+					w={{ base: 'full', md: 'auto' }}
 					onClick={() => setIsDeleteModalOpen(true)}
 				>
 					Delete Vehicle
 				</Button>
-				<Button variant='ghost' onClick={() => router.push('/vehicles')}>
-					← Back to Vehicles
-				</Button>
-			</ButtonGroup>
+			</Stack>
 
 			<Stack direction={{ base: 'column', md: 'row' }} gap='6' mb='8'>
 				{/* Section 3: Basic Information Card */}
