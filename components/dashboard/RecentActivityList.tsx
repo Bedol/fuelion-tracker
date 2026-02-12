@@ -15,9 +15,7 @@ const RecentActivityList: React.FC<RecentActivityListProps> = ({ items }) => {
 	if (items.length === 0) {
 		return (
 			<Box borderWidth='1px' borderRadius='lg' p='4' bg='gray.50'>
-				<Text fontSize='sm' color='gray.600'>
-					{t('dashboard.emptyActivityDescription')}
-				</Text>
+				<Text color='gray.600'>{t('dashboard.emptyActivityDescription')}</Text>
 			</Box>
 		);
 	}
@@ -110,11 +108,11 @@ const RecentActivityList: React.FC<RecentActivityListProps> = ({ items }) => {
 										>
 											<Box flex='1' minW='0'>
 												<HStack gap='2' wrap='wrap' mb='0.5'>
-													<Text fontWeight='semibold' fontSize='xs'>
+													<Text fontWeight='semibold' fontSize='sm'>
 														{formattedDate}
 													</Text>
 													<Text
-														fontSize='xs'
+														fontSize='sm'
 														color='gray.500'
 														whiteSpace='nowrap'
 														overflow='hidden'
@@ -124,14 +122,14 @@ const RecentActivityList: React.FC<RecentActivityListProps> = ({ items }) => {
 														{registrationLabel}
 													</Text>
 												</HStack>
-												<Text fontSize='xs' color='gray.500'>
+												<Text fontSize='sm' color='gray.500'>
 													{numberFormatter.format(item.quantity)} L @{' '}
 													{numberFormatter.format(unitCost)} {item.currency}/L •{' '}
 													{t('fuelings.item.odometer')}:{' '}
 													{distanceFormatter.format(item.mileage)} km
 												</Text>
 											</Box>
-											<Text fontSize='sm' fontWeight='bold' color='blue.600'>
+											<Text fontSize='md' fontWeight='bold' color='blue.600'>
 												{formatCurrency(item.cost, item.currency)}
 											</Text>
 										</Stack>
