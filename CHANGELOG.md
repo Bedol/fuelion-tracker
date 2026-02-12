@@ -1,3 +1,34 @@
+# [1.2.0-develop.4](https://github.com/Bedol/fuelion-tracker/compare/v1.2.0-develop.3...v1.2.0-develop.4) (2026-02-12)
+
+
+### Bug Fixes
+
+* **dashboard:** localize homepage summary and activity ([8d036a9](https://github.com/Bedol/fuelion-tracker/commit/8d036a972071f413c45f50e1e27739a2d274d2fd))
+* **fueling:** align fuelings page width with vehicle details ([6274246](https://github.com/Bedol/fuelion-tracker/commit/6274246c6fe03ed56e550afc1a3cb05d8ec64dc7))
+* **fueling:** localize fuelings list and dialogs ([fd6abaf](https://github.com/Bedol/fuelion-tracker/commit/fd6abafa517fad2f8ac90371cb86210ed3968dcb))
+* **style:** update string to sigle ([6ccc5fd](https://github.com/Bedol/fuelion-tracker/commit/6ccc5fd28d88b26ce9921cae694f3ef0c001001e))
+* **vehicles:** improve mobile layout for detail actions ([6661666](https://github.com/Bedol/fuelion-tracker/commit/6661666854cb1b725dd8a91ea0153ff2a96388ec))
+* **vehicles:** localize vehicle details page content ([c498a52](https://github.com/Bedol/fuelion-tracker/commit/c498a52791469d58e7939d1d0ee44ea3d144ef50))
+* **vehicles:** stabilize form select dropdown positioning ([fde1d79](https://github.com/Bedol/fuelion-tracker/commit/fde1d79a4cd292205cf3eda03cfaf057c6134d36))
+
+
+### Features
+
+* **dashboard:** add create vehicle button to vehicles section ([e6a470e](https://github.com/Bedol/fuelion-tracker/commit/e6a470ec2b7456b33c3e018c0d611947144f7373))
+* **dashboard:** align recent activity with compact fueling cards ([930bfa2](https://github.com/Bedol/fuelion-tracker/commit/930bfa25d4ffb0adeb2f3111e2af037785bc258a))
+* **dashboard:** improve vehicles section ordering and refresh ([80f2da7](https://github.com/Bedol/fuelion-tracker/commit/80f2da76913a147025f88f78382faa57f3c3f206))
+* **fueling:** add filters for fuelings history ([68da4da](https://github.com/Bedol/fuelion-tracker/commit/68da4da8eb41e35ec2f6fb5495a960513c574754))
+* **fueling:** add list density toggle for cards ([ca76a8d](https://github.com/Bedol/fuelion-tracker/commit/ca76a8d1556ae17c70f44410a822e1692b50bb3e))
+* **fueling:** add summary for visible records ([6a97a61](https://github.com/Bedol/fuelion-tracker/commit/6a97a61a8ac607af5fd9286eb5da8fa8fbcee4d9))
+* **navigation:** add alpha badge to app logo ([eab8a16](https://github.com/Bedol/fuelion-tracker/commit/eab8a1629a7d4066b3d7f48fc9f58725930fa820))
+* **vehicles:** add inline validation feedback in vehicle form ([b0af990](https://github.com/Bedol/fuelion-tracker/commit/b0af9901d399685dc90e2103bb696af1818381db))
+* **vehicles:** improve form select UX and save redirects ([926e1ad](https://github.com/Bedol/fuelion-tracker/commit/926e1ad13ea8cb937b29e5db6d56cb6268754286))
+* **vehicles:** localize create and edit vehicle forms ([9042064](https://github.com/Bedol/fuelion-tracker/commit/9042064a72538927dfcbc9cece4f669bd1095242))
+* **vehicles:** polish validation states in vehicle form ([574f076](https://github.com/Bedol/fuelion-tracker/commit/574f076536dc706aecb2d17615484aeeedc8f2d4))
+* **vehicles:** redesign list view and sort by recency ([8297ac2](https://github.com/Bedol/fuelion-tracker/commit/8297ac26a36047846c86c59d56cf3bfb36323c61))
+* **vehicles:** redirect create flow to new vehicle details ([3ab5c4d](https://github.com/Bedol/fuelion-tracker/commit/3ab5c4de9fd6451b3e78bc146a67406ecd930fb2))
+* **vehicles:** show last 10 fuelings on details page ([a6208dd](https://github.com/Bedol/fuelion-tracker/commit/a6208dd6184481d4c9f4a2e6e59d5a60b8e77c7c))
+
 # [1.2.0-develop.3](https://github.com/Bedol/fuelion-tracker/compare/v1.2.0-develop.2...v1.2.0-develop.3) (2026-02-12)
 
 
