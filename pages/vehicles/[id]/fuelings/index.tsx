@@ -85,37 +85,35 @@ const FuelingsListPage: React.FC = () => {
 	}
 
 	return (
-		<Box maxW='1000px' mx='auto' p='4'>
-			<Box maxW='820px' mx='auto' w='full'>
-				<Box mb='6'>
-					<Heading size='xl' mb='2'>
-						{vehicle.brand_name} {vehicle.model_name}
-					</Heading>
-					<Text color='gray.600'>
-						{vehicle.production_year} •{' '}
-						{vehicle.mileage.toLocaleString(localeCode)} {vehicle.mileage_unit}
-					</Text>
-				</Box>
-
-				<Stack direction={{ base: 'column', sm: 'row' }} mb='6' gap='3'>
-					<Button
-						colorPalette='blue'
-						w={{ base: 'full', sm: 'auto' }}
-						onClick={handleAddFueling}
-						cursor='pointer'
-					>
-						{t('fuelings.actions.addFueling')}
-					</Button>
-					<Button
-						variant='ghost'
-						w={{ base: 'full', sm: 'auto' }}
-						onClick={() => router.push(`/vehicles/${id}`)}
-						cursor='pointer'
-					>
-						← {t('fuelings.actions.backToVehicle')}
-					</Button>
-				</Stack>
+		<Box maxW='1200px' mx='auto' p='4'>
+			<Box mb='6'>
+				<Heading size='xl' mb='2'>
+					{vehicle.brand_name} {vehicle.model_name}
+				</Heading>
+				<Text color='gray.600'>
+					{vehicle.production_year} •{' '}
+					{vehicle.mileage.toLocaleString(localeCode)} {vehicle.mileage_unit}
+				</Text>
 			</Box>
+
+			<Stack direction={{ base: 'column', sm: 'row' }} mb='6' gap='3'>
+				<Button
+					colorPalette='blue'
+					w={{ base: 'full', sm: 'auto' }}
+					onClick={handleAddFueling}
+					cursor='pointer'
+				>
+					{t('fuelings.actions.addFueling')}
+				</Button>
+				<Button
+					variant='ghost'
+					w={{ base: 'full', sm: 'auto' }}
+					onClick={() => router.push(`/vehicles/${id}`)}
+					cursor='pointer'
+				>
+					← {t('fuelings.actions.backToVehicle')}
+				</Button>
+			</Stack>
 
 			<FuelingList
 				vehicleId={vehicle.id}

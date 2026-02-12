@@ -186,7 +186,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	// Loading state
 	if (isPending) {
 		return (
-			<Box maxW='820px' mx='auto' w='full'>
+			<Box w='full'>
 				<Heading size='md' mb='4'>
 					{t('fuelings.list.title')}
 				</Heading>
@@ -198,7 +198,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	// Error state
 	if (isError) {
 		return (
-			<Box maxW='820px' mx='auto' w='full'>
+			<Box w='full'>
 				<Heading size='md' mb='4'>
 					{t('fuelings.list.title')}
 				</Heading>
@@ -212,7 +212,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	// Empty state
 	if (fuelings.length === 0) {
 		return (
-			<Box maxW='820px' mx='auto' w='full' textAlign='center' py='12'>
+			<Box w='full' textAlign='center' py='12'>
 				<Text fontSize='4xl' mb='4'>
 					⛽
 				</Text>
@@ -232,7 +232,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	}
 
 	return (
-		<Box maxW='820px' mx='auto' w='full'>
+		<Box w='full'>
 			<Heading size='md' mb='4'>
 				{t('fuelings.list.title')}
 				<Text
