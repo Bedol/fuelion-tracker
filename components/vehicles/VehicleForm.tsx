@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocale } from '../../contexts/LocaleContext';
 import {
 	fuelTypes,
@@ -48,6 +48,18 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 	const router = useRouter();
 	const { t } = useLocale();
 	const [showTechnical, setShowTechnical] = useState(false);
+
+	const hasTechnicalData =
+		initialValues.engine_capacity != null ||
+		initialValues.engine_power != null ||
+		(typeof initialValues.power_unit === 'string' &&
+			initialValues.power_unit.trim() !== '') ||
+		(typeof initialValues.transmission === 'string' &&
+			initialValues.transmission.trim() !== '');
+
+	useEffect(() => {
+		setShowTechnical(hasTechnicalData);
+	}, [hasTechnicalData]);
 
 	const formik = useFormik({
 		initialValues,
@@ -197,6 +209,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 				{/* Section 2: Technical Data (Collapsible) */}
 				<Box mb='6'>
 					<Button
+						type='button'
 						variant='ghost'
 						size='sm'
 						onClick={() => setShowTechnical(!showTechnical)}
@@ -347,7 +360,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							? t('vehicles.form.actions.createVehicle')
 							: t('vehicles.form.actions.saveChanges')}
 					</Button>
-					<Button variant='outline' onClick={backToVehicles}>
+					<Button type='button' variant='outline' onClick={backToVehicles}>
 						{t('vehicles.form.actions.cancel')}
 					</Button>
 				</ButtonGroup>
