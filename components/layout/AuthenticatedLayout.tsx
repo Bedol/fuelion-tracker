@@ -15,11 +15,7 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
 			<Navigation />
 
 			{/* Content Area */}
-			<Box
-				flex='1'
-				p='6'
-				pb={{ base: '20', md: '6' }} // Extra bottom padding on mobile for bottom nav
-			>
+			<Box flex='1' p='6' pb='6'>
 				<Box maxW='1200px' mx='auto'>
 					{children}
 				</Box>

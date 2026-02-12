@@ -80,7 +80,7 @@ const HomePage = () => {
 				</Stack>
 
 				<Stack gap={{ base: '6', md: '8' }}>
-					<CardRoot variant='outline' order={{ base: 1, lg: 2 }}>
+					<CardRoot variant='outline' order={2}>
 						<CardBody>
 							<Stack gap='4'>
 								<Heading size='md'>{t('dashboard.activityTitle')}</Heading>
@@ -103,7 +103,7 @@ const HomePage = () => {
 						</CardBody>
 					</CardRoot>
 
-					<CardRoot variant='outline' order={{ base: 2, lg: 1 }}>
+					<CardRoot variant='outline' order={1}>
 						<CardBody>
 							<Stack gap='4'>
 								<Heading size='md'>{t('dashboard.vehiclesTitle')}</Heading>
