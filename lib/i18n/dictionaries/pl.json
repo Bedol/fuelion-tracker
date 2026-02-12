@@ -46,6 +46,11 @@
 	},
 	"vehicles": {
 		"last10Fuelings": "Ostatnie 10 tankowań",
+		"list": {
+			"subtitle": "Zarządzaj pojazdami i szybko przechodź do szczegółów.",
+			"yourGarage": "Twoja flota",
+			"countLabel": "pojazdów"
+		},
 		"detail": {
 			"errors": {
 				"loadVehicleDetails": "Nie udało się załadować szczegółów pojazdu.",

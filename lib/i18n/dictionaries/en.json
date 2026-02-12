@@ -46,6 +46,11 @@
 	},
 	"vehicles": {
 		"last10Fuelings": "Last 10 Fuelings",
+		"list": {
+			"subtitle": "Manage your vehicles and quickly jump to details.",
+			"yourGarage": "Your garage",
+			"countLabel": "vehicles"
+		},
 		"detail": {
 			"errors": {
 				"loadVehicleDetails": "Failed to load vehicle details.",

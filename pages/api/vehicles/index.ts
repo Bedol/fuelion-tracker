@@ -20,6 +20,7 @@ const handleGet = async (
 
 	const vehicles = await prisma.vehicle.findMany({
 		where: getOwnedVehicleWhere(sessionUserId),
+		orderBy: [{ updated_at: 'desc' }, { created_at: 'desc' }, { id: 'desc' }],
 	});
 	return res.json(vehicles);
 };
