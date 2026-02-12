@@ -1,25 +1,46 @@
-import { Box, Heading, useToast } from '@chakra-ui/react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { Box, Heading } from '@chakra-ui/react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import VehicleForm from '../../../components/vehicles/VehicleForm';
+import { toaster } from '../../../components/ui/toaster';
+import { useLocale } from '../../../contexts/LocaleContext';
 import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../components/Loading';
-import VehicleForm from '../../../components/vehicles/VehicleForm';
 
 const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
+	const router = useRouter();
 	const queryClient = useQueryClient();
-	const toast = useToast();
-	const { isLoading, isError, data } = useQuery(
-		['vehicle', vehicleId],
-		async () => {
+	const { t } = useLocale();
+	const { status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/auth/signin');
+		},
+	});
+
+	const { isPending, isError, data } = useQuery({
+		queryKey: ['vehicle', vehicleId],
+		queryFn: async () => {
 			const resp = await fetch(`/api/vehicles/${vehicleId}`);
-			if (!resp.ok) throw new Error('An error occurred.');
+			if (!resp.ok) throw new Error(t('vehicles.form.errors.generic'));
 			return resp.json();
-		}
-	);
+		},
+		enabled: status === 'authenticated',
+	});
 
-	const vehicleMutation = useMutation(
-		async (values) => {
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-
+	const vehicleMutation = useMutation({
+		mutationFn: async (values: {
+			brand_name: string;
+			model_name: string;
+			production_year: number;
+			fuel_type: string;
+			registration_number?: string;
+			engine_capacity?: number;
+			engine_power?: number;
+			power_unit?: string;
+			transmission?: string;
+		}) => {
 			const resp = await fetch(`/api/vehicles/${vehicleId}`, {
 				method: 'PUT',
 				headers: {
@@ -27,41 +48,70 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 				},
 				body: JSON.stringify(values),
 			});
-			if (!resp.ok) throw new Error('An error occurred.');
+
+			if (!resp.ok) {
+				const error = await resp.json();
+				throw new Error(
+					error.message || t('vehicles.form.errors.updateFailed')
+				);
+			}
+
 			return resp.json();
 		},
-		{
-			onSuccess: () => {
-				queryClient.invalidateQueries(['vehicle', vehicleId]);
-				toast({
-					title: 'Vehicle updated.',
-					position: 'top-right',
-					status: 'success',
-					duration: 5000,
-					isClosable: true,
-					containerStyle: {
-						zIndex: 999,
-						marginTop: '5rem',
-					},
-				});
-			},
-		}
-	);
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['vehicle', vehicleId] });
+			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+			queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+			toaster.create({
+				title: t('vehicles.form.toasts.updateSuccess'),
+				type: 'success',
+				duration: 6000,
+				closable: true,
+			});
+			router.push(`/vehicles/${vehicleId}`);
+		},
+		onError: (error) => {
+			toaster.create({
+				title:
+					error instanceof Error
+						? error.message
+						: t('vehicles.form.toasts.updateError'),
+				type: 'error',
+			});
+		},
+	});
 
-	if (isLoading) return <Loading />;
+	if (status === 'loading') return <Loading />;
+	if (isPending) return <Loading />;
 	if (isError)
 		return (
-			<FetchDataErrorAlert errorMessage='An error occurred while fetching data' />
+			<FetchDataErrorAlert
+				errorMessage={t('vehicles.form.errors.loadVehicleData')}
+			/>
 		);
 
-	const { brand, model, production_year } = data;
+	// Map all fields from API response to form initial values
+	const initialValues = {
+		brand_name: data.brand_name || '',
+		model_name: data.model_name || '',
+		production_year: data.production_year || new Date().getFullYear(),
+		fuel_type: data.fuel_type || 'gasoline',
+		registration_number: data.registration_number || '',
+		engine_capacity: data.engine_capacity,
+		engine_power: data.engine_power,
+		power_unit: data.power_unit,
+		transmission: data.transmission,
+	};
 
 	return (
-		<Box>
-			<Heading mb='3'>Edit Vehicle</Heading>
+		<Box maxW='800px' mx='auto' p='4'>
+			<Heading mb='6' size='lg'>
+				{t('vehicles.form.titles.editVehicle')}
+			</Heading>
 			<VehicleForm
-				initialValues={{ brand, model, production_year }}
+				initialValues={initialValues}
 				mutation={vehicleMutation}
+				mode='edit'
 			/>
 		</Box>
 	);
@@ -69,7 +119,7 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 
 export default EditVehiclePage;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: { params: { id: string } }) {
 	const { id } = context.params;
 	const vehicleId = parseInt(id);
 

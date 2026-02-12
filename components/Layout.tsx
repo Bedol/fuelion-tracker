@@ -1,17 +1,21 @@
-import { Box, Flex } from '@chakra-ui/react';
-import Navigation from './Navigation';
+import React, { ReactNode } from 'react';
+import { useSession } from 'next-auth/react';
+import AuthenticatedLayout from './layout/AuthenticatedLayout';
 
-const Layout = ({ children }) => {
-	return (
-		<Flex flexDirection='column' flex='1'>
-			<Navigation />
-			<Flex as='main' role='main' direction='column' flex='1' py='sm'>
-				<Box flex='1' px='12'>
-					{children}
-				</Box>
-			</Flex>
-		</Flex>
-	);
+type LayoutProps = {
+	children: ReactNode;
+};
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+	const { data: session } = useSession();
+
+	// If user is authenticated, use AuthenticatedLayout with navigation
+	if (session) {
+		return <AuthenticatedLayout>{children}</AuthenticatedLayout>;
+	}
+
+	// For public pages (like sign-in), render children without navigation
+	return <>{children}</>;
 };
 
 export default Layout;

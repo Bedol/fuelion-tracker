@@ -1,117 +1,107 @@
-import {
-	Box,
-	Button,
-	Flex,
-	FormControl,
-	FormLabel,
-	Input,
-	Text,
-} from '@chakra-ui/react';
-import { Vehicles } from '@prisma/client';
-import { useFormik } from 'formik';
-import { useMutation } from 'react-query';
+import { Box, Heading } from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import VehicleForm from '../../components/vehicles/VehicleForm';
+import { toaster } from '../../components/ui/toaster';
+import { useLocale } from '../../contexts/LocaleContext';
+import Loading from '../../components/Loading';
 
-const NewVehicle = () => {
-	const vehicleMutation = useMutation(
-		(values: Omit<Vehicles, 'id' | 'created_at' | 'updated_at'>) =>
-			fetch('/api/vehicles', {
+const NewVehiclePage = () => {
+	const router = useRouter();
+	const { t } = useLocale();
+	const { data: session, status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/auth/signin');
+		},
+	});
+	const queryClient = useQueryClient();
+
+	const vehicleMutation = useMutation({
+		mutationFn: async (values: {
+			brand_name: string;
+			model_name: string;
+			production_year: number;
+			fuel_type: string;
+			registration_number?: string;
+			engine_capacity?: number;
+			engine_power?: number;
+			power_unit?: string;
+			transmission?: string;
+		}) => {
+			if (!session?.user?.id) {
+				throw new Error(t('vehicles.form.errors.userNotAuthenticated'));
+			}
+
+			const resp = await fetch('/api/vehicles', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(values),
-			})
-	);
+				body: JSON.stringify({
+					...values,
+					user_id: Number(session.user.id),
+				}),
+			});
 
-	const formik = useFormik({
-		initialValues: {
-			brand: '',
-			model: '',
-			fuel_type: '',
-			gearbox: '',
-			power: 0,
-			power_unit: '',
-			type: '',
-			production_year: 1900,
-			engine_capacity: 0.0,
-			mileage: 0,
+			if (!resp.ok) {
+				const error = await resp.json();
+				throw new Error(
+					error.message || t('vehicles.form.errors.createFailed')
+				);
+			}
+
+			return resp.json();
 		},
-		onSubmit: async (values, actions) => {
-			await vehicleMutation.mutate(values);
-			actions.setSubmitting(false);
-			actions.resetForm();
+		onSuccess: (createdVehicle: { id: number }) => {
+			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+			queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+			toaster.create({
+				title: t('vehicles.form.toasts.createSuccess'),
+				type: 'success',
+				duration: 6000,
+				closable: true,
+			});
+			router.push(`/vehicles/${createdVehicle.id}`);
+		},
+		onError: (error) => {
+			toaster.create({
+				title:
+					error instanceof Error
+						? error.message
+						: t('vehicles.form.toasts.createError'),
+				type: 'error',
+			});
 		},
 	});
 
-	return (
-		<Box>
-			<Text fontSize='2xl' mb='2'>
-				Add New Vehicle
-			</Text>
-			<Flex flexDir='column' justifyContent='space-between'>
-				<form onSubmit={formik.handleSubmit}>
-					<FormControl>
-						<FormLabel htmlFor='brand'>Brand</FormLabel>
-						<Input
-							type='text'
-							name='brand'
-							id='brand'
-							onChange={formik.handleChange}
-							value={formik.values.brand}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor='model'>Model</FormLabel>
-						<Input
-							type='text'
-							name='model'
-							id='model'
-							onChange={formik.handleChange}
-							value={formik.values.model}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor='production_year'>Production Year</FormLabel>
-						<Input
-							type='number'
-							name='production_year'
-							id='production_year'
-							onChange={formik.handleChange}
-							value={formik.values.production_year}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor='engine_capacity'>Engine Capacity</FormLabel>
-						<Input
-							type='number'
-							name='engine_capacity'
-							id='engine_capacity'
-							onChange={formik.handleChange}
-							value={formik.values.engine_capacity}
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor='mileage'>Mileage</FormLabel>
-						<Input
-							type='number'
-							name='mileage'
-							id='mileage'
-							onChange={formik.handleChange}
-							value={formik.values.mileage}
-						/>
-					</FormControl>
+	if (status === 'loading') {
+		return <Loading />;
+	}
 
-					<Button
-						type='submit'
-						colorScheme='telegram'
-						variant='outline'
-						my='4'
-						disabled={formik.isSubmitting}
-					>
-						{formik.isSubmitting ? 'Submitting...' : 'Submit'}
-					</Button>
-				</form>
-			</Flex>
+	const initialValues = {
+		brand_name: '',
+		model_name: '',
+		production_year: new Date().getFullYear(),
+		fuel_type: 'gasoline',
+		registration_number: '',
+		engine_capacity: undefined,
+		engine_power: undefined,
+		power_unit: undefined,
+		transmission: undefined,
+	};
+
+	return (
+		<Box maxW='800px' mx='auto' p='4'>
+			<Heading mb='6' size='lg'>
+				{t('vehicles.form.titles.addNewVehicle')}
+			</Heading>
+			<VehicleForm
+				initialValues={initialValues}
+				mutation={vehicleMutation}
+				mode='create'
+			/>
 		</Box>
 	);
 };
 
-export default NewVehicle;
+export default NewVehiclePage;

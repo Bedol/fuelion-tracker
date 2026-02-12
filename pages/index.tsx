@@ -1,17 +1,200 @@
-import Head from 'next/head';
+import {
+	Box,
+	Button,
+	CardBody,
+	CardRoot,
+	Heading,
+	SimpleGrid,
+	Spinner,
+	Stack,
+	Text,
+} from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import DashboardSkeleton from '../components/dashboard/DashboardSkeleton';
+import RecentActivityList from '../components/dashboard/RecentActivityList';
+import VehicleSummaryCard from '../components/dashboard/VehicleSummaryCard';
+import FetchDataErrorAlert from '../components/errors/FetchDataErrorAlert';
+import { toaster } from '../components/ui/toaster';
+import { useDashboardData } from '../hooks/useDashboardData';
+import { useLocale } from '../contexts/LocaleContext';
 
-export default function Home() {
-	return (
-		<div>
-			<Head>
-				<title>Fuelion Tracker</title>
-				<link rel='icon' href='/favicon.ico' />
-			</Head>
+const INITIAL_VISIBLE_VEHICLES = 4;
+const VEHICLES_LOAD_STEP = 2;
 
-			<div className='md:container md:mx-auto py-4'>
-				<h1>Welcome to Fuelion Tracker</h1>
-				<p>Track your money speded to the fuel</p>
-			</div>
-		</div>
+const HomePage = () => {
+	const router = useRouter();
+	const { status } = useSession({
+		required: true,
+		onUnauthenticated() {
+			router.push('/auth/signin');
+		},
+	});
+	const { t } = useLocale();
+	const { data, isPending, isError, isFetching } = useDashboardData();
+	const refreshErrorShown = useRef(false);
+	const vehiclesCount = data?.vehicles.length ?? 0;
+	const [visibleVehiclesCount, setVisibleVehiclesCount] = useState(
+		INITIAL_VISIBLE_VEHICLES
 	);
-}
+
+	useEffect(() => {
+		if (isError && data && !refreshErrorShown.current) {
+			toaster.create({
+				title: t('dashboard.refreshFailed'),
+				type: 'error',
+			});
+			refreshErrorShown.current = true;
+		}
+
+		if (!isError) {
+			refreshErrorShown.current = false;
+		}
+	}, [data, isError, t]);
+
+	useEffect(() => {
+		setVisibleVehiclesCount(INITIAL_VISIBLE_VEHICLES);
+	}, [vehiclesCount]);
+
+	if (status === 'loading' || isPending) {
+		return <DashboardSkeleton />;
+	}
+
+	if (isError && !data) {
+		return <FetchDataErrorAlert errorMessage={t('errors.generic')} />;
+	}
+
+	if (!data) {
+		return <DashboardSkeleton />;
+	}
+
+	const { vehicles, recentActivity } = data;
+	const visibleVehicles = vehicles.slice(0, visibleVehiclesCount);
+	const hasVehicles = vehicles.length > 0;
+	const hasMoreVehicles = vehicles.length > visibleVehiclesCount;
+	const hasActivity = recentActivity.length > 0;
+
+	const handleLoadMoreVehicles = () => {
+		setVisibleVehiclesCount((prev) =>
+			Math.min(prev + VEHICLES_LOAD_STEP, vehicles.length)
+		);
+	};
+
+	return (
+		<Box
+			maxW='1200px'
+			mx='auto'
+			px={{ base: '4', md: '6' }}
+			py={{ base: '6', md: '8' }}
+		>
+			<Stack gap={{ base: '6', md: '8' }}>
+				<Stack gap='2'>
+					<Stack direction='row' align='center' gap='3'>
+						<Heading size='xl'>{t('dashboard.title')}</Heading>
+						{isFetching && data && <Spinner size='sm' color='gray.500' />}
+					</Stack>
+					<Text color='gray.600'>{t('dashboard.subtitle')}</Text>
+				</Stack>
+
+				<Stack gap={{ base: '6', md: '8' }}>
+					<CardRoot variant='outline' order={2}>
+						<CardBody>
+							<Stack gap='4'>
+								<Heading size='md'>{t('dashboard.activityTitle')}</Heading>
+								{hasActivity ? (
+									<RecentActivityList items={recentActivity} />
+								) : (
+									<Box textAlign='center' py='10'>
+										<Text fontSize='4xl' mb='4'>
+											🧾
+										</Text>
+										<Heading size='md' mb='2'>
+											{t('dashboard.emptyActivityTitle')}
+										</Heading>
+										<Text color='gray.500'>
+											{t('dashboard.emptyActivityDescription')}
+										</Text>
+									</Box>
+								)}
+							</Stack>
+						</CardBody>
+					</CardRoot>
+
+					<CardRoot variant='outline' order={1}>
+						<CardBody>
+							<Stack gap='4'>
+								<Stack
+									direction={{ base: 'column', sm: 'row' }}
+									justify='space-between'
+									align={{ base: 'flex-start', sm: 'center' }}
+									gap='3'
+								>
+									<Heading size='md'>{t('dashboard.vehiclesTitle')}</Heading>
+									<Stack direction='row' gap='2'>
+										<NextLink href='/vehicles/new' passHref legacyBehavior>
+											<Button as='a' colorPalette='blue' size='sm'>
+												{t('dashboard.emptyVehiclesCta')}
+											</Button>
+										</NextLink>
+										<NextLink href='/vehicles' passHref legacyBehavior>
+											<Button as='a' variant='outline' size='sm'>
+												{t('dashboard.viewAllVehicles')}
+											</Button>
+										</NextLink>
+									</Stack>
+								</Stack>
+								{hasVehicles ? (
+									<Stack gap='4'>
+										<SimpleGrid columns={{ base: 1, lg: 2 }} gap='4'>
+											{visibleVehicles.map((vehicle) => (
+												<VehicleSummaryCard
+													key={vehicle.id}
+													vehicle={vehicle}
+													labels={{
+														totalSpent: t('dashboard.totalSpent'),
+														averageConsumption: t(
+															'dashboard.averageConsumption'
+														),
+														totalDistance: t('dashboard.totalDistance'),
+														lastFueling: t('dashboard.lastFueling'),
+														viewVehicle: t('dashboard.viewVehicle'),
+														quickAdd: t('dashboard.quickAdd'),
+													}}
+												/>
+											))}
+										</SimpleGrid>
+										{hasMoreVehicles && (
+											<Button
+												alignSelf='center'
+												variant='outline'
+												onClick={handleLoadMoreVehicles}
+											>
+												{t('dashboard.loadMoreVehicles')}
+											</Button>
+										)}
+									</Stack>
+								) : (
+									<Box textAlign='center' py='10'>
+										<Text fontSize='4xl' mb='4'>
+											🚗
+										</Text>
+										<Heading size='md' mb='2'>
+											{t('dashboard.emptyVehiclesTitle')}
+										</Heading>
+										<Text color='gray.500' mb='6'>
+											{t('dashboard.emptyVehiclesDescription')}
+										</Text>
+									</Box>
+								)}
+							</Stack>
+						</CardBody>
+					</CardRoot>
+				</Stack>
+			</Stack>
+		</Box>
+	);
+};
+
+export default HomePage;
