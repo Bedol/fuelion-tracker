@@ -40,6 +40,71 @@
 		"emptyActivityDescription": "Dodaj tankowanie, aby zobaczyć je tutaj."
 	},
 	"vehicles": {
-		"last10Fuelings": "Ostatnie 10 tankowań"
+		"last10Fuelings": "Ostatnie 10 tankowań",
+		"detail": {
+			"errors": {
+				"loadVehicleDetails": "Nie udało się załadować szczegółów pojazdu.",
+				"loadRecentFuelings": "Nie udało się załadować ostatnich tankowań."
+			},
+			"actions": {
+				"viewStatistics": "Zobacz statystyki",
+				"editVehicle": "Edytuj pojazd",
+				"deleteVehicle": "Usuń pojazd",
+				"addFueling": "Dodaj tankowanie",
+				"viewAllFuelings": "Zobacz wszystkie tankowania"
+			},
+			"sections": {
+				"basicInformation": "Podstawowe informacje",
+				"technicalSpecifications": "Specyfikacja techniczna",
+				"vehicleStatus": "Stan pojazdu"
+			},
+			"fields": {
+				"brand": "Marka",
+				"model": "Model",
+				"productionYear": "Rok produkcji",
+				"fuelType": "Rodzaj paliwa",
+				"registration": "Rejestracja",
+				"engineCapacity": "Pojemność silnika",
+				"enginePower": "Moc silnika",
+				"transmission": "Skrzynia biegów",
+				"currentMileage": "Aktualny przebieg",
+				"currency": "Waluta",
+				"addedOn": "Dodano",
+				"lastUpdated": "Ostatnia aktualizacja"
+			},
+			"values": {
+				"notRegistered": "Brak rejestracji",
+				"manual": "Manualna",
+				"automatic": "Automatyczna"
+			},
+			"messages": {
+				"loadingRecentFuelings": "Ładowanie ostatnich tankowań...",
+				"emptyRecentFuelings": "Brak wpisów tankowań. Dodaj pierwsze tankowanie, aby rozpocząć śledzenie."
+			}
+		},
+		"fuelTypes": {
+			"gasoline": "Benzyna",
+			"diesel": "Diesel",
+			"lpg": "LPG",
+			"electric": "Elektryczny",
+			"hybrid": "Hybryda"
+		},
+		"deleteModal": {
+			"title": "Usunąć pojazd?",
+			"confirmPrefix": "Czy na pewno chcesz usunąć",
+			"warning": "Ten pojazd oraz wszystkie jego wpisy tankowań zostaną trwale usunięte. Tej operacji nie można cofnąć.",
+			"cancel": "Anuluj",
+			"confirm": "Usuń pojazd",
+			"deleting": "Usuwanie...",
+			"errors": {
+				"deleteFailed": "Nie udało się usunąć pojazdu"
+			},
+			"toasts": {
+				"successTitle": "Pojazd został usunięty",
+				"successDescriptionSuffix": "został usunięty.",
+				"errorTitle": "Nie udało się usunąć pojazdu",
+				"errorDescription": "Spróbuj ponownie później."
+			}
+		}
 	}
 }

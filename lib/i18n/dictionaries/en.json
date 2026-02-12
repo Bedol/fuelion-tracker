@@ -40,6 +40,71 @@
 		"emptyActivityDescription": "Add a fueling to see it here."
 	},
 	"vehicles": {
-		"last10Fuelings": "Last 10 Fuelings"
+		"last10Fuelings": "Last 10 Fuelings",
+		"detail": {
+			"errors": {
+				"loadVehicleDetails": "Failed to load vehicle details.",
+				"loadRecentFuelings": "Failed to load recent fueling records."
+			},
+			"actions": {
+				"viewStatistics": "View statistics",
+				"editVehicle": "Edit Vehicle",
+				"deleteVehicle": "Delete Vehicle",
+				"addFueling": "Add Fueling",
+				"viewAllFuelings": "View All Fuelings"
+			},
+			"sections": {
+				"basicInformation": "Basic Information",
+				"technicalSpecifications": "Technical Specifications",
+				"vehicleStatus": "Vehicle Status"
+			},
+			"fields": {
+				"brand": "Brand",
+				"model": "Model",
+				"productionYear": "Production Year",
+				"fuelType": "Fuel Type",
+				"registration": "Registration",
+				"engineCapacity": "Engine Capacity",
+				"enginePower": "Engine Power",
+				"transmission": "Transmission",
+				"currentMileage": "Current Mileage",
+				"currency": "Currency",
+				"addedOn": "Added On",
+				"lastUpdated": "Last Updated"
+			},
+			"values": {
+				"notRegistered": "Not registered",
+				"manual": "Manual",
+				"automatic": "Automatic"
+			},
+			"messages": {
+				"loadingRecentFuelings": "Loading recent fuelings...",
+				"emptyRecentFuelings": "No fueling records yet. Add your first fueling to start tracking."
+			}
+		},
+		"fuelTypes": {
+			"gasoline": "Gasoline",
+			"diesel": "Diesel",
+			"lpg": "LPG",
+			"electric": "Electric",
+			"hybrid": "Hybrid"
+		},
+		"deleteModal": {
+			"title": "Delete Vehicle?",
+			"confirmPrefix": "Are you sure you want to delete",
+			"warning": "This vehicle and all its fueling records will be permanently deleted. This action cannot be undone.",
+			"cancel": "Cancel",
+			"confirm": "Delete Vehicle",
+			"deleting": "Deleting...",
+			"errors": {
+				"deleteFailed": "Failed to delete vehicle"
+			},
+			"toasts": {
+				"successTitle": "Vehicle deleted successfully",
+				"successDescriptionSuffix": "has been removed.",
+				"errorTitle": "Failed to delete vehicle",
+				"errorDescription": "Please try again later."
+			}
+		}
 	}
 }

@@ -35,13 +35,24 @@ const getFuelTypeIcon = (fuelType: string): string => {
 	return icons[fuelType] || '⛽';
 };
 
-const getFuelTypeLabel = (fuelType: string): string => {
-	const type = fuelTypes.find((t) => t.value === fuelType);
-	return type?.name || fuelType;
+const getFuelTypeLabel = (
+	fuelType: string,
+	t: (key: string) => string
+): string => {
+	const labels: Record<string, string> = {
+		gasoline: t('vehicles.fuelTypes.gasoline'),
+		diesel: t('vehicles.fuelTypes.diesel'),
+		lpg: t('vehicles.fuelTypes.lpg'),
+		electric: t('vehicles.fuelTypes.electric'),
+		hybrid: t('vehicles.fuelTypes.hybrid'),
+	};
+
+	const type = fuelTypes.find((item) => item.value === fuelType);
+	return labels[fuelType] || type?.name || fuelType;
 };
 
-const formatDate = (date: Date | string): string => {
-	return new Date(date).toLocaleDateString('en-US', {
+const formatDate = (date: Date | string, locale: string): string => {
+	return new Date(date).toLocaleDateString(locale, {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
@@ -51,7 +62,7 @@ const formatDate = (date: Date | string): string => {
 const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 	const router = useRouter();
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-	const { t } = useLocale();
+	const { locale, t } = useLocale();
 	const { status } = useSession({
 		required: true,
 		onUnauthenticated() {
@@ -95,13 +106,17 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 		router.push('/vehicles');
 	};
 
+	const localeCode = locale === 'pl' ? 'pl-PL' : 'en-US';
+
 	if (status !== 'authenticated') return <Loading />;
 
 	if (isPending) return <Loading />;
 
 	if (isError || !vehicle) {
 		return (
-			<FetchDataErrorAlert errorMessage='Failed to load vehicle details.' />
+			<FetchDataErrorAlert
+				errorMessage={t('vehicles.detail.errors.loadVehicleDetails')}
+			/>
 		);
 	}
 
@@ -120,7 +135,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 					<Text>•</Text>
 					<Badge variant='subtle' colorPalette='blue'>
 						{getFuelTypeIcon(vehicle.fuel_type)}{' '}
-						{getFuelTypeLabel(vehicle.fuel_type)}
+						{getFuelTypeLabel(vehicle.fuel_type, t)}
 					</Badge>
 					{vehicle.registration_number && (
 						<>
@@ -148,7 +163,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 					w={{ base: 'full', md: 'auto' }}
 					onClick={() => router.push(`/vehicles/${vehicleId}/statistics`)}
 				>
-					View statistics
+					{t('vehicles.detail.actions.viewStatistics')}
 				</Button>
 				<Button
 					colorPalette='blue'
@@ -156,7 +171,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 					w={{ base: 'full', md: 'auto' }}
 					onClick={() => router.push(`/vehicles/${vehicleId}/edit`)}
 				>
-					Edit Vehicle
+					{t('vehicles.detail.actions.editVehicle')}
 				</Button>
 				<Button
 					colorPalette='red'
@@ -164,7 +179,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 					w={{ base: 'full', md: 'auto' }}
 					onClick={() => setIsDeleteModalOpen(true)}
 				>
-					Delete Vehicle
+					{t('vehicles.detail.actions.deleteVehicle')}
 				</Button>
 			</Stack>
 
@@ -173,42 +188,43 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				<CardRoot flex='1'>
 					<CardBody>
 						<Heading size='md' mb='4'>
-							Basic Information
+							{t('vehicles.detail.sections.basicInformation')}
 						</Heading>
 						<Stack gap='3'>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Brand
+									{t('vehicles.detail.fields.brand')}
 								</Text>
 								<Text fontWeight='medium'>{vehicle.brand_name}</Text>
 							</Box>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Model
+									{t('vehicles.detail.fields.model')}
 								</Text>
 								<Text fontWeight='medium'>{vehicle.model_name}</Text>
 							</Box>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Production Year
+									{t('vehicles.detail.fields.productionYear')}
 								</Text>
 								<Text fontWeight='medium'>{vehicle.production_year}</Text>
 							</Box>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Fuel Type
+									{t('vehicles.detail.fields.fuelType')}
 								</Text>
 								<Text fontWeight='medium'>
 									{getFuelTypeIcon(vehicle.fuel_type)}{' '}
-									{getFuelTypeLabel(vehicle.fuel_type)}
+									{getFuelTypeLabel(vehicle.fuel_type, t)}
 								</Text>
 							</Box>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Registration
+									{t('vehicles.detail.fields.registration')}
 								</Text>
 								<Text fontWeight='medium'>
-									{vehicle.registration_number || 'Not registered'}
+									{vehicle.registration_number ||
+										t('vehicles.detail.values.notRegistered')}
 								</Text>
 							</Box>
 						</Stack>
@@ -220,13 +236,13 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 					<CardRoot flex='1'>
 						<CardBody>
 							<Heading size='md' mb='4'>
-								Technical Specifications
+								{t('vehicles.detail.sections.technicalSpecifications')}
 							</Heading>
 							<Stack gap='3'>
 								{vehicle.engine_capacity && (
 									<Box>
 										<Text color='gray.500' fontSize='sm'>
-											Engine Capacity
+											{t('vehicles.detail.fields.engineCapacity')}
 										</Text>
 										<Text fontWeight='medium'>
 											{(vehicle.engine_capacity / 1000).toFixed(1)} L
@@ -236,7 +252,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 								{vehicle.engine_power && (
 									<Box>
 										<Text color='gray.500' fontSize='sm'>
-											Engine Power
+											{t('vehicles.detail.fields.enginePower')}
 										</Text>
 										<Text fontWeight='medium'>
 											{vehicle.engine_power} {vehicle.power_unit || 'HP'}
@@ -246,12 +262,12 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 								{vehicle.transmission && (
 									<Box>
 										<Text color='gray.500' fontSize='sm'>
-											Transmission
+											{t('vehicles.detail.fields.transmission')}
 										</Text>
 										<Text fontWeight='medium'>
 											{vehicle.transmission === 'manual'
-												? 'Manual'
-												: 'Automatic'}
+												? t('vehicles.detail.values.manual')
+												: t('vehicles.detail.values.automatic')}
 										</Text>
 									</Box>
 								)}
@@ -264,37 +280,38 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				<CardRoot flex='1'>
 					<CardBody>
 						<Heading size='md' mb='4'>
-							Vehicle Status
+							{t('vehicles.detail.sections.vehicleStatus')}
 						</Heading>
 						<Stack gap='3'>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Current Mileage
+									{t('vehicles.detail.fields.currentMileage')}
 								</Text>
 								<Text fontWeight='medium'>
-									{vehicle.mileage.toLocaleString()} {vehicle.mileage_unit}
+									{vehicle.mileage.toLocaleString(localeCode)}{' '}
+									{vehicle.mileage_unit}
 								</Text>
 							</Box>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Currency
+									{t('vehicles.detail.fields.currency')}
 								</Text>
 								<Text fontWeight='medium'>{vehicle.currency}</Text>
 							</Box>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Added On
+									{t('vehicles.detail.fields.addedOn')}
 								</Text>
 								<Text fontWeight='medium'>
-									{formatDate(vehicle.created_at)}
+									{formatDate(vehicle.created_at, localeCode)}
 								</Text>
 							</Box>
 							<Box>
 								<Text color='gray.500' fontSize='sm'>
-									Last Updated
+									{t('vehicles.detail.fields.lastUpdated')}
 								</Text>
 								<Text fontWeight='medium'>
-									{formatDate(vehicle.updated_at)}
+									{formatDate(vehicle.updated_at, localeCode)}
 								</Text>
 							</Box>
 						</Stack>
@@ -316,7 +333,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 							onClick={() => router.push(`/vehicles/${vehicleId}/fuelings/new`)}
 							cursor='pointer'
 						>
-							Add Fueling
+							{t('vehicles.detail.actions.addFueling')}
 						</Button>
 						<Button
 							variant='outline'
@@ -324,19 +341,19 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 							onClick={() => router.push(`/vehicles/${vehicleId}/fuelings`)}
 							cursor='pointer'
 						>
-							View All Fuelings
+							{t('vehicles.detail.actions.viewAllFuelings')}
 						</Button>
 					</Stack>
 
 					{isRecentFuelingsPending && (
 						<Text color='gray.500' mb='4'>
-							Loading recent fuelings...
+							{t('vehicles.detail.messages.loadingRecentFuelings')}
 						</Text>
 					)}
 
 					{isRecentFuelingsError && (
 						<Text color='red.500' mb='4'>
-							Failed to load recent fueling records.
+							{t('vehicles.detail.errors.loadRecentFuelings')}
 						</Text>
 					)}
 
@@ -359,11 +376,11 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 										>
 											<Box>
 												<Text fontWeight='medium'>
-													{formatDate(fueling.date)}
+													{formatDate(fueling.date, localeCode)}
 												</Text>
 												<Text fontSize='sm' color='gray.500'>
 													{fueling.quantity.toFixed(2)} L •{' '}
-													{fueling.mileage.toLocaleString()}{' '}
+													{fueling.mileage.toLocaleString(localeCode)}{' '}
 													{vehicle.mileage_unit}
 												</Text>
 											</Box>
@@ -387,8 +404,7 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 						recentFuelings &&
 						recentFuelings.length === 0 && (
 							<Text color='gray.500' mb='6'>
-								No fueling records yet. Add your first fueling to start
-								tracking.
+								{t('vehicles.detail.messages.emptyRecentFuelings')}
 							</Text>
 						)}
 				</CardBody>
