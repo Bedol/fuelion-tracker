@@ -36,7 +36,7 @@ const HomePage = () => {
 	useEffect(() => {
 		if (isError && data && !refreshErrorShown.current) {
 			toaster.create({
-				title: 'Failed to refresh dashboard',
+				title: t('dashboard.refreshFailed'),
 				type: 'error',
 			});
 			refreshErrorShown.current = true;
@@ -45,7 +45,7 @@ const HomePage = () => {
 		if (!isError) {
 			refreshErrorShown.current = false;
 		}
-	}, [data, isError]);
+	}, [data, isError, t]);
 
 	if (status === 'loading' || isPending) {
 		return <DashboardSkeleton />;

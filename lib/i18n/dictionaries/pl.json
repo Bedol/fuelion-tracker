@@ -25,8 +25,11 @@
 	"dashboard": {
 		"title": "Twoje podsumowanie",
 		"subtitle": "Szybki podgląd pojazdów i ostatnich tankowań.",
+		"refreshFailed": "Nie udało się odświeżyć pulpitu",
 		"vehiclesTitle": "Pojazdy",
 		"activityTitle": "Ostatnia aktywność",
+		"fuelTypeLabel": "Rodzaj paliwa",
+		"noRegistration": "Brak rejestracji",
 		"totalSpent": "Suma wydatków",
 		"averageConsumption": "Średnie spalanie",
 		"totalDistance": "Łączny dystans",

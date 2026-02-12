@@ -25,8 +25,11 @@
 	"dashboard": {
 		"title": "Your dashboard",
 		"subtitle": "Quick overview of vehicles and recent fuelings.",
+		"refreshFailed": "Failed to refresh dashboard",
 		"vehiclesTitle": "Vehicles",
 		"activityTitle": "Recent activity",
+		"fuelTypeLabel": "Fuel type",
+		"noRegistration": "No registration",
 		"totalSpent": "Total spent",
 		"averageConsumption": "Average consumption",
 		"totalDistance": "Total distance",

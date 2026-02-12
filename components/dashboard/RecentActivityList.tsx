@@ -1,7 +1,7 @@
 import { Box, Separator, Stack, Text } from '@chakra-ui/react';
-import { format, parseISO } from 'date-fns';
 import NextLink from 'next/link';
 import React from 'react';
+import { useLocale } from '../../contexts/LocaleContext';
 import type { DashboardActivityItem } from '../../types/dashboard_types';
 
 type RecentActivityListProps = {
@@ -9,32 +9,39 @@ type RecentActivityListProps = {
 };
 
 const RecentActivityList: React.FC<RecentActivityListProps> = ({ items }) => {
+	const { locale, t } = useLocale();
+	const localeCode = locale === 'pl' ? 'pl-PL' : 'en-US';
+
 	if (items.length === 0) {
 		return (
 			<Box borderWidth='1px' borderRadius='lg' p='4' bg='gray.50'>
 				<Text fontSize='sm' color='gray.600'>
-					No recent activity yet. Add a fueling to see it here.
+					{t('dashboard.emptyActivityDescription')}
 				</Text>
 			</Box>
 		);
 	}
 
 	const visibleItems = items.slice(0, 5);
-	const currencyFormatter = new Intl.NumberFormat('pl-PL', {
+	const currencyFormatter = new Intl.NumberFormat(localeCode, {
 		style: 'currency',
 		currency: 'PLN',
 	});
-	const numberFormatter = new Intl.NumberFormat('pl-PL', {
+	const numberFormatter = new Intl.NumberFormat(localeCode, {
 		minimumFractionDigits: 1,
 		maximumFractionDigits: 1,
 	});
-	const distanceFormatter = new Intl.NumberFormat('pl-PL');
+	const distanceFormatter = new Intl.NumberFormat(localeCode);
 
 	return (
 		<Stack gap='3'>
 			{visibleItems.map((item, index) => {
 				const formattedDate = item.date
-					? format(parseISO(item.date), 'dd MMM yyyy')
+					? new Date(item.date).toLocaleDateString(localeCode, {
+							year: 'numeric',
+							month: 'short',
+							day: 'numeric',
+						})
 					: '--';
 				const registrationLabel = item.registrationNumber
 					? ` (${item.registrationNumber})`
