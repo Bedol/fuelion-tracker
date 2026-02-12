@@ -1,5 +1,5 @@
-import { format, parseISO } from 'date-fns';
 import { Badge, Box, HStack, IconButton, Stack, Text } from '@chakra-ui/react';
+import { useLocale } from '../../contexts/LocaleContext';
 import { FuelingData } from '../../types';
 
 interface FuelingListItemProps {
@@ -15,8 +15,18 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 	onEdit,
 	onDelete,
 }) => {
-	const formattedDate = format(parseISO(fueling.date), 'MMM d, yyyy');
+	const { locale, t } = useLocale();
+	const localeCode = locale === 'pl' ? 'pl-PL' : 'en-US';
+	const formattedDate = new Date(fueling.date).toLocaleDateString(localeCode, {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	});
 	const isPartialTank = !fueling.full_tank;
+	const translatedFuelType = t(`vehicles.fuelTypes.${fueling.fuel_type}`);
+	const fuelTypeLabel = translatedFuelType.startsWith('vehicles.fuelTypes.')
+		? fueling.fuel_type
+		: translatedFuelType;
 
 	return (
 		<Box
@@ -41,11 +51,11 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 						</Text>
 						{isPartialTank ? (
 							<Badge colorPalette='orange' size='sm' variant='solid'>
-								Partial Tank
+								{t('fuelings.item.partialTank')}
 							</Badge>
 						) : (
 							<Badge colorPalette='green' size='sm' variant='subtle'>
-								Full Tank
+								{t('fuelings.item.fullTank')}
 							</Badge>
 						)}
 						<Badge
@@ -54,12 +64,13 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 							variant='outline'
 							textTransform='capitalize'
 						>
-							{fueling.fuel_type}
+							{fuelTypeLabel}
 						</Badge>
 					</HStack>
 					<Text fontSize='sm' color='gray.500'>
 						{fueling.quantity.toFixed(2)} L @ {fueling.cost_per_unit.toFixed(3)}{' '}
-						{currency}/L • Odo: {fueling.mileage.toLocaleString()}
+						{currency}/L • {t('fuelings.item.odometer')}:{' '}
+						{fueling.mileage.toLocaleString(localeCode)}
 					</Text>
 				</Box>
 
@@ -78,7 +89,7 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 						<HStack gap='1'>
 							{onEdit && (
 								<IconButton
-									aria-label='Edit fueling'
+									aria-label={t('fuelings.actions.editFueling')}
 									size='sm'
 									variant='ghost'
 									onClick={onEdit}
@@ -89,7 +100,7 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 							)}
 							{onDelete && (
 								<IconButton
-									aria-label='Delete fueling'
+									aria-label={t('fuelings.actions.deleteFueling')}
 									size='sm'
 									variant='ghost'
 									colorPalette='red'

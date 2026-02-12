@@ -10,11 +10,13 @@ import {
 import { FuelingData } from '../../../../types';
 import FetchDataErrorAlert from '../../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../../components/Loading';
+import { useLocale } from '../../../../contexts/LocaleContext';
 import { useSession } from 'next-auth/react';
 
 const FuelingsListPage: React.FC = () => {
 	const router = useRouter();
 	const { id } = router.query;
+	const { locale, t } = useLocale();
 	const { status } = useSession({ required: true });
 
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -67,6 +69,8 @@ const FuelingsListPage: React.FC = () => {
 		setSelectedFueling(null);
 	};
 
+	const localeCode = locale === 'pl' ? 'pl-PL' : 'en-US';
+
 	// Loading states
 	if (status === 'loading' || isPending) {
 		return <Loading />;
@@ -74,7 +78,9 @@ const FuelingsListPage: React.FC = () => {
 
 	if (isError || !vehicle) {
 		return (
-			<FetchDataErrorAlert errorMessage='Failed to load vehicle details.' />
+			<FetchDataErrorAlert
+				errorMessage={t('fuelings.errors.loadVehicleDetails')}
+			/>
 		);
 	}
 
@@ -86,8 +92,8 @@ const FuelingsListPage: React.FC = () => {
 						{vehicle.brand_name} {vehicle.model_name}
 					</Heading>
 					<Text color='gray.600'>
-						{vehicle.production_year} • {vehicle.mileage.toLocaleString()}{' '}
-						{vehicle.mileage_unit}
+						{vehicle.production_year} •{' '}
+						{vehicle.mileage.toLocaleString(localeCode)} {vehicle.mileage_unit}
 					</Text>
 				</Box>
 
@@ -98,7 +104,7 @@ const FuelingsListPage: React.FC = () => {
 						onClick={handleAddFueling}
 						cursor='pointer'
 					>
-						Add Fueling
+						{t('fuelings.actions.addFueling')}
 					</Button>
 					<Button
 						variant='ghost'
@@ -106,7 +112,7 @@ const FuelingsListPage: React.FC = () => {
 						onClick={() => router.push(`/vehicles/${id}`)}
 						cursor='pointer'
 					>
-						← Back to Vehicle
+						← {t('fuelings.actions.backToVehicle')}
 					</Button>
 				</Stack>
 			</Box>

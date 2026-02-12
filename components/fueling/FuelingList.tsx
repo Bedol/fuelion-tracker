@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { format, parseISO } from 'date-fns';
 import { Box, Button, Heading, Stack, Text, VStack } from '@chakra-ui/react';
+import { useLocale } from '../../contexts/LocaleContext';
 import { useFuelings } from '../../hooks';
 import { FuelingData } from '../../types';
 import SkeletonLoader from '../ui/SkeletonLoader';
@@ -23,6 +23,9 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	onDelete,
 	onAddNew,
 }) => {
+	const { locale, t } = useLocale();
+	const localeCode = locale === 'pl' ? 'pl-PL' : 'en-US';
+
 	const {
 		data,
 		fetchNextPage,
@@ -56,21 +59,24 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	const groupedFuelings = useMemo(() => {
 		const groups: Record<string, FuelingData[]> = {};
 		fuelings.forEach((fueling) => {
-			const monthKey = format(parseISO(fueling.date), 'MMMM yyyy');
+			const monthKey = new Date(fueling.date).toLocaleDateString(localeCode, {
+				year: 'numeric',
+				month: 'long',
+			});
 			if (!groups[monthKey]) {
 				groups[monthKey] = [];
 			}
 			groups[monthKey].push(fueling);
 		});
 		return groups;
-	}, [fuelings]);
+	}, [fuelings, localeCode]);
 
 	// Loading state
 	if (isPending) {
 		return (
 			<Box maxW='820px' mx='auto' w='full'>
 				<Heading size='md' mb='4'>
-					Fueling History
+					{t('fuelings.list.title')}
 				</Heading>
 				<SkeletonLoader type='list' />
 			</Box>
@@ -82,9 +88,11 @@ const FuelingList: React.FC<FuelingListProps> = ({
 		return (
 			<Box maxW='820px' mx='auto' w='full'>
 				<Heading size='md' mb='4'>
-					Fueling History
+					{t('fuelings.list.title')}
 				</Heading>
-				<ErrorAlert error={error || new Error('Failed to load fuelings')} />
+				<ErrorAlert
+					error={error || new Error(t('fuelings.errors.loadFuelings'))}
+				/>
 			</Box>
 		);
 	}
@@ -97,14 +105,14 @@ const FuelingList: React.FC<FuelingListProps> = ({
 					⛽
 				</Text>
 				<Heading size='md' mb='2'>
-					No fuelings yet
+					{t('fuelings.list.emptyTitle')}
 				</Heading>
 				<Text color='gray.500' mb='6'>
-					Start tracking your fuel expenses by adding your first fueling record.
+					{t('fuelings.list.emptyDescription')}
 				</Text>
 				{onAddNew && (
 					<Button colorPalette='blue' onClick={onAddNew} cursor='pointer'>
-						Add First Fueling
+						{t('fuelings.actions.addFirstFueling')}
 					</Button>
 				)}
 			</Box>
@@ -114,7 +122,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	return (
 		<Box maxW='820px' mx='auto' w='full'>
 			<Heading size='md' mb='4'>
-				Fueling History
+				{t('fuelings.list.title')}
 				<Text
 					as='span'
 					fontSize='sm'
@@ -122,7 +130,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 					color='gray.500'
 					ml='2'
 				>
-					({fuelings.length} records)
+					({fuelings.length} {t('fuelings.list.recordsLabel')})
 				</Text>
 			</Heading>
 
@@ -158,11 +166,11 @@ const FuelingList: React.FC<FuelingListProps> = ({
 				<Box ref={loadMoreRef} py='4' textAlign='center'>
 					{isFetchingNextPage ? (
 						<Text color='gray.500' fontSize='sm'>
-							Loading more...
+							{t('fuelings.list.loadingMore')}
 						</Text>
 					) : (
 						<Text color='gray.400' fontSize='sm'>
-							Scroll for more
+							{t('fuelings.list.scrollForMore')}
 						</Text>
 					)}
 				</Box>
@@ -172,7 +180,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 			{!hasNextPage && fuelings.length > 10 && (
 				<Box py='4' textAlign='center'>
 					<Text color='gray.400' fontSize='sm'>
-						— End of history —
+						{t('fuelings.list.endOfHistory')}
 					</Text>
 				</Box>
 			)}

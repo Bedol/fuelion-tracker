@@ -109,5 +109,49 @@
 				"errorDescription": "Spróbuj ponownie później."
 			}
 		}
+	},
+	"fuelings": {
+		"errors": {
+			"loadVehicleDetails": "Nie udało się załadować szczegółów pojazdu.",
+			"loadFuelings": "Nie udało się załadować tankowań"
+		},
+		"actions": {
+			"addFueling": "Dodaj tankowanie",
+			"addFirstFueling": "Dodaj pierwsze tankowanie",
+			"backToVehicle": "Powrót do pojazdu",
+			"editFueling": "Edytuj tankowanie",
+			"deleteFueling": "Usuń tankowanie"
+		},
+		"list": {
+			"title": "Historia tankowań",
+			"recordsLabel": "wpisów",
+			"emptyTitle": "Brak tankowań",
+			"emptyDescription": "Dodaj pierwsze tankowanie, aby zacząć śledzić wydatki na paliwo.",
+			"loadingMore": "Ładowanie kolejnych wpisów...",
+			"scrollForMore": "Przewiń, aby wczytać więcej",
+			"endOfHistory": "- Koniec historii -"
+		},
+		"item": {
+			"partialTank": "Niepełny bak",
+			"fullTank": "Pełny bak",
+			"odometer": "Przebieg"
+		},
+		"deleteModal": {
+			"title": "Usunąć wpis tankowania?",
+			"confirmPrefix": "Czy na pewno chcesz usunąć wpis tankowania z dnia",
+			"warning": "Tej operacji nie można cofnąć. Statystyki pojazdu zostaną przeliczone.",
+			"cancel": "Anuluj",
+			"confirm": "Usuń",
+			"deleting": "Usuwanie...",
+			"errors": {
+				"deleteFailed": "Nie udało się usunąć tankowania"
+			}
+		},
+		"toasts": {
+			"deleteSuccessTitle": "Tankowanie usunięte",
+			"deleteSuccessDescription": "Wpis został usunięty.",
+			"deleteErrorTitle": "Nie udało się usunąć",
+			"deleteErrorDescription": "Spróbuj ponownie."
+		}
 	}
 }

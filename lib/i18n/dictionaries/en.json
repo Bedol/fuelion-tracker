@@ -109,5 +109,49 @@
 				"errorDescription": "Please try again later."
 			}
 		}
+	},
+	"fuelings": {
+		"errors": {
+			"loadVehicleDetails": "Failed to load vehicle details.",
+			"loadFuelings": "Failed to load fuelings"
+		},
+		"actions": {
+			"addFueling": "Add Fueling",
+			"addFirstFueling": "Add First Fueling",
+			"backToVehicle": "Back to Vehicle",
+			"editFueling": "Edit fueling",
+			"deleteFueling": "Delete fueling"
+		},
+		"list": {
+			"title": "Fueling History",
+			"recordsLabel": "records",
+			"emptyTitle": "No fuelings yet",
+			"emptyDescription": "Start tracking your fuel expenses by adding your first fueling record.",
+			"loadingMore": "Loading more...",
+			"scrollForMore": "Scroll for more",
+			"endOfHistory": "- End of history -"
+		},
+		"item": {
+			"partialTank": "Partial Tank",
+			"fullTank": "Full Tank",
+			"odometer": "Odo"
+		},
+		"deleteModal": {
+			"title": "Delete Fueling Record?",
+			"confirmPrefix": "Are you sure you want to delete the fueling record from",
+			"warning": "This action cannot be undone. Vehicle statistics will be recalculated.",
+			"cancel": "Cancel",
+			"confirm": "Delete",
+			"deleting": "Deleting...",
+			"errors": {
+				"deleteFailed": "Failed to delete fueling"
+			}
+		},
+		"toasts": {
+			"deleteSuccessTitle": "Fueling deleted",
+			"deleteSuccessDescription": "Record removed.",
+			"deleteErrorTitle": "Failed to delete",
+			"deleteErrorDescription": "Please try again."
+		}
 	}
 }
