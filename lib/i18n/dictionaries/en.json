@@ -92,6 +92,63 @@
 			"electric": "Electric",
 			"hybrid": "Hybrid"
 		},
+		"form": {
+			"titles": {
+				"addNewVehicle": "Add New Vehicle",
+				"editVehicle": "Edit Vehicle"
+			},
+			"sections": {
+				"basicInformation": "Basic Information",
+				"technicalSpecifications": "Technical Specifications"
+			},
+			"fields": {
+				"brand": "Brand",
+				"model": "Model",
+				"productionYear": "Production Year",
+				"fuelType": "Fuel Type",
+				"registrationNumberOptional": "Registration Number (optional)",
+				"engineCapacityOptional": "Engine Capacity (cc, optional)",
+				"enginePowerOptional": "Engine Power (optional)",
+				"powerUnitOptional": "Power Unit (optional)",
+				"transmissionOptional": "Transmission (optional)"
+			},
+			"placeholders": {
+				"brandExample": "e.g., Toyota",
+				"modelExample": "e.g., Corolla",
+				"registrationExample": "e.g., ABC 1234",
+				"engineCapacityExample": "e.g., 2000",
+				"enginePowerExample": "e.g., 150",
+				"selectUnit": "Select unit...",
+				"selectTransmission": "Select transmission..."
+			},
+			"technicalToggle": {
+				"show": "+ Add technical data",
+				"hide": "- Hide technical data"
+			},
+			"options": {
+				"powerUnitHp": "Horsepower (HP)",
+				"powerUnitKw": "Kilowatts (kW)"
+			},
+			"actions": {
+				"createVehicle": "Create Vehicle",
+				"saveChanges": "Save Changes",
+				"cancel": "Cancel",
+				"submitting": "Submitting"
+			},
+			"errors": {
+				"generic": "An error occurred.",
+				"loadVehicleData": "An error occurred while fetching vehicle data.",
+				"userNotAuthenticated": "User not authenticated",
+				"createFailed": "Failed to create vehicle",
+				"updateFailed": "Failed to update vehicle"
+			},
+			"toasts": {
+				"createSuccess": "Vehicle created successfully",
+				"updateSuccess": "Vehicle updated successfully",
+				"createError": "Failed to create vehicle",
+				"updateError": "Failed to update vehicle"
+			}
+		},
 		"deleteModal": {
 			"title": "Delete Vehicle?",
 			"confirmPrefix": "Are you sure you want to delete",

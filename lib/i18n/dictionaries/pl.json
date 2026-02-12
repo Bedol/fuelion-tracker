@@ -92,6 +92,63 @@
 			"electric": "Elektryczny",
 			"hybrid": "Hybryda"
 		},
+		"form": {
+			"titles": {
+				"addNewVehicle": "Dodaj nowy pojazd",
+				"editVehicle": "Edytuj pojazd"
+			},
+			"sections": {
+				"basicInformation": "Podstawowe informacje",
+				"technicalSpecifications": "Specyfikacja techniczna"
+			},
+			"fields": {
+				"brand": "Marka",
+				"model": "Model",
+				"productionYear": "Rok produkcji",
+				"fuelType": "Rodzaj paliwa",
+				"registrationNumberOptional": "Numer rejestracyjny (opcjonalnie)",
+				"engineCapacityOptional": "Pojemność silnika (cc, opcjonalnie)",
+				"enginePowerOptional": "Moc silnika (opcjonalnie)",
+				"powerUnitOptional": "Jednostka mocy (opcjonalnie)",
+				"transmissionOptional": "Skrzynia biegów (opcjonalnie)"
+			},
+			"placeholders": {
+				"brandExample": "np. Toyota",
+				"modelExample": "np. Corolla",
+				"registrationExample": "np. ABC 1234",
+				"engineCapacityExample": "np. 2000",
+				"enginePowerExample": "np. 150",
+				"selectUnit": "Wybierz jednostkę...",
+				"selectTransmission": "Wybierz skrzynię..."
+			},
+			"technicalToggle": {
+				"show": "+ Dodaj dane techniczne",
+				"hide": "- Ukryj dane techniczne"
+			},
+			"options": {
+				"powerUnitHp": "Konie mechaniczne (HP)",
+				"powerUnitKw": "Kilowaty (kW)"
+			},
+			"actions": {
+				"createVehicle": "Utwórz pojazd",
+				"saveChanges": "Zapisz zmiany",
+				"cancel": "Anuluj",
+				"submitting": "Zapisywanie"
+			},
+			"errors": {
+				"generic": "Wystąpił błąd.",
+				"loadVehicleData": "Wystąpił błąd podczas pobierania danych pojazdu.",
+				"userNotAuthenticated": "Użytkownik nie jest zalogowany",
+				"createFailed": "Nie udało się utworzyć pojazdu",
+				"updateFailed": "Nie udało się zaktualizować pojazdu"
+			},
+			"toasts": {
+				"createSuccess": "Pojazd został utworzony",
+				"updateSuccess": "Pojazd został zaktualizowany",
+				"createError": "Nie udało się utworzyć pojazdu",
+				"updateError": "Nie udało się zaktualizować pojazdu"
+			}
+		},
 		"deleteModal": {
 			"title": "Usunąć pojazd?",
 			"confirmPrefix": "Czy na pewno chcesz usunąć",

@@ -4,10 +4,12 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import VehicleForm from '../../components/vehicles/VehicleForm';
 import { toaster } from '../../components/ui/toaster';
+import { useLocale } from '../../contexts/LocaleContext';
 import Loading from '../../components/Loading';
 
 const NewVehiclePage = () => {
 	const router = useRouter();
+	const { t } = useLocale();
 	const { data: session, status } = useSession({
 		required: true,
 		onUnauthenticated() {
@@ -29,7 +31,7 @@ const NewVehiclePage = () => {
 			transmission?: string;
 		}) => {
 			if (!session?.user?.id) {
-				throw new Error('User not authenticated');
+				throw new Error(t('vehicles.form.errors.userNotAuthenticated'));
 			}
 
 			const resp = await fetch('/api/vehicles', {
@@ -43,7 +45,9 @@ const NewVehiclePage = () => {
 
 			if (!resp.ok) {
 				const error = await resp.json();
-				throw new Error(error.message || 'Failed to create vehicle');
+				throw new Error(
+					error.message || t('vehicles.form.errors.createFailed')
+				);
 			}
 
 			return resp.json();
@@ -51,7 +55,7 @@ const NewVehiclePage = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
 			toaster.create({
-				title: 'Vehicle created successfully',
+				title: t('vehicles.form.toasts.createSuccess'),
 				type: 'success',
 			});
 			router.push('/vehicles');
@@ -59,7 +63,9 @@ const NewVehiclePage = () => {
 		onError: (error) => {
 			toaster.create({
 				title:
-					error instanceof Error ? error.message : 'Failed to create vehicle',
+					error instanceof Error
+						? error.message
+						: t('vehicles.form.toasts.createError'),
 				type: 'error',
 			});
 		},
@@ -84,7 +90,7 @@ const NewVehiclePage = () => {
 	return (
 		<Box maxW='800px' mx='auto' p='4'>
 			<Heading mb='6' size='lg'>
-				Add New Vehicle
+				{t('vehicles.form.titles.addNewVehicle')}
 			</Heading>
 			<VehicleForm
 				initialValues={initialValues}

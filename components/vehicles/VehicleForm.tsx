@@ -10,6 +10,7 @@ import {
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useLocale } from '../../contexts/LocaleContext';
 import {
 	fuelTypes,
 	powerUnits,
@@ -45,6 +46,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 	mode,
 }) => {
 	const router = useRouter();
+	const { t } = useLocale();
 	const [showTechnical, setShowTechnical] = useState(false);
 
 	const formik = useFormik({
@@ -65,7 +67,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 				{/* Section 1: Basic Information */}
 				<Box mb='6'>
 					<Text fontSize='lg' fontWeight='semibold' mb='4'>
-						Basic Information
+						{t('vehicles.form.sections.basicInformation')}
 					</Text>
 
 					<Box mb='4'>
@@ -77,7 +79,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							mb='2'
 							display='block'
 						>
-							Brand *
+							{t('vehicles.form.fields.brand')} *
 						</Text>
 						<Input
 							type='text'
@@ -85,7 +87,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							id='brand_name'
 							onChange={formik.handleChange}
 							value={formik.values.brand_name}
-							placeholder='e.g., Toyota'
+							placeholder={t('vehicles.form.placeholders.brandExample')}
 							required
 						/>
 					</Box>
@@ -99,7 +101,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							mb='2'
 							display='block'
 						>
-							Model *
+							{t('vehicles.form.fields.model')} *
 						</Text>
 						<Input
 							type='text'
@@ -107,7 +109,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							id='model_name'
 							onChange={formik.handleChange}
 							value={formik.values.model_name}
-							placeholder='e.g., Corolla'
+							placeholder={t('vehicles.form.placeholders.modelExample')}
 							required
 						/>
 					</Box>
@@ -121,7 +123,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							mb='2'
 							display='block'
 						>
-							Production Year *
+							{t('vehicles.form.fields.productionYear')} *
 						</Text>
 						<Input
 							type='number'
@@ -144,7 +146,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							mb='2'
 							display='block'
 						>
-							Fuel Type *
+							{t('vehicles.form.fields.fuelType')} *
 						</Text>
 						<Box
 							as='select'
@@ -161,7 +163,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 						>
 							{fuelTypes.map((option) => (
 								<option key={option.value} value={option.value}>
-									{option.name}
+									{t(`vehicles.fuelTypes.${option.value}`)}
 								</option>
 							))}
 						</Box>
@@ -176,7 +178,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							mb='2'
 							display='block'
 						>
-							Registration Number (optional)
+							{t('vehicles.form.fields.registrationNumberOptional')}
 						</Text>
 						<Input
 							type='text'
@@ -184,7 +186,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							id='registration_number'
 							onChange={formik.handleChange}
 							value={formik.values.registration_number || ''}
-							placeholder='e.g., ABC 1234'
+							placeholder={t('vehicles.form.placeholders.registrationExample')}
 						/>
 					</Box>
 				</Box>
@@ -197,7 +199,9 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 						onClick={() => setShowTechnical(!showTechnical)}
 						mb={showTechnical ? '4' : '0'}
 					>
-						{showTechnical ? '− Hide technical data' : '+ Add technical data'}
+						{showTechnical
+							? t('vehicles.form.technicalToggle.hide')
+							: t('vehicles.form.technicalToggle.show')}
 					</Button>
 
 					<Collapsible.Root open={showTechnical}>
@@ -209,7 +213,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 								borderColor='gray.200'
 							>
 								<Text fontSize='md' fontWeight='medium' mb='4'>
-									Technical Specifications
+									{t('vehicles.form.sections.technicalSpecifications')}
 								</Text>
 
 								<Box mb='4'>
@@ -221,7 +225,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										mb='2'
 										display='block'
 									>
-										Engine Capacity (cc, optional)
+										{t('vehicles.form.fields.engineCapacityOptional')}
 									</Text>
 									<Input
 										type='number'
@@ -229,7 +233,9 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										id='engine_capacity'
 										onChange={formik.handleChange}
 										value={formik.values.engine_capacity || ''}
-										placeholder='e.g., 2000'
+										placeholder={t(
+											'vehicles.form.placeholders.engineCapacityExample'
+										)}
 									/>
 								</Box>
 
@@ -242,7 +248,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										mb='2'
 										display='block'
 									>
-										Engine Power (optional)
+										{t('vehicles.form.fields.enginePowerOptional')}
 									</Text>
 									<Input
 										type='number'
@@ -250,7 +256,9 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										id='engine_power'
 										onChange={formik.handleChange}
 										value={formik.values.engine_power || ''}
-										placeholder='e.g., 150'
+										placeholder={t(
+											'vehicles.form.placeholders.enginePowerExample'
+										)}
 									/>
 								</Box>
 
@@ -263,7 +271,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										mb='2'
 										display='block'
 									>
-										Power Unit (optional)
+										{t('vehicles.form.fields.powerUnitOptional')}
 									</Text>
 									<Box
 										as='select'
@@ -277,10 +285,14 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										borderRadius='md'
 										w='full'
 									>
-										<option value=''>Select unit...</option>
+										<option value=''>
+											{t('vehicles.form.placeholders.selectUnit')}
+										</option>
 										{powerUnits.map((option) => (
 											<option key={option.value} value={option.value}>
-												{option.name}
+												{option.value === 'HP'
+													? t('vehicles.form.options.powerUnitHp')
+													: t('vehicles.form.options.powerUnitKw')}
 											</option>
 										))}
 									</Box>
@@ -295,7 +307,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										mb='2'
 										display='block'
 									>
-										Transmission (optional)
+										{t('vehicles.form.fields.transmissionOptional')}
 									</Text>
 									<Box
 										as='select'
@@ -309,10 +321,14 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										borderRadius='md'
 										w='full'
 									>
-										<option value=''>Select transmission...</option>
+										<option value=''>
+											{t('vehicles.form.placeholders.selectTransmission')}
+										</option>
 										{transmissionTypes.map((option) => (
 											<option key={option.value} value={option.value}>
-												{option.name}
+												{option.value === 'manual'
+													? t('vehicles.detail.values.manual')
+													: t('vehicles.detail.values.automatic')}
 											</option>
 										))}
 									</Box>
@@ -326,14 +342,16 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 				<ButtonGroup mt='4' gap='3'>
 					<Button
 						loading={mutation.isPending}
-						loadingText='Submitting'
+						loadingText={t('vehicles.form.actions.submitting')}
 						type='submit'
 						colorPalette='blue'
 					>
-						{mode === 'create' ? 'Create Vehicle' : 'Save Changes'}
+						{mode === 'create'
+							? t('vehicles.form.actions.createVehicle')
+							: t('vehicles.form.actions.saveChanges')}
 					</Button>
 					<Button variant='outline' onClick={backToVehicles}>
-						Cancel
+						{t('vehicles.form.actions.cancel')}
 					</Button>
 				</ButtonGroup>
 			</form>

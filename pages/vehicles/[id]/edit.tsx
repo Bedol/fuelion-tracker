@@ -4,12 +4,14 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import VehicleForm from '../../../components/vehicles/VehicleForm';
 import { toaster } from '../../../components/ui/toaster';
+import { useLocale } from '../../../contexts/LocaleContext';
 import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../components/Loading';
 
 const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+	const { t } = useLocale();
 	const { status } = useSession({
 		required: true,
 		onUnauthenticated() {
@@ -21,7 +23,7 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 		queryKey: ['vehicle', vehicleId],
 		queryFn: async () => {
 			const resp = await fetch(`/api/vehicles/${vehicleId}`);
-			if (!resp.ok) throw new Error('An error occurred.');
+			if (!resp.ok) throw new Error(t('vehicles.form.errors.generic'));
 			return resp.json();
 		},
 		enabled: status === 'authenticated',
@@ -49,7 +51,9 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 
 			if (!resp.ok) {
 				const error = await resp.json();
-				throw new Error(error.message || 'Failed to update vehicle');
+				throw new Error(
+					error.message || t('vehicles.form.errors.updateFailed')
+				);
 			}
 
 			return resp.json();
@@ -58,7 +62,7 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 			queryClient.invalidateQueries({ queryKey: ['vehicle', vehicleId] });
 			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
 			toaster.create({
-				title: 'Vehicle updated successfully',
+				title: t('vehicles.form.toasts.updateSuccess'),
 				type: 'success',
 			});
 			router.push('/vehicles');
@@ -66,7 +70,9 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 		onError: (error) => {
 			toaster.create({
 				title:
-					error instanceof Error ? error.message : 'Failed to update vehicle',
+					error instanceof Error
+						? error.message
+						: t('vehicles.form.toasts.updateError'),
 				type: 'error',
 			});
 		},
@@ -76,7 +82,9 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 	if (isPending) return <Loading />;
 	if (isError)
 		return (
-			<FetchDataErrorAlert errorMessage='An error occurred while fetching vehicle data.' />
+			<FetchDataErrorAlert
+				errorMessage={t('vehicles.form.errors.loadVehicleData')}
+			/>
 		);
 
 	// Map all fields from API response to form initial values
@@ -95,7 +103,7 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 	return (
 		<Box maxW='800px' mx='auto' p='4'>
 			<Heading mb='6' size='lg'>
-				Edit Vehicle
+				{t('vehicles.form.titles.editVehicle')}
 			</Heading>
 			<VehicleForm
 				initialValues={initialValues}
