@@ -1,10 +1,10 @@
-// @ts-nocheck - Chakra v3 migration: Text as 'label' and Box as 'select' have type issues but work at runtime
 import {
 	Box,
 	Button,
 	ButtonGroup,
 	Collapsible,
 	Input,
+	NativeSelect,
 	Text,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
@@ -58,6 +58,12 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 	});
 
 	const backToVehicles = () => {
+		const routeVehicleId = router.query.id;
+		if (mode === 'edit' && typeof routeVehicleId === 'string') {
+			router.push(`/vehicles/${routeVehicleId}`);
+			return;
+		}
+
 		router.push('/vehicles');
 	};
 
@@ -148,25 +154,22 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 						>
 							{t('vehicles.form.fields.fuelType')} *
 						</Text>
-						<Box
-							as='select'
-							name='fuel_type'
-							id='fuel_type'
-							onChange={formik.handleChange}
-							value={formik.values.fuel_type}
-							required
-							className='chakra-select'
-							p='2'
-							borderWidth='1px'
-							borderRadius='md'
-							w='full'
-						>
-							{fuelTypes.map((option) => (
-								<option key={option.value} value={option.value}>
-									{t(`vehicles.fuelTypes.${option.value}`)}
-								</option>
-							))}
-						</Box>
+						<NativeSelect.Root w='full'>
+							<NativeSelect.Field
+								name='fuel_type'
+								id='fuel_type'
+								onChange={formik.handleChange}
+								value={formik.values.fuel_type}
+								required
+							>
+								{fuelTypes.map((option) => (
+									<option key={option.value} value={option.value}>
+										{t(`vehicles.fuelTypes.${option.value}`)}
+									</option>
+								))}
+							</NativeSelect.Field>
+							<NativeSelect.Indicator />
+						</NativeSelect.Root>
 					</Box>
 
 					<Box mb='4'>
@@ -273,29 +276,26 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 									>
 										{t('vehicles.form.fields.powerUnitOptional')}
 									</Text>
-									<Box
-										as='select'
-										name='power_unit'
-										id='power_unit'
-										onChange={formik.handleChange}
-										value={formik.values.power_unit || ''}
-										className='chakra-select'
-										p='2'
-										borderWidth='1px'
-										borderRadius='md'
-										w='full'
-									>
-										<option value=''>
-											{t('vehicles.form.placeholders.selectUnit')}
-										</option>
-										{powerUnits.map((option) => (
-											<option key={option.value} value={option.value}>
-												{option.value === 'HP'
-													? t('vehicles.form.options.powerUnitHp')
-													: t('vehicles.form.options.powerUnitKw')}
+									<NativeSelect.Root w='full'>
+										<NativeSelect.Field
+											name='power_unit'
+											id='power_unit'
+											onChange={formik.handleChange}
+											value={formik.values.power_unit || ''}
+										>
+											<option value=''>
+												{t('vehicles.form.placeholders.selectUnit')}
 											</option>
-										))}
-									</Box>
+											{powerUnits.map((option) => (
+												<option key={option.value} value={option.value}>
+													{option.value === 'HP'
+														? t('vehicles.form.options.powerUnitHp')
+														: t('vehicles.form.options.powerUnitKw')}
+												</option>
+											))}
+										</NativeSelect.Field>
+										<NativeSelect.Indicator />
+									</NativeSelect.Root>
 								</Box>
 
 								<Box mb='4'>
@@ -309,29 +309,26 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 									>
 										{t('vehicles.form.fields.transmissionOptional')}
 									</Text>
-									<Box
-										as='select'
-										name='transmission'
-										id='transmission'
-										onChange={formik.handleChange}
-										value={formik.values.transmission || ''}
-										className='chakra-select'
-										p='2'
-										borderWidth='1px'
-										borderRadius='md'
-										w='full'
-									>
-										<option value=''>
-											{t('vehicles.form.placeholders.selectTransmission')}
-										</option>
-										{transmissionTypes.map((option) => (
-											<option key={option.value} value={option.value}>
-												{option.value === 'manual'
-													? t('vehicles.detail.values.manual')
-													: t('vehicles.detail.values.automatic')}
+									<NativeSelect.Root w='full'>
+										<NativeSelect.Field
+											name='transmission'
+											id='transmission'
+											onChange={formik.handleChange}
+											value={formik.values.transmission || ''}
+										>
+											<option value=''>
+												{t('vehicles.form.placeholders.selectTransmission')}
 											</option>
-										))}
-									</Box>
+											{transmissionTypes.map((option) => (
+												<option key={option.value} value={option.value}>
+													{option.value === 'manual'
+														? t('vehicles.detail.values.manual')
+														: t('vehicles.detail.values.automatic')}
+												</option>
+											))}
+										</NativeSelect.Field>
+										<NativeSelect.Indicator />
+									</NativeSelect.Root>
 								</Box>
 							</Box>
 						</Collapsible.Content>

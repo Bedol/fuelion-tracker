@@ -57,6 +57,8 @@ const NewVehiclePage = () => {
 			toaster.create({
 				title: t('vehicles.form.toasts.createSuccess'),
 				type: 'success',
+				duration: 6000,
+				closable: true,
 			});
 			router.push('/vehicles');
 		},

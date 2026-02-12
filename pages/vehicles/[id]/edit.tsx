@@ -64,8 +64,10 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 			toaster.create({
 				title: t('vehicles.form.toasts.updateSuccess'),
 				type: 'success',
+				duration: 6000,
+				closable: true,
 			});
-			router.push('/vehicles');
+			router.push(`/vehicles/${vehicleId}`);
 		},
 		onError: (error) => {
 			toaster.create({
