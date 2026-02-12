@@ -1,3 +1,10 @@
+# [1.2.0-develop.3](https://github.com/Bedol/fuelion-tracker/compare/v1.2.0-develop.2...v1.2.0-develop.3) (2026-02-12)
+
+
+### Bug Fixes
+
+* **dashboard:** keep card order consistent on mobile ([3496e96](https://github.com/Bedol/fuelion-tracker/commit/3496e96371354bd49911c8d46ef62c0a85ce675e))
+
 # [1.2.0-develop.2](https://github.com/Bedol/fuelion-tracker/compare/v1.2.0-develop.1...v1.2.0-develop.2) (2026-02-12)
 
 
