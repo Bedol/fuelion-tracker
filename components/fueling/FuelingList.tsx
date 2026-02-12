@@ -68,7 +68,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	// Loading state
 	if (isPending) {
 		return (
-			<Box>
+			<Box maxW='820px' mx='auto' w='full'>
 				<Heading size='md' mb='4'>
 					Fueling History
 				</Heading>
@@ -80,7 +80,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	// Error state
 	if (isError) {
 		return (
-			<Box>
+			<Box maxW='820px' mx='auto' w='full'>
 				<Heading size='md' mb='4'>
 					Fueling History
 				</Heading>
@@ -92,7 +92,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	// Empty state
 	if (fuelings.length === 0) {
 		return (
-			<Box textAlign='center' py='12'>
+			<Box maxW='820px' mx='auto' w='full' textAlign='center' py='12'>
 				<Text fontSize='4xl' mb='4'>
 					⛽
 				</Text>
@@ -112,7 +112,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 	}
 
 	return (
-		<Box>
+		<Box maxW='820px' mx='auto' w='full'>
 			<Heading size='md' mb='4'>
 				Fueling History
 				<Text
@@ -126,7 +126,7 @@ const FuelingList: React.FC<FuelingListProps> = ({
 				</Text>
 			</Heading>
 
-			<VStack gap='6' align='stretch'>
+			<VStack gap='4' align='stretch'>
 				{Object.entries(groupedFuelings).map(([month, monthFuelings]) => (
 					<Box key={month}>
 						<Heading

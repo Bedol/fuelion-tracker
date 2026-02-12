@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns';
-import { Box, Flex, Text, Badge, IconButton, HStack } from '@chakra-ui/react';
+import { Badge, Box, HStack, IconButton, Stack, Text } from '@chakra-ui/react';
 import { FuelingData } from '../../types';
 
 interface FuelingListItemProps {
@@ -20,19 +20,23 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 
 	return (
 		<Box
-			p='4'
+			p='3'
 			borderWidth='1px'
-			borderRadius='md'
+			borderRadius='lg'
 			borderColor={isPartialTank ? 'orange.300' : 'gray.200'}
 			bg={isPartialTank ? 'orange.50' : 'white'}
-			_hover={{ shadow: 'sm' }}
+			_hover={{ shadow: 'xs' }}
 			transition='all 0.2s'
 		>
-			<Flex justify='space-between' align='flex-start' gap='4'>
-				{/* Left: Date and indicators */}
+			<Stack
+				direction={{ base: 'column', md: 'row' }}
+				justify='space-between'
+				align={{ base: 'flex-start', md: 'center' }}
+				gap='3'
+			>
 				<Box flex='1'>
-					<Flex align='center' gap='2' mb='2'>
-						<Text fontWeight='semibold' fontSize='md'>
+					<HStack gap='2' wrap='wrap' mb='1'>
+						<Text fontWeight='semibold' fontSize='sm'>
 							{formattedDate}
 						</Text>
 						{isPartialTank ? (
@@ -44,63 +48,61 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 								Full Tank
 							</Badge>
 						)}
-					</Flex>
-
-					{/* Fuel type badge */}
-					<Badge
-						colorPalette='gray'
-						size='sm'
-						variant='outline'
-						textTransform='capitalize'
-						mb='2'
-					>
-						{fueling.fuel_type}
-					</Badge>
-				</Box>
-
-				{/* Right: Cost and price info */}
-				<Box textAlign='right'>
-					<Text fontSize='lg' fontWeight='bold' color='blue.600'>
-						{fueling.cost.toFixed(2)} {currency}
-					</Text>
+						<Badge
+							colorPalette='gray'
+							size='sm'
+							variant='outline'
+							textTransform='capitalize'
+						>
+							{fueling.fuel_type}
+						</Badge>
+					</HStack>
 					<Text fontSize='sm' color='gray.500'>
 						{fueling.quantity.toFixed(2)} L @ {fueling.cost_per_unit.toFixed(3)}{' '}
-						{currency}/L
-					</Text>
-					<Text fontSize='xs' color='gray.400' mt='1'>
-						Odo: {fueling.mileage.toLocaleString()}
+						{currency}/L • Odo: {fueling.mileage.toLocaleString()}
 					</Text>
 				</Box>
-			</Flex>
 
-			{/* Actions */}
-			{(onEdit || onDelete) && (
-				<HStack justify='flex-end' mt='3' gap='2'>
-					{onEdit && (
-						<IconButton
-							aria-label='Edit fueling'
-							size='sm'
-							variant='ghost'
-							onClick={onEdit}
-							cursor='pointer'
-						>
-							<span>✏️</span>
-						</IconButton>
+				<Stack
+					direction='row'
+					align='center'
+					justify='space-between'
+					w={{ base: 'full', md: 'auto' }}
+					gap='2'
+				>
+					<Text fontSize='md' fontWeight='bold' color='blue.600'>
+						{fueling.cost.toFixed(2)} {currency}
+					</Text>
+
+					{(onEdit || onDelete) && (
+						<HStack gap='1'>
+							{onEdit && (
+								<IconButton
+									aria-label='Edit fueling'
+									size='sm'
+									variant='ghost'
+									onClick={onEdit}
+									cursor='pointer'
+								>
+									<span>✏️</span>
+								</IconButton>
+							)}
+							{onDelete && (
+								<IconButton
+									aria-label='Delete fueling'
+									size='sm'
+									variant='ghost'
+									colorPalette='red'
+									onClick={onDelete}
+									cursor='pointer'
+								>
+									<span>🗑️</span>
+								</IconButton>
+							)}
+						</HStack>
 					)}
-					{onDelete && (
-						<IconButton
-							aria-label='Delete fueling'
-							size='sm'
-							variant='ghost'
-							colorPalette='red'
-							onClick={onDelete}
-							cursor='pointer'
-						>
-							<span>🗑️</span>
-						</IconButton>
-					)}
-				</HStack>
-			)}
+				</Stack>
+			</Stack>
 		</Box>
 	);
 };

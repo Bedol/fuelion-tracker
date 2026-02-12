@@ -79,33 +79,38 @@ const FuelingsListPage: React.FC = () => {
 	}
 
 	return (
-		<Box maxW='1200px' mx='auto' p='4'>
-			{/* Header */}
-			<Box mb='6'>
-				<Heading size='xl' mb='2'>
-					{vehicle.brand_name} {vehicle.model_name}
-				</Heading>
-				<Text color='gray.600'>
-					{vehicle.production_year} • {vehicle.mileage.toLocaleString()}{' '}
-					{vehicle.mileage_unit}
-				</Text>
+		<Box maxW='1000px' mx='auto' p='4'>
+			<Box maxW='820px' mx='auto' w='full'>
+				<Box mb='6'>
+					<Heading size='xl' mb='2'>
+						{vehicle.brand_name} {vehicle.model_name}
+					</Heading>
+					<Text color='gray.600'>
+						{vehicle.production_year} • {vehicle.mileage.toLocaleString()}{' '}
+						{vehicle.mileage_unit}
+					</Text>
+				</Box>
+
+				<Stack direction={{ base: 'column', sm: 'row' }} mb='6' gap='3'>
+					<Button
+						colorPalette='blue'
+						w={{ base: 'full', sm: 'auto' }}
+						onClick={handleAddFueling}
+						cursor='pointer'
+					>
+						Add Fueling
+					</Button>
+					<Button
+						variant='ghost'
+						w={{ base: 'full', sm: 'auto' }}
+						onClick={() => router.push(`/vehicles/${id}`)}
+						cursor='pointer'
+					>
+						← Back to Vehicle
+					</Button>
+				</Stack>
 			</Box>
 
-			{/* Action Buttons */}
-			<Stack direction='row' mb='6' gap='4'>
-				<Button colorPalette='blue' onClick={handleAddFueling} cursor='pointer'>
-					Add Fueling
-				</Button>
-				<Button
-					variant='ghost'
-					onClick={() => router.push(`/vehicles/${id}`)}
-					cursor='pointer'
-				>
-					← Back to Vehicle
-				</Button>
-			</Stack>
-
-			{/* Fueling List */}
 			<FuelingList
 				vehicleId={vehicle.id}
 				currency={vehicle.currency}
