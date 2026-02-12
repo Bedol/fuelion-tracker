@@ -145,6 +145,13 @@
 				"partialTank": "Partial tank"
 			}
 		},
+		"summary": {
+			"title": "Summary for visible records",
+			"fuelings": "Fuelings",
+			"totalCost": "Total cost",
+			"avgPricePerLiter": "Average price per liter",
+			"perLiterSuffix": "/L"
+		},
 		"item": {
 			"partialTank": "Partial Tank",
 			"fullTank": "Full Tank",

@@ -7,6 +7,7 @@ import {
 	Input,
 	Menu,
 	Portal,
+	SimpleGrid,
 	Stack,
 	Text,
 	VStack,
@@ -148,6 +149,33 @@ const FuelingList: React.FC<FuelingListProps> = ({
 		});
 		return groups;
 	}, [filteredFuelings, localeCode]);
+
+	const visibleSummary = useMemo(() => {
+		const totalCost = filteredFuelings.reduce(
+			(acc, fueling) => acc + fueling.cost,
+			0
+		);
+		const totalQuantity = filteredFuelings.reduce(
+			(acc, fueling) => acc + fueling.quantity,
+			0
+		);
+		const avgPricePerLiter = totalQuantity > 0 ? totalCost / totalQuantity : 0;
+
+		return {
+			count: filteredFuelings.length,
+			totalCost,
+			avgPricePerLiter,
+		};
+	}, [filteredFuelings]);
+
+	const currencyFormatter = useMemo(
+		() =>
+			new Intl.NumberFormat(localeCode, {
+				style: 'currency',
+				currency,
+			}),
+		[localeCode, currency]
+	);
 
 	// Loading state
 	if (isPending) {
@@ -360,6 +388,40 @@ const FuelingList: React.FC<FuelingListProps> = ({
 				</Box>
 			) : (
 				<>
+					<Box borderWidth='1px' borderRadius='md' p='4' mb='4' bg='gray.50'>
+						<Text fontSize='sm' color='gray.600' mb='3'>
+							{t('fuelings.summary.title')}
+						</Text>
+						<SimpleGrid columns={{ base: 1, md: 3 }} gap='4'>
+							<Box>
+								<Text fontSize='xs' color='gray.500' mb='1'>
+									{t('fuelings.summary.fuelings')}
+								</Text>
+								<Text fontWeight='semibold'>{visibleSummary.count}</Text>
+							</Box>
+							<Box>
+								<Text fontSize='xs' color='gray.500' mb='1'>
+									{t('fuelings.summary.totalCost')}
+								</Text>
+								<Text fontWeight='semibold'>
+									{currencyFormatter.format(visibleSummary.totalCost)}
+								</Text>
+							</Box>
+							<Box>
+								<Text fontSize='xs' color='gray.500' mb='1'>
+									{t('fuelings.summary.avgPricePerLiter')}
+								</Text>
+								<Text fontWeight='semibold'>
+									{visibleSummary.count > 0
+										? `${currencyFormatter.format(visibleSummary.avgPricePerLiter)} ${t(
+												'fuelings.summary.perLiterSuffix'
+											)}`
+										: '-'}
+								</Text>
+							</Box>
+						</SimpleGrid>
+					</Box>
+
 					<VStack gap='4' align='stretch'>
 						{Object.entries(groupedFuelings).map(([month, monthFuelings]) => (
 							<Box key={month}>

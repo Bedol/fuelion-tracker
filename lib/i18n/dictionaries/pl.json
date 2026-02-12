@@ -145,6 +145,13 @@
 				"partialTank": "Niepełny bak"
 			}
 		},
+		"summary": {
+			"title": "Podsumowanie widocznych wpisów",
+			"fuelings": "Tankowania",
+			"totalCost": "Suma kosztów",
+			"avgPricePerLiter": "Średnia cena za litr",
+			"perLiterSuffix": "/l"
+		},
 		"item": {
 			"partialTank": "Niepełny bak",
 			"fullTank": "Pełny bak",
