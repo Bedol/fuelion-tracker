@@ -38,5 +38,8 @@
 		"emptyVehiclesCta": "Add vehicle",
 		"emptyActivityTitle": "No activity yet",
 		"emptyActivityDescription": "Add a fueling to see it here."
+	},
+	"vehicles": {
+		"last10Fuelings": "Last 10 Fuelings"
 	}
 }

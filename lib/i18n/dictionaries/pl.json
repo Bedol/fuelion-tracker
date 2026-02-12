@@ -38,5 +38,8 @@
 		"emptyVehiclesCta": "Dodaj pojazd",
 		"emptyActivityTitle": "Brak aktywności",
 		"emptyActivityDescription": "Dodaj tankowanie, aby zobaczyć je tutaj."
+	},
+	"vehicles": {
+		"last10Fuelings": "Ostatnie 10 tankowań"
 	}
 }

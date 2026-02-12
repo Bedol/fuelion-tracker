@@ -2,7 +2,6 @@ import {
 	Badge,
 	Box,
 	Button,
-	ButtonGroup,
 	CardRoot,
 	CardBody,
 	Heading,
@@ -17,6 +16,8 @@ import { Vehicle } from '@prisma/client';
 import FetchDataErrorAlert from '../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../components/Loading';
 import DeleteVehicleModal from '../../../components/vehicles/DeleteVehicleModal';
+import { useLocale } from '../../../contexts/LocaleContext';
+import { FuelingData } from '../../../types';
 import { fuelTypes } from '../../../types/vehicle_types';
 
 type VehicleDetailPageProps = {
@@ -50,6 +51,7 @@ const formatDate = (date: Date | string): string => {
 const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 	const router = useRouter();
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const { t } = useLocale();
 	const { status } = useSession({
 		required: true,
 		onUnauthenticated() {
@@ -69,6 +71,22 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				throw new Error('Failed to fetch vehicle');
 			}
 			return result.json() as Promise<Vehicle>;
+		},
+		enabled: status === 'authenticated',
+	});
+
+	const {
+		data: recentFuelings,
+		isPending: isRecentFuelingsPending,
+		isError: isRecentFuelingsError,
+	} = useQuery({
+		queryKey: ['fuelings', vehicleId, 'recent'],
+		queryFn: async () => {
+			const result = await fetch(`/api/fueling?vehicleId=${vehicleId}&take=10`);
+			if (!result.ok) {
+				throw new Error('Failed to fetch recent fuelings');
+			}
+			return result.json() as Promise<FuelingData[]>;
 		},
 		enabled: status === 'authenticated',
 	});
@@ -284,38 +302,95 @@ const VehicleDetailPage: React.FC<VehicleDetailPageProps> = ({ vehicleId }) => {
 				</CardRoot>
 			</Stack>
 
-			{/* Section 4: Placeholder for Future Features */}
+			{/* Section 4: Recent Fueling Records */}
 			<CardRoot variant='outline'>
 				<CardBody>
-					<Box textAlign='center' py='8'>
-						<Text fontSize='2xl' mb='4'>
-							⛽
-						</Text>
-						<Heading size='md' mb='2' color='gray.600'>
-							Fueling Records & Statistics
-						</Heading>
+					<Heading size='md' mb='4'>
+						{t('vehicles.last10Fuelings')}
+					</Heading>
+
+					<Stack direction={{ base: 'column', sm: 'row' }} gap='3' mb='6'>
+						<Button
+							colorPalette='blue'
+							w={{ base: 'full', sm: 'auto' }}
+							onClick={() => router.push(`/vehicles/${vehicleId}/fuelings/new`)}
+							cursor='pointer'
+						>
+							Add Fueling
+						</Button>
+						<Button
+							variant='outline'
+							w={{ base: 'full', sm: 'auto' }}
+							onClick={() => router.push(`/vehicles/${vehicleId}/fuelings`)}
+							cursor='pointer'
+						>
+							View All Fuelings
+						</Button>
+					</Stack>
+
+					{isRecentFuelingsPending && (
 						<Text color='gray.500' mb='4'>
-							Track your fuel expenses and view statistics
+							Loading recent fuelings...
 						</Text>
-						<ButtonGroup gap='3'>
-							<Button
-								colorPalette='blue'
-								onClick={() =>
-									router.push(`/vehicles/${vehicleId}/fuelings/new`)
-								}
-								cursor='pointer'
-							>
-								Add Fueling
-							</Button>
-							<Button
-								variant='outline'
-								onClick={() => router.push(`/vehicles/${vehicleId}/fuelings`)}
-								cursor='pointer'
-							>
-								View All Fuelings
-							</Button>
-						</ButtonGroup>
-					</Box>
+					)}
+
+					{isRecentFuelingsError && (
+						<Text color='red.500' mb='4'>
+							Failed to load recent fueling records.
+						</Text>
+					)}
+
+					{!isRecentFuelingsPending &&
+						!isRecentFuelingsError &&
+						recentFuelings &&
+						recentFuelings.length > 0 && (
+							<Stack gap='3' mb='6'>
+								{recentFuelings.map((fueling) => (
+									<Box
+										key={fueling.id}
+										p='4'
+										borderWidth='1px'
+										borderRadius='md'
+									>
+										<Stack
+											direction={{ base: 'column', sm: 'row' }}
+											justify='space-between'
+											gap='3'
+										>
+											<Box>
+												<Text fontWeight='medium'>
+													{formatDate(fueling.date)}
+												</Text>
+												<Text fontSize='sm' color='gray.500'>
+													{fueling.quantity.toFixed(2)} L •{' '}
+													{fueling.mileage.toLocaleString()}{' '}
+													{vehicle.mileage_unit}
+												</Text>
+											</Box>
+											<Box textAlign={{ base: 'left', sm: 'right' }}>
+												<Text fontWeight='semibold'>
+													{fueling.cost.toFixed(2)} {vehicle.currency}
+												</Text>
+												<Text fontSize='sm' color='gray.500'>
+													{fueling.cost_per_unit.toFixed(3)} {vehicle.currency}
+													/L
+												</Text>
+											</Box>
+										</Stack>
+									</Box>
+								))}
+							</Stack>
+						)}
+
+					{!isRecentFuelingsPending &&
+						!isRecentFuelingsError &&
+						recentFuelings &&
+						recentFuelings.length === 0 && (
+							<Text color='gray.500' mb='6'>
+								No fueling records yet. Add your first fueling to start
+								tracking.
+							</Text>
+						)}
 				</CardBody>
 			</CardRoot>
 
