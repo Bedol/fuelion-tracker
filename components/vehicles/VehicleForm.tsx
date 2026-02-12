@@ -20,11 +20,11 @@ import {
 type VehicleFormValues = {
 	brand_name: string;
 	model_name: string;
-	production_year: number;
+	production_year: number | string;
 	fuel_type: string;
 	registration_number?: string;
-	engine_capacity?: number;
-	engine_power?: number;
+	engine_capacity?: number | string;
+	engine_power?: number | string;
 	power_unit?: string;
 	transmission?: string;
 };
@@ -61,13 +61,88 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 		setShowTechnical(hasTechnicalData);
 	}, [hasTechnicalData]);
 
+	const validatePositiveInteger = (value: number | string | undefined) => {
+		if (value === undefined || value === null || value === '') {
+			return true;
+		}
+
+		const parsedValue = Number(value);
+		return Number.isInteger(parsedValue) && parsedValue > 0;
+	};
+
 	const formik = useFormik({
 		initialValues,
+		validate: (values) => {
+			const errors: Partial<Record<keyof VehicleFormValues, string>> = {};
+
+			if (!values.brand_name.trim()) {
+				errors.brand_name = t('vehicles.form.validation.brandRequired');
+			}
+
+			if (!values.model_name.trim()) {
+				errors.model_name = t('vehicles.form.validation.modelRequired');
+			}
+
+			if (
+				values.production_year === '' ||
+				values.production_year === null ||
+				values.production_year === undefined
+			) {
+				errors.production_year = t(
+					'vehicles.form.validation.productionYearRequired'
+				);
+			} else {
+				const parsedYear = Number(values.production_year);
+				if (!Number.isInteger(parsedYear)) {
+					errors.production_year = t(
+						'vehicles.form.validation.productionYearInvalid'
+					);
+				} else if (parsedYear < 1900 || parsedYear > currentYear + 1) {
+					errors.production_year = t(
+						'vehicles.form.validation.productionYearRange'
+					);
+				}
+			}
+
+			if (!validatePositiveInteger(values.engine_capacity)) {
+				errors.engine_capacity = t(
+					'vehicles.form.validation.engineCapacityInvalid'
+				);
+			}
+
+			if (!validatePositiveInteger(values.engine_power)) {
+				errors.engine_power = t('vehicles.form.validation.enginePowerInvalid');
+			}
+
+			return errors;
+		},
 		onSubmit: (values) => {
-			mutation.mutate(values);
+			mutation.mutate({
+				...values,
+				brand_name: values.brand_name.trim(),
+				model_name: values.model_name.trim(),
+				production_year: Number(values.production_year),
+				registration_number: values.registration_number?.trim() || '',
+			});
 		},
 		enableReinitialize: true,
 	});
+
+	const hasBrandError = Boolean(
+		formik.touched.brand_name && formik.errors.brand_name
+	);
+	const hasModelError = Boolean(
+		formik.touched.model_name && formik.errors.model_name
+	);
+	const hasProductionYearError = Boolean(
+		formik.touched.production_year && formik.errors.production_year
+	);
+	const hasEngineCapacityError = Boolean(
+		formik.touched.engine_capacity && formik.errors.engine_capacity
+	);
+	const hasEnginePowerError = Boolean(
+		formik.touched.engine_power && formik.errors.engine_power
+	);
 
 	const backToVehicles = () => {
 		const routeVehicleId = router.query.id;
@@ -104,10 +179,20 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							name='brand_name'
 							id='brand_name'
 							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
 							value={formik.values.brand_name}
 							placeholder={t('vehicles.form.placeholders.brandExample')}
+							borderColor={hasBrandError ? 'red.500' : undefined}
+							_focusVisible={
+								hasBrandError ? { borderColor: 'red.500' } : undefined
+							}
 							required
 						/>
+						{formik.touched.brand_name && formik.errors.brand_name && (
+							<Text color='red.500' fontSize='xs' mt='1'>
+								{formik.errors.brand_name}
+							</Text>
+						)}
 					</Box>
 
 					<Box mb='4'>
@@ -126,10 +211,20 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							name='model_name'
 							id='model_name'
 							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
 							value={formik.values.model_name}
 							placeholder={t('vehicles.form.placeholders.modelExample')}
+							borderColor={hasModelError ? 'red.500' : undefined}
+							_focusVisible={
+								hasModelError ? { borderColor: 'red.500' } : undefined
+							}
 							required
 						/>
+						{formik.touched.model_name && formik.errors.model_name && (
+							<Text color='red.500' fontSize='xs' mt='1'>
+								{formik.errors.model_name}
+							</Text>
+						)}
 					</Box>
 
 					<Box mb='4'>
@@ -148,11 +243,22 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							name='production_year'
 							id='production_year'
 							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
 							value={formik.values.production_year}
 							min={1900}
 							max={currentYear + 1}
+							borderColor={hasProductionYearError ? 'red.500' : undefined}
+							_focusVisible={
+								hasProductionYearError ? { borderColor: 'red.500' } : undefined
+							}
 							required
 						/>
+						{formik.touched.production_year &&
+							formik.errors.production_year && (
+								<Text color='red.500' fontSize='xs' mt='1'>
+									{formik.errors.production_year}
+								</Text>
+							)}
 					</Box>
 
 					<Box mb='4'>
@@ -171,6 +277,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 								name='fuel_type'
 								id='fuel_type'
 								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
 								value={formik.values.fuel_type}
 								required
 							>
@@ -200,6 +307,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							name='registration_number'
 							id='registration_number'
 							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
 							value={formik.values.registration_number || ''}
 							placeholder={t('vehicles.form.placeholders.registrationExample')}
 						/>
@@ -248,11 +356,24 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										name='engine_capacity'
 										id='engine_capacity'
 										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
 										value={formik.values.engine_capacity || ''}
 										placeholder={t(
 											'vehicles.form.placeholders.engineCapacityExample'
 										)}
+										borderColor={hasEngineCapacityError ? 'red.500' : undefined}
+										_focusVisible={
+											hasEngineCapacityError
+												? { borderColor: 'red.500' }
+												: undefined
+										}
 									/>
+									{formik.touched.engine_capacity &&
+										formik.errors.engine_capacity && (
+											<Text color='red.500' fontSize='xs' mt='1'>
+												{formik.errors.engine_capacity}
+											</Text>
+										)}
 								</Box>
 
 								<Box mb='4'>
@@ -271,11 +392,24 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										name='engine_power'
 										id='engine_power'
 										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
 										value={formik.values.engine_power || ''}
 										placeholder={t(
 											'vehicles.form.placeholders.enginePowerExample'
 										)}
+										borderColor={hasEnginePowerError ? 'red.500' : undefined}
+										_focusVisible={
+											hasEnginePowerError
+												? { borderColor: 'red.500' }
+												: undefined
+										}
 									/>
+									{formik.touched.engine_power &&
+										formik.errors.engine_power && (
+											<Text color='red.500' fontSize='xs' mt='1'>
+												{formik.errors.engine_power}
+											</Text>
+										)}
 								</Box>
 
 								<Box mb='4'>
@@ -294,6 +428,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 											name='power_unit'
 											id='power_unit'
 											onChange={formik.handleChange}
+											onBlur={formik.handleBlur}
 											value={formik.values.power_unit || ''}
 										>
 											<option value=''>
@@ -327,6 +462,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 											name='transmission'
 											id='transmission'
 											onChange={formik.handleChange}
+											onBlur={formik.handleBlur}
 											value={formik.values.transmission || ''}
 										>
 											<option value=''>

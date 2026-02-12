@@ -142,6 +142,15 @@
 				"createFailed": "Failed to create vehicle",
 				"updateFailed": "Failed to update vehicle"
 			},
+			"validation": {
+				"brandRequired": "Brand is required",
+				"modelRequired": "Model is required",
+				"productionYearRequired": "Production year is required",
+				"productionYearInvalid": "Production year must be a valid number",
+				"productionYearRange": "Production year must be between 1900 and next year",
+				"engineCapacityInvalid": "Engine capacity must be a positive whole number",
+				"enginePowerInvalid": "Engine power must be a positive whole number"
+			},
 			"toasts": {
 				"createSuccess": "Vehicle created successfully",
 				"updateSuccess": "Vehicle updated successfully",

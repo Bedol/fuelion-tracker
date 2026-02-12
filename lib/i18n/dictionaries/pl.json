@@ -142,6 +142,15 @@
 				"createFailed": "Nie udało się utworzyć pojazdu",
 				"updateFailed": "Nie udało się zaktualizować pojazdu"
 			},
+			"validation": {
+				"brandRequired": "Marka jest wymagana",
+				"modelRequired": "Model jest wymagany",
+				"productionYearRequired": "Rok produkcji jest wymagany",
+				"productionYearInvalid": "Rok produkcji musi być poprawną liczbą",
+				"productionYearRange": "Rok produkcji musi być między 1900 a przyszłym rokiem",
+				"engineCapacityInvalid": "Pojemność silnika musi być dodatnią liczbą całkowitą",
+				"enginePowerInvalid": "Moc silnika musi być dodatnią liczbą całkowitą"
+			},
 			"toasts": {
 				"createSuccess": "Pojazd został utworzony",
 				"updateSuccess": "Pojazd został zaktualizowany",
