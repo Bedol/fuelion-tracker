@@ -131,6 +131,20 @@
 			"scrollForMore": "Przewiń, aby wczytać więcej",
 			"endOfHistory": "- Koniec historii -"
 		},
+		"filters": {
+			"dateFrom": "Data od",
+			"dateTo": "Data do",
+			"tankType": "Typ tankowania",
+			"fuelType": "Rodzaj paliwa",
+			"clear": "Wyczyść filtry",
+			"emptyTitle": "Brak wpisów dla wybranych filtrów",
+			"emptyDescription": "Zmień filtry albo wyczyść je, aby zobaczyć wszystkie wpisy.",
+			"options": {
+				"all": "Wszystkie",
+				"fullTank": "Pełny bak",
+				"partialTank": "Niepełny bak"
+			}
+		},
 		"item": {
 			"partialTank": "Niepełny bak",
 			"fullTank": "Pełny bak",

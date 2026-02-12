@@ -131,6 +131,20 @@
 			"scrollForMore": "Scroll for more",
 			"endOfHistory": "- End of history -"
 		},
+		"filters": {
+			"dateFrom": "Date from",
+			"dateTo": "Date to",
+			"tankType": "Tank type",
+			"fuelType": "Fuel type",
+			"clear": "Clear filters",
+			"emptyTitle": "No records for selected filters",
+			"emptyDescription": "Try changing filters or clear them to see all records.",
+			"options": {
+				"all": "All",
+				"fullTank": "Full tank",
+				"partialTank": "Partial tank"
+			}
+		},
 		"item": {
 			"partialTank": "Partial Tank",
 			"fullTank": "Full Tank",
