@@ -52,7 +52,7 @@ const NewVehiclePage = () => {
 
 			return resp.json();
 		},
-		onSuccess: () => {
+		onSuccess: (createdVehicle: { id: number }) => {
 			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
 			toaster.create({
 				title: t('vehicles.form.toasts.createSuccess'),
@@ -60,7 +60,7 @@ const NewVehiclePage = () => {
 				duration: 6000,
 				closable: true,
 			});
-			router.push('/vehicles');
+			router.push(`/vehicles/${createdVehicle.id}`);
 		},
 		onError: (error) => {
 			toaster.create({
