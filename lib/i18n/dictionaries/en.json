@@ -196,6 +196,50 @@
 			"editFueling": "Edit fueling",
 			"deleteFueling": "Delete fueling"
 		},
+		"form": {
+			"titles": {
+				"addFueling": "Add Fueling",
+				"editFueling": "Edit Fueling"
+			},
+			"sections": {
+				"fuelingDetails": "Fueling details",
+				"tripDetails": "Trip details"
+			},
+			"fields": {
+				"totalCost": "Total cost",
+				"quantity": "Fuel quantity (L)",
+				"costPerUnit": "Price per liter",
+				"fuelType": "Fuel type",
+				"mileage": "Odometer",
+				"date": "Date",
+				"tankType": "Tank type"
+			},
+			"tankType": {
+				"full": "Full tank",
+				"partial": "Partial tank"
+			},
+			"hints": {
+				"autoCalculated": "calculated automatically",
+				"lastRecorded": "Last recorded:",
+				"fullTankSelected": "Full tank fueling - used in fuel consumption statistics.",
+				"partialTankSelected": "Partial fueling - useful for tracking expenses."
+			},
+			"validation": {
+				"costGreaterThanZero": "Total cost must be greater than 0",
+				"quantityGreaterThanZero": "Fuel quantity must be greater than 0",
+				"mileageGreaterThanZero": "Odometer reading must be greater than 0",
+				"mileageAboveLastPrefix": "Odometer must be greater than last reading",
+				"dateRequired": "Date is required",
+				"fuelTypeRequired": "Fuel type is required"
+			},
+			"actions": {
+				"addFueling": "Add Fueling",
+				"saveChanges": "Save Changes",
+				"cancel": "Cancel",
+				"adding": "Adding...",
+				"saving": "Saving..."
+			}
+		},
 		"list": {
 			"title": "Fueling History",
 			"recordsLabel": "records",
