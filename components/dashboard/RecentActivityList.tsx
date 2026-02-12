@@ -1,6 +1,6 @@
-import { Box, Separator, Stack, Text } from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLocale } from '../../contexts/LocaleContext';
 import type { DashboardActivityItem } from '../../types/dashboard_types';
 
@@ -23,77 +23,126 @@ const RecentActivityList: React.FC<RecentActivityListProps> = ({ items }) => {
 	}
 
 	const visibleItems = items.slice(0, 5);
-	const currencyFormatter = new Intl.NumberFormat(localeCode, {
-		style: 'currency',
-		currency: 'PLN',
-	});
 	const numberFormatter = new Intl.NumberFormat(localeCode, {
-		minimumFractionDigits: 1,
-		maximumFractionDigits: 1,
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2,
 	});
 	const distanceFormatter = new Intl.NumberFormat(localeCode);
 
-	return (
-		<Stack gap='3'>
-			{visibleItems.map((item, index) => {
-				const formattedDate = item.date
-					? new Date(item.date).toLocaleDateString(localeCode, {
-							year: 'numeric',
-							month: 'short',
-							day: 'numeric',
-						})
-					: '--';
-				const registrationLabel = item.registrationNumber
-					? ` (${item.registrationNumber})`
-					: '';
-				const costLabel = currencyFormatter.format(item.cost);
-				const quantityLabel = `${numberFormatter.format(item.quantity)} L`;
-				const mileageLabel = `${distanceFormatter.format(item.mileage)} km`;
+	const groupedItems = useMemo(() => {
+		const groups: Record<string, DashboardActivityItem[]> = {};
 
-				return (
-					<Box key={`${item.vehicleId}-${index}`}>
-						<NextLink
-							href={`/vehicles/${item.vehicleId}`}
-							passHref
-							legacyBehavior
-						>
-							<Box
-								as='a'
-								display='flex'
-								alignItems='center'
-								justifyContent='space-between'
-								gap='4'
-								fontSize='sm'
-								color='gray.700'
-								_hover={{ color: 'gray.900' }}
-							>
-								<Text
-									fontWeight='medium'
-									whiteSpace='nowrap'
-									overflow='hidden'
-									textOverflow='ellipsis'
+		visibleItems.forEach((item) => {
+			const monthKey = item.date
+				? new Date(item.date).toLocaleDateString(localeCode, {
+						year: 'numeric',
+						month: 'long',
+					})
+				: '--';
+
+			if (!groups[monthKey]) {
+				groups[monthKey] = [];
+			}
+
+			groups[monthKey].push(item);
+		});
+
+		return Object.entries(groups);
+	}, [localeCode, visibleItems]);
+
+	const formatCurrency = (value: number, currency: string) => {
+		return new Intl.NumberFormat(localeCode, {
+			style: 'currency',
+			currency,
+		}).format(value);
+	};
+
+	return (
+		<VStack gap='4' align='stretch'>
+			{groupedItems.map(([month, monthItems]) => (
+				<Box key={month}>
+					<Heading
+						size='sm'
+						color='gray.600'
+						mb='2'
+						pb='2'
+						borderBottomWidth='1px'
+					>
+						{month}
+					</Heading>
+					<Stack gap='2'>
+						{monthItems.map((item, index) => {
+							const formattedDate = item.date
+								? new Date(item.date).toLocaleDateString(localeCode, {
+										year: 'numeric',
+										month: 'short',
+										day: 'numeric',
+									})
+								: '--';
+							const registrationLabel = item.registrationNumber
+								? ` (${item.registrationNumber})`
+								: '';
+							const unitCost =
+								item.quantity > 0 ? item.cost / item.quantity : 0;
+
+							return (
+								<NextLink
+									key={`${item.vehicleId}-${item.date ?? index}-${index}`}
+									href={`/vehicles/${item.vehicleId}`}
+									passHref
+									legacyBehavior
 								>
-									{item.vehicleLabel}
-									{registrationLabel}
-								</Text>
-								<Text
-									flex='1'
-									textAlign='right'
-									color='gray.500'
-									whiteSpace='nowrap'
-									overflow='hidden'
-									textOverflow='ellipsis'
-								>
-									{formattedDate} • {costLabel} • {quantityLabel} •{' '}
-									{mileageLabel}
-								</Text>
-							</Box>
-						</NextLink>
-						{index < visibleItems.length - 1 && <Separator mt='3' />}
-					</Box>
-				);
-			})}
-		</Stack>
+									<Box
+										as='a'
+										p='2'
+										borderWidth='1px'
+										borderRadius='lg'
+										borderColor='gray.200'
+										bg='white'
+										_hover={{ shadow: 'xs' }}
+										transition='all 0.2s'
+									>
+										<Stack
+											direction={{ base: 'column', md: 'row' }}
+											justify='space-between'
+											align={{ base: 'flex-start', md: 'center' }}
+											gap='2'
+										>
+											<Box flex='1' minW='0'>
+												<HStack gap='2' wrap='wrap' mb='0.5'>
+													<Text fontWeight='semibold' fontSize='xs'>
+														{formattedDate}
+													</Text>
+													<Text
+														fontSize='xs'
+														color='gray.500'
+														whiteSpace='nowrap'
+														overflow='hidden'
+														textOverflow='ellipsis'
+													>
+														{item.vehicleLabel}
+														{registrationLabel}
+													</Text>
+												</HStack>
+												<Text fontSize='xs' color='gray.500'>
+													{numberFormatter.format(item.quantity)} L @{' '}
+													{numberFormatter.format(unitCost)} {item.currency}/L •{' '}
+													{t('fuelings.item.odometer')}:{' '}
+													{distanceFormatter.format(item.mileage)} km
+												</Text>
+											</Box>
+											<Text fontSize='sm' fontWeight='bold' color='blue.600'>
+												{formatCurrency(item.cost, item.currency)}
+											</Text>
+										</Stack>
+									</Box>
+								</NextLink>
+							);
+						})}
+					</Stack>
+				</Box>
+			))}
+		</VStack>
 	);
 };
 
