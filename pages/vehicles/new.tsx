@@ -54,6 +54,7 @@ const NewVehiclePage = () => {
 		},
 		onSuccess: (createdVehicle: { id: number }) => {
 			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+			queryClient.invalidateQueries({ queryKey: ['dashboard'] });
 			toaster.create({
 				title: t('vehicles.form.toasts.createSuccess'),
 				type: 'success',

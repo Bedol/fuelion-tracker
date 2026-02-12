@@ -12,7 +12,7 @@ import {
 import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DashboardSkeleton from '../components/dashboard/DashboardSkeleton';
 import RecentActivityList from '../components/dashboard/RecentActivityList';
 import VehicleSummaryCard from '../components/dashboard/VehicleSummaryCard';
@@ -20,6 +20,9 @@ import FetchDataErrorAlert from '../components/errors/FetchDataErrorAlert';
 import { toaster } from '../components/ui/toaster';
 import { useDashboardData } from '../hooks/useDashboardData';
 import { useLocale } from '../contexts/LocaleContext';
+
+const INITIAL_VISIBLE_VEHICLES = 4;
+const VEHICLES_LOAD_STEP = 2;
 
 const HomePage = () => {
 	const router = useRouter();
@@ -32,6 +35,10 @@ const HomePage = () => {
 	const { t } = useLocale();
 	const { data, isPending, isError, isFetching } = useDashboardData();
 	const refreshErrorShown = useRef(false);
+	const vehiclesCount = data?.vehicles.length ?? 0;
+	const [visibleVehiclesCount, setVisibleVehiclesCount] = useState(
+		INITIAL_VISIBLE_VEHICLES
+	);
 
 	useEffect(() => {
 		if (isError && data && !refreshErrorShown.current) {
@@ -47,6 +54,10 @@ const HomePage = () => {
 		}
 	}, [data, isError, t]);
 
+	useEffect(() => {
+		setVisibleVehiclesCount(INITIAL_VISIBLE_VEHICLES);
+	}, [vehiclesCount]);
+
 	if (status === 'loading' || isPending) {
 		return <DashboardSkeleton />;
 	}
@@ -60,8 +71,16 @@ const HomePage = () => {
 	}
 
 	const { vehicles, recentActivity } = data;
+	const visibleVehicles = vehicles.slice(0, visibleVehiclesCount);
 	const hasVehicles = vehicles.length > 0;
+	const hasMoreVehicles = vehicles.length > visibleVehiclesCount;
 	const hasActivity = recentActivity.length > 0;
+
+	const handleLoadMoreVehicles = () => {
+		setVisibleVehiclesCount((prev) =>
+			Math.min(prev + VEHICLES_LOAD_STEP, vehicles.length)
+		);
+	};
 
 	return (
 		<Box
@@ -113,29 +132,49 @@ const HomePage = () => {
 									gap='3'
 								>
 									<Heading size='md'>{t('dashboard.vehiclesTitle')}</Heading>
-									<NextLink href='/vehicles/new' passHref legacyBehavior>
-										<Button as='a' colorPalette='blue' size='sm'>
-											{t('dashboard.emptyVehiclesCta')}
-										</Button>
-									</NextLink>
+									<Stack direction='row' gap='2'>
+										<NextLink href='/vehicles/new' passHref legacyBehavior>
+											<Button as='a' colorPalette='blue' size='sm'>
+												{t('dashboard.emptyVehiclesCta')}
+											</Button>
+										</NextLink>
+										<NextLink href='/vehicles' passHref legacyBehavior>
+											<Button as='a' variant='outline' size='sm'>
+												{t('dashboard.viewAllVehicles')}
+											</Button>
+										</NextLink>
+									</Stack>
 								</Stack>
 								{hasVehicles ? (
-									<SimpleGrid columns={{ base: 1, lg: 2 }} gap='4'>
-										{vehicles.map((vehicle) => (
-											<VehicleSummaryCard
-												key={vehicle.id}
-												vehicle={vehicle}
-												labels={{
-													totalSpent: t('dashboard.totalSpent'),
-													averageConsumption: t('dashboard.averageConsumption'),
-													totalDistance: t('dashboard.totalDistance'),
-													lastFueling: t('dashboard.lastFueling'),
-													viewVehicle: t('dashboard.viewVehicle'),
-													quickAdd: t('dashboard.quickAdd'),
-												}}
-											/>
-										))}
-									</SimpleGrid>
+									<Stack gap='4'>
+										<SimpleGrid columns={{ base: 1, lg: 2 }} gap='4'>
+											{visibleVehicles.map((vehicle) => (
+												<VehicleSummaryCard
+													key={vehicle.id}
+													vehicle={vehicle}
+													labels={{
+														totalSpent: t('dashboard.totalSpent'),
+														averageConsumption: t(
+															'dashboard.averageConsumption'
+														),
+														totalDistance: t('dashboard.totalDistance'),
+														lastFueling: t('dashboard.lastFueling'),
+														viewVehicle: t('dashboard.viewVehicle'),
+														quickAdd: t('dashboard.quickAdd'),
+													}}
+												/>
+											))}
+										</SimpleGrid>
+										{hasMoreVehicles && (
+											<Button
+												alignSelf='center'
+												variant='outline'
+												onClick={handleLoadMoreVehicles}
+											>
+												{t('dashboard.loadMoreVehicles')}
+											</Button>
+										)}
+									</Stack>
 								) : (
 									<Box textAlign='center' py='10'>
 										<Text fontSize='4xl' mb='4'>

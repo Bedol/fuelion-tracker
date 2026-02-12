@@ -61,6 +61,7 @@ const EditVehiclePage = ({ vehicleId }: { vehicleId: number }) => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['vehicle', vehicleId] });
 			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+			queryClient.invalidateQueries({ queryKey: ['dashboard'] });
 			toaster.create({
 				title: t('vehicles.form.toasts.updateSuccess'),
 				type: 'success',

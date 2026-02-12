@@ -31,7 +31,7 @@ const handleGet = async (
 			fuel_type: true,
 			currency: true,
 		},
-		orderBy: [{ brand_name: 'asc' }, { model_name: 'asc' }],
+		orderBy: [{ updated_at: 'desc' }, { created_at: 'desc' }, { id: 'desc' }],
 	});
 
 	if (vehicles.length === 0) {

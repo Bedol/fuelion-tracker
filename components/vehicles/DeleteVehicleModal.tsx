@@ -1,5 +1,5 @@
 import { Button, Dialog, Portal, Text } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocale } from '../../contexts/LocaleContext';
 import { toaster } from '../ui/toaster';
 
@@ -22,6 +22,7 @@ const DeleteVehicleModal: React.FC<DeleteVehicleModalProps> = ({
 	onDeleteSuccess,
 }) => {
 	const { t } = useLocale();
+	const queryClient = useQueryClient();
 
 	const deleteMutation = useMutation({
 		mutationFn: async () => {
@@ -37,6 +38,8 @@ const DeleteVehicleModal: React.FC<DeleteVehicleModalProps> = ({
 			return resp.json();
 		},
 		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+			queryClient.invalidateQueries({ queryKey: ['dashboard'] });
 			toaster.create({
 				title: t('vehicles.deleteModal.toasts.successTitle'),
 				description: `${vehicle.brand_name} ${vehicle.model_name} ${t(

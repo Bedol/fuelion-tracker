@@ -36,6 +36,8 @@
 		"lastFueling": "Last fueling",
 		"viewVehicle": "View vehicle",
 		"quickAdd": "Quick add",
+		"loadMoreVehicles": "Show 2 more vehicles",
+		"viewAllVehicles": "Vehicle list",
 		"emptyVehiclesTitle": "No vehicles yet",
 		"emptyVehiclesDescription": "Add your first vehicle to start tracking costs.",
 		"emptyVehiclesCta": "Add vehicle",
