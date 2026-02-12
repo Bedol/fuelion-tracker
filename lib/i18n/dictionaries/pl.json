@@ -152,6 +152,10 @@
 			"avgPricePerLiter": "Średnia cena za litr",
 			"perLiterSuffix": "/l"
 		},
+		"density": {
+			"comfortable": "Wygodna",
+			"compact": "Kompaktowa"
+		},
 		"item": {
 			"partialTank": "Niepełny bak",
 			"fullTank": "Pełny bak",

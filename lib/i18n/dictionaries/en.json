@@ -152,6 +152,10 @@
 			"avgPricePerLiter": "Average price per liter",
 			"perLiterSuffix": "/L"
 		},
+		"density": {
+			"comfortable": "Comfortable",
+			"compact": "Compact"
+		},
 		"item": {
 			"partialTank": "Partial Tank",
 			"fullTank": "Full Tank",

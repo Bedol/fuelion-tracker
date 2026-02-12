@@ -5,6 +5,7 @@ import { FuelingData } from '../../types';
 interface FuelingListItemProps {
 	fueling: FuelingData;
 	currency: string;
+	density?: 'comfortable' | 'compact';
 	onEdit?: () => void;
 	onDelete?: () => void;
 }
@@ -12,6 +13,7 @@ interface FuelingListItemProps {
 const FuelingListItem: React.FC<FuelingListItemProps> = ({
 	fueling,
 	currency,
+	density = 'comfortable',
 	onEdit,
 	onDelete,
 }) => {
@@ -27,10 +29,11 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 	const fuelTypeLabel = translatedFuelType.startsWith('vehicles.fuelTypes.')
 		? fueling.fuel_type
 		: translatedFuelType;
+	const isCompact = density === 'compact';
 
 	return (
 		<Box
-			p='3'
+			p={isCompact ? '2' : '3'}
 			borderWidth='1px'
 			borderRadius='lg'
 			borderColor={isPartialTank ? 'orange.300' : 'gray.200'}
@@ -42,11 +45,11 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 				direction={{ base: 'column', md: 'row' }}
 				justify='space-between'
 				align={{ base: 'flex-start', md: 'center' }}
-				gap='3'
+				gap={isCompact ? '2' : '3'}
 			>
 				<Box flex='1'>
-					<HStack gap='2' wrap='wrap' mb='1'>
-						<Text fontWeight='semibold' fontSize='sm'>
+					<HStack gap='2' wrap='wrap' mb={isCompact ? '0.5' : '1'}>
+						<Text fontWeight='semibold' fontSize={isCompact ? 'xs' : 'sm'}>
 							{formattedDate}
 						</Text>
 						{isPartialTank ? (
@@ -67,7 +70,7 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 							{fuelTypeLabel}
 						</Badge>
 					</HStack>
-					<Text fontSize='sm' color='gray.500'>
+					<Text fontSize={isCompact ? 'xs' : 'sm'} color='gray.500'>
 						{fueling.quantity.toFixed(2)} L @ {fueling.cost_per_unit.toFixed(3)}{' '}
 						{currency}/L • {t('fuelings.item.odometer')}:{' '}
 						{fueling.mileage.toLocaleString(localeCode)}
@@ -79,9 +82,13 @@ const FuelingListItem: React.FC<FuelingListItemProps> = ({
 					align='center'
 					justify='space-between'
 					w={{ base: 'full', md: 'auto' }}
-					gap='2'
+					gap={isCompact ? '1' : '2'}
 				>
-					<Text fontSize='md' fontWeight='bold' color='blue.600'>
+					<Text
+						fontSize={isCompact ? 'sm' : 'md'}
+						fontWeight='bold'
+						color='blue.600'
+					>
 						{fueling.cost.toFixed(2)} {currency}
 					</Text>
 

@@ -4,6 +4,7 @@ import {
 	Box,
 	Button,
 	Heading,
+	HStack,
 	Input,
 	Menu,
 	Portal,
@@ -42,6 +43,9 @@ const FuelingList: React.FC<FuelingListProps> = ({
 		'all'
 	);
 	const [fuelTypeFilter, setFuelTypeFilter] = useState('all');
+	const [density, setDensity] = useState<'comfortable' | 'compact'>(
+		'comfortable'
+	);
 
 	const {
 		data,
@@ -133,6 +137,8 @@ const FuelingList: React.FC<FuelingListProps> = ({
 		fuelTypeFilter === 'all'
 			? t('fuelings.filters.options.all')
 			: getFuelTypeLabel(fuelTypeFilter);
+
+	const monthSectionGap = density === 'compact' ? '2' : '3';
 
 	// Group fuelings by month
 	const groupedFuelings = useMemo(() => {
@@ -422,24 +428,46 @@ const FuelingList: React.FC<FuelingListProps> = ({
 						</SimpleGrid>
 					</Box>
 
+					<HStack mb='4' justify='flex-end' align='center' flexWrap='wrap'>
+						<HStack gap='2'>
+							<Button
+								size='sm'
+								variant={density === 'comfortable' ? 'solid' : 'outline'}
+								colorPalette={density === 'comfortable' ? 'blue' : 'gray'}
+								onClick={() => setDensity('comfortable')}
+							>
+								{t('fuelings.density.comfortable')}
+							</Button>
+							<Button
+								size='sm'
+								variant={density === 'compact' ? 'solid' : 'outline'}
+								colorPalette={density === 'compact' ? 'blue' : 'gray'}
+								onClick={() => setDensity('compact')}
+							>
+								{t('fuelings.density.compact')}
+							</Button>
+						</HStack>
+					</HStack>
+
 					<VStack gap='4' align='stretch'>
 						{Object.entries(groupedFuelings).map(([month, monthFuelings]) => (
 							<Box key={month}>
 								<Heading
 									size='sm'
 									color='gray.600'
-									mb='3'
+									mb={density === 'compact' ? '2' : '3'}
 									pb='2'
 									borderBottomWidth='1px'
 								>
 									{month}
 								</Heading>
-								<Stack gap='3'>
+								<Stack gap={monthSectionGap}>
 									{monthFuelings.map((fueling) => (
 										<FuelingListItem
 											key={fueling.id}
 											fueling={fueling}
 											currency={currency}
+											density={density}
 											onEdit={() => onEdit(fueling)}
 											onDelete={() => onDelete(fueling)}
 										/>
