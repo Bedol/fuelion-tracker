@@ -2,6 +2,8 @@ import {
 	Box,
 	Button,
 	ButtonGroup,
+	CardBody,
+	CardRoot,
 	Collapsible,
 	Input,
 	NativeSelect,
@@ -162,373 +164,381 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 	};
 
 	return (
-		<Box maxW='600px'>
-			<form onSubmit={formik.handleSubmit}>
-				{/* Section 1: Basic Information */}
-				<Box mb='6'>
-					<Text fontSize='lg' fontWeight='semibold' mb='4'>
-						{t('vehicles.form.sections.basicInformation')}
-					</Text>
-
-					<Box mb='4'>
-						<Text
-							as='label'
-							htmlFor='brand_name'
-							fontSize='sm'
-							fontWeight='medium'
-							mb='2'
-							display='block'
-						>
-							{t('vehicles.form.fields.brand')} *
+		<CardRoot variant='outline' w='full'>
+			<CardBody>
+				<form onSubmit={formik.handleSubmit}>
+					{/* Section 1: Basic Information */}
+					<Box mb='6'>
+						<Text fontSize='lg' fontWeight='semibold' mb='4'>
+							{t('vehicles.form.sections.basicInformation')}
 						</Text>
-						<Input
-							type='text'
-							name='brand_name'
-							id='brand_name'
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.brand_name}
-							placeholder={t('vehicles.form.placeholders.brandExample')}
-							borderColor={hasBrandError ? 'red.500' : undefined}
-							aria-invalid={hasBrandError || undefined}
-							_focusVisible={
-								hasBrandError ? { borderColor: 'red.500' } : undefined
-							}
-							required
-						/>
-						{formik.touched.brand_name && formik.errors.brand_name && (
-							<Text color='red.500' fontSize='xs' mt='1'>
-								{formik.errors.brand_name}
+
+						<Box mb='4'>
+							<Text
+								as='label'
+								htmlFor='brand_name'
+								fontSize='sm'
+								fontWeight='medium'
+								mb='2'
+								display='block'
+							>
+								{t('vehicles.form.fields.brand')} *
 							</Text>
-						)}
-					</Box>
-
-					<Box mb='4'>
-						<Text
-							as='label'
-							htmlFor='model_name'
-							fontSize='sm'
-							fontWeight='medium'
-							mb='2'
-							display='block'
-						>
-							{t('vehicles.form.fields.model')} *
-						</Text>
-						<Input
-							type='text'
-							name='model_name'
-							id='model_name'
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.model_name}
-							placeholder={t('vehicles.form.placeholders.modelExample')}
-							borderColor={hasModelError ? 'red.500' : undefined}
-							aria-invalid={hasModelError || undefined}
-							_focusVisible={
-								hasModelError ? { borderColor: 'red.500' } : undefined
-							}
-							required
-						/>
-						{formik.touched.model_name && formik.errors.model_name && (
-							<Text color='red.500' fontSize='xs' mt='1'>
-								{formik.errors.model_name}
-							</Text>
-						)}
-					</Box>
-
-					<Box mb='4'>
-						<Text
-							as='label'
-							htmlFor='production_year'
-							fontSize='sm'
-							fontWeight='medium'
-							mb='2'
-							display='block'
-						>
-							{t('vehicles.form.fields.productionYear')} *
-						</Text>
-						<Input
-							type='number'
-							name='production_year'
-							id='production_year'
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.production_year}
-							min={1900}
-							max={currentYear + 1}
-							step={1}
-							borderColor={hasProductionYearError ? 'red.500' : undefined}
-							aria-invalid={hasProductionYearError || undefined}
-							_focusVisible={
-								hasProductionYearError ? { borderColor: 'red.500' } : undefined
-							}
-							required
-						/>
-						{formik.touched.production_year &&
-							formik.errors.production_year && (
-								<Text color='red.500' fontSize='xs' mt='1'>
-									{formik.errors.production_year}
-								</Text>
-							)}
-					</Box>
-
-					<Box mb='4'>
-						<Text
-							as='label'
-							htmlFor='fuel_type'
-							fontSize='sm'
-							fontWeight='medium'
-							mb='2'
-							display='block'
-						>
-							{t('vehicles.form.fields.fuelType')} *
-						</Text>
-						<NativeSelect.Root w='full'>
-							<NativeSelect.Field
-								name='fuel_type'
-								id='fuel_type'
+							<Input
+								type='text'
+								name='brand_name'
+								id='brand_name'
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
-								value={formik.values.fuel_type}
-								borderColor={hasFuelTypeError ? 'red.500' : undefined}
-								aria-invalid={hasFuelTypeError || undefined}
+								value={formik.values.brand_name}
+								placeholder={t('vehicles.form.placeholders.brandExample')}
+								borderColor={hasBrandError ? 'red.500' : undefined}
+								aria-invalid={hasBrandError || undefined}
 								_focusVisible={
-									hasFuelTypeError ? { borderColor: 'red.500' } : undefined
+									hasBrandError ? { borderColor: 'red.500' } : undefined
 								}
 								required
-							>
-								{fuelTypes.map((option) => (
-									<option key={option.value} value={option.value}>
-										{t(`vehicles.fuelTypes.${option.value}`)}
-									</option>
-								))}
-							</NativeSelect.Field>
-							<NativeSelect.Indicator />
-						</NativeSelect.Root>
-						{formik.touched.fuel_type && formik.errors.fuel_type && (
-							<Text color='red.500' fontSize='xs' mt='1'>
-								{formik.errors.fuel_type}
-							</Text>
-						)}
-					</Box>
-
-					<Box mb='4'>
-						<Text
-							as='label'
-							htmlFor='registration_number'
-							fontSize='sm'
-							fontWeight='medium'
-							mb='2'
-							display='block'
-						>
-							{t('vehicles.form.fields.registrationNumberOptional')}
-						</Text>
-						<Input
-							type='text'
-							name='registration_number'
-							id='registration_number'
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							value={formik.values.registration_number || ''}
-							placeholder={t('vehicles.form.placeholders.registrationExample')}
-						/>
-					</Box>
-				</Box>
-
-				{/* Section 2: Technical Data (Collapsible) */}
-				<Box mb='6'>
-					<Button
-						type='button'
-						variant='ghost'
-						size='sm'
-						onClick={() => setShowTechnical(!showTechnical)}
-						mb={showTechnical ? '4' : '0'}
-					>
-						{showTechnical
-							? t('vehicles.form.technicalToggle.hide')
-							: t('vehicles.form.technicalToggle.show')}
-					</Button>
-
-					<Collapsible.Root open={showTechnical}>
-						<Collapsible.Content>
-							<Box
-								p='4'
-								borderWidth='1px'
-								borderRadius='md'
-								borderColor='gray.200'
-							>
-								<Text fontSize='md' fontWeight='medium' mb='4'>
-									{t('vehicles.form.sections.technicalSpecifications')}
+							/>
+							{formik.touched.brand_name && formik.errors.brand_name && (
+								<Text color='red.500' fontSize='xs' mt='1'>
+									{formik.errors.brand_name}
 								</Text>
+							)}
+						</Box>
 
-								<Box mb='4'>
-									<Text
-										as='label'
-										htmlFor='engine_capacity'
-										fontSize='sm'
-										fontWeight='medium'
-										mb='2'
-										display='block'
-									>
-										{t('vehicles.form.fields.engineCapacityOptional')}
-									</Text>
-									<Input
-										type='number'
-										name='engine_capacity'
-										id='engine_capacity'
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										value={formik.values.engine_capacity || ''}
-										min={1}
-										step={1}
-										placeholder={t(
-											'vehicles.form.placeholders.engineCapacityExample'
-										)}
-										borderColor={hasEngineCapacityError ? 'red.500' : undefined}
-										aria-invalid={hasEngineCapacityError || undefined}
-										_focusVisible={
-											hasEngineCapacityError
-												? { borderColor: 'red.500' }
-												: undefined
-										}
-									/>
-									{formik.touched.engine_capacity &&
-										formik.errors.engine_capacity && (
-											<Text color='red.500' fontSize='xs' mt='1'>
-												{formik.errors.engine_capacity}
-											</Text>
-										)}
-								</Box>
+						<Box mb='4'>
+							<Text
+								as='label'
+								htmlFor='model_name'
+								fontSize='sm'
+								fontWeight='medium'
+								mb='2'
+								display='block'
+							>
+								{t('vehicles.form.fields.model')} *
+							</Text>
+							<Input
+								type='text'
+								name='model_name'
+								id='model_name'
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.model_name}
+								placeholder={t('vehicles.form.placeholders.modelExample')}
+								borderColor={hasModelError ? 'red.500' : undefined}
+								aria-invalid={hasModelError || undefined}
+								_focusVisible={
+									hasModelError ? { borderColor: 'red.500' } : undefined
+								}
+								required
+							/>
+							{formik.touched.model_name && formik.errors.model_name && (
+								<Text color='red.500' fontSize='xs' mt='1'>
+									{formik.errors.model_name}
+								</Text>
+							)}
+						</Box>
 
-								<Box mb='4'>
-									<Text
-										as='label'
-										htmlFor='engine_power'
-										fontSize='sm'
-										fontWeight='medium'
-										mb='2'
-										display='block'
-									>
-										{t('vehicles.form.fields.enginePowerOptional')}
+						<Box mb='4'>
+							<Text
+								as='label'
+								htmlFor='production_year'
+								fontSize='sm'
+								fontWeight='medium'
+								mb='2'
+								display='block'
+							>
+								{t('vehicles.form.fields.productionYear')} *
+							</Text>
+							<Input
+								type='number'
+								name='production_year'
+								id='production_year'
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.production_year}
+								min={1900}
+								max={currentYear + 1}
+								step={1}
+								borderColor={hasProductionYearError ? 'red.500' : undefined}
+								aria-invalid={hasProductionYearError || undefined}
+								_focusVisible={
+									hasProductionYearError
+										? { borderColor: 'red.500' }
+										: undefined
+								}
+								required
+							/>
+							{formik.touched.production_year &&
+								formik.errors.production_year && (
+									<Text color='red.500' fontSize='xs' mt='1'>
+										{formik.errors.production_year}
 									</Text>
-									<Input
-										type='number'
-										name='engine_power'
-										id='engine_power'
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										value={formik.values.engine_power || ''}
-										min={1}
-										step={1}
-										placeholder={t(
-											'vehicles.form.placeholders.enginePowerExample'
-										)}
-										borderColor={hasEnginePowerError ? 'red.500' : undefined}
-										aria-invalid={hasEnginePowerError || undefined}
-										_focusVisible={
-											hasEnginePowerError
-												? { borderColor: 'red.500' }
-												: undefined
-										}
-									/>
-									{formik.touched.engine_power &&
-										formik.errors.engine_power && (
-											<Text color='red.500' fontSize='xs' mt='1'>
-												{formik.errors.engine_power}
-											</Text>
-										)}
-								</Box>
+								)}
+						</Box>
 
-								<Box mb='4'>
-									<Text
-										as='label'
-										htmlFor='power_unit'
-										fontSize='sm'
-										fontWeight='medium'
-										mb='2'
-										display='block'
-									>
-										{t('vehicles.form.fields.powerUnitOptional')}
+						<Box mb='4'>
+							<Text
+								as='label'
+								htmlFor='fuel_type'
+								fontSize='sm'
+								fontWeight='medium'
+								mb='2'
+								display='block'
+							>
+								{t('vehicles.form.fields.fuelType')} *
+							</Text>
+							<NativeSelect.Root w='full'>
+								<NativeSelect.Field
+									name='fuel_type'
+									id='fuel_type'
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									value={formik.values.fuel_type}
+									borderColor={hasFuelTypeError ? 'red.500' : undefined}
+									aria-invalid={hasFuelTypeError || undefined}
+									_focusVisible={
+										hasFuelTypeError ? { borderColor: 'red.500' } : undefined
+									}
+									required
+								>
+									{fuelTypes.map((option) => (
+										<option key={option.value} value={option.value}>
+											{t(`vehicles.fuelTypes.${option.value}`)}
+										</option>
+									))}
+								</NativeSelect.Field>
+								<NativeSelect.Indicator />
+							</NativeSelect.Root>
+							{formik.touched.fuel_type && formik.errors.fuel_type && (
+								<Text color='red.500' fontSize='xs' mt='1'>
+									{formik.errors.fuel_type}
+								</Text>
+							)}
+						</Box>
+
+						<Box mb='4'>
+							<Text
+								as='label'
+								htmlFor='registration_number'
+								fontSize='sm'
+								fontWeight='medium'
+								mb='2'
+								display='block'
+							>
+								{t('vehicles.form.fields.registrationNumberOptional')}
+							</Text>
+							<Input
+								type='text'
+								name='registration_number'
+								id='registration_number'
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.registration_number || ''}
+								placeholder={t(
+									'vehicles.form.placeholders.registrationExample'
+								)}
+							/>
+						</Box>
+					</Box>
+
+					{/* Section 2: Technical Data (Collapsible) */}
+					<Box mb='6'>
+						<Button
+							type='button'
+							variant='ghost'
+							size='sm'
+							onClick={() => setShowTechnical(!showTechnical)}
+							mb={showTechnical ? '4' : '0'}
+						>
+							{showTechnical
+								? t('vehicles.form.technicalToggle.hide')
+								: t('vehicles.form.technicalToggle.show')}
+						</Button>
+
+						<Collapsible.Root open={showTechnical}>
+							<Collapsible.Content>
+								<Box
+									p='4'
+									borderWidth='1px'
+									borderRadius='md'
+									borderColor='gray.200'
+								>
+									<Text fontSize='md' fontWeight='medium' mb='4'>
+										{t('vehicles.form.sections.technicalSpecifications')}
 									</Text>
-									<NativeSelect.Root w='full'>
-										<NativeSelect.Field
-											name='power_unit'
-											id='power_unit'
+
+									<Box mb='4'>
+										<Text
+											as='label'
+											htmlFor='engine_capacity'
+											fontSize='sm'
+											fontWeight='medium'
+											mb='2'
+											display='block'
+										>
+											{t('vehicles.form.fields.engineCapacityOptional')}
+										</Text>
+										<Input
+											type='number'
+											name='engine_capacity'
+											id='engine_capacity'
 											onChange={formik.handleChange}
 											onBlur={formik.handleBlur}
-											value={formik.values.power_unit || ''}
-										>
-											<option value=''>
-												{t('vehicles.form.placeholders.selectUnit')}
-											</option>
-											{powerUnits.map((option) => (
-												<option key={option.value} value={option.value}>
-													{option.value === 'HP'
-														? t('vehicles.form.options.powerUnitHp')
-														: t('vehicles.form.options.powerUnitKw')}
-												</option>
-											))}
-										</NativeSelect.Field>
-										<NativeSelect.Indicator />
-									</NativeSelect.Root>
-								</Box>
+											value={formik.values.engine_capacity || ''}
+											min={1}
+											step={1}
+											placeholder={t(
+												'vehicles.form.placeholders.engineCapacityExample'
+											)}
+											borderColor={
+												hasEngineCapacityError ? 'red.500' : undefined
+											}
+											aria-invalid={hasEngineCapacityError || undefined}
+											_focusVisible={
+												hasEngineCapacityError
+													? { borderColor: 'red.500' }
+													: undefined
+											}
+										/>
+										{formik.touched.engine_capacity &&
+											formik.errors.engine_capacity && (
+												<Text color='red.500' fontSize='xs' mt='1'>
+													{formik.errors.engine_capacity}
+												</Text>
+											)}
+									</Box>
 
-								<Box mb='4'>
-									<Text
-										as='label'
-										htmlFor='transmission'
-										fontSize='sm'
-										fontWeight='medium'
-										mb='2'
-										display='block'
-									>
-										{t('vehicles.form.fields.transmissionOptional')}
-									</Text>
-									<NativeSelect.Root w='full'>
-										<NativeSelect.Field
-											name='transmission'
-											id='transmission'
+									<Box mb='4'>
+										<Text
+											as='label'
+											htmlFor='engine_power'
+											fontSize='sm'
+											fontWeight='medium'
+											mb='2'
+											display='block'
+										>
+											{t('vehicles.form.fields.enginePowerOptional')}
+										</Text>
+										<Input
+											type='number'
+											name='engine_power'
+											id='engine_power'
 											onChange={formik.handleChange}
 											onBlur={formik.handleBlur}
-											value={formik.values.transmission || ''}
-										>
-											<option value=''>
-												{t('vehicles.form.placeholders.selectTransmission')}
-											</option>
-											{transmissionTypes.map((option) => (
-												<option key={option.value} value={option.value}>
-													{option.value === 'manual'
-														? t('vehicles.detail.values.manual')
-														: t('vehicles.detail.values.automatic')}
-												</option>
-											))}
-										</NativeSelect.Field>
-										<NativeSelect.Indicator />
-									</NativeSelect.Root>
-								</Box>
-							</Box>
-						</Collapsible.Content>
-					</Collapsible.Root>
-				</Box>
+											value={formik.values.engine_power || ''}
+											min={1}
+											step={1}
+											placeholder={t(
+												'vehicles.form.placeholders.enginePowerExample'
+											)}
+											borderColor={hasEnginePowerError ? 'red.500' : undefined}
+											aria-invalid={hasEnginePowerError || undefined}
+											_focusVisible={
+												hasEnginePowerError
+													? { borderColor: 'red.500' }
+													: undefined
+											}
+										/>
+										{formik.touched.engine_power &&
+											formik.errors.engine_power && (
+												<Text color='red.500' fontSize='xs' mt='1'>
+													{formik.errors.engine_power}
+												</Text>
+											)}
+									</Box>
 
-				{/* Submit Buttons */}
-				<ButtonGroup mt='4' gap='3'>
-					<Button
-						loading={mutation.isPending}
-						loadingText={t('vehicles.form.actions.submitting')}
-						type='submit'
-						colorPalette='blue'
-					>
-						{mode === 'create'
-							? t('vehicles.form.actions.createVehicle')
-							: t('vehicles.form.actions.saveChanges')}
-					</Button>
-					<Button type='button' variant='outline' onClick={backToVehicles}>
-						{t('vehicles.form.actions.cancel')}
-					</Button>
-				</ButtonGroup>
-			</form>
-		</Box>
+									<Box mb='4'>
+										<Text
+											as='label'
+											htmlFor='power_unit'
+											fontSize='sm'
+											fontWeight='medium'
+											mb='2'
+											display='block'
+										>
+											{t('vehicles.form.fields.powerUnitOptional')}
+										</Text>
+										<NativeSelect.Root w='full'>
+											<NativeSelect.Field
+												name='power_unit'
+												id='power_unit'
+												onChange={formik.handleChange}
+												onBlur={formik.handleBlur}
+												value={formik.values.power_unit || ''}
+											>
+												<option value=''>
+													{t('vehicles.form.placeholders.selectUnit')}
+												</option>
+												{powerUnits.map((option) => (
+													<option key={option.value} value={option.value}>
+														{option.value === 'HP'
+															? t('vehicles.form.options.powerUnitHp')
+															: t('vehicles.form.options.powerUnitKw')}
+													</option>
+												))}
+											</NativeSelect.Field>
+											<NativeSelect.Indicator />
+										</NativeSelect.Root>
+									</Box>
+
+									<Box mb='4'>
+										<Text
+											as='label'
+											htmlFor='transmission'
+											fontSize='sm'
+											fontWeight='medium'
+											mb='2'
+											display='block'
+										>
+											{t('vehicles.form.fields.transmissionOptional')}
+										</Text>
+										<NativeSelect.Root w='full'>
+											<NativeSelect.Field
+												name='transmission'
+												id='transmission'
+												onChange={formik.handleChange}
+												onBlur={formik.handleBlur}
+												value={formik.values.transmission || ''}
+											>
+												<option value=''>
+													{t('vehicles.form.placeholders.selectTransmission')}
+												</option>
+												{transmissionTypes.map((option) => (
+													<option key={option.value} value={option.value}>
+														{option.value === 'manual'
+															? t('vehicles.detail.values.manual')
+															: t('vehicles.detail.values.automatic')}
+													</option>
+												))}
+											</NativeSelect.Field>
+											<NativeSelect.Indicator />
+										</NativeSelect.Root>
+									</Box>
+								</Box>
+							</Collapsible.Content>
+						</Collapsible.Root>
+					</Box>
+
+					{/* Submit Buttons */}
+					<ButtonGroup mt='4' gap='3'>
+						<Button
+							loading={mutation.isPending}
+							loadingText={t('vehicles.form.actions.submitting')}
+							type='submit'
+							colorPalette='blue'
+						>
+							{mode === 'create'
+								? t('vehicles.form.actions.createVehicle')
+								: t('vehicles.form.actions.saveChanges')}
+						</Button>
+						<Button type='button' variant='outline' onClick={backToVehicles}>
+							{t('vehicles.form.actions.cancel')}
+						</Button>
+					</ButtonGroup>
+				</form>
+			</CardBody>
+		</CardRoot>
 	);
 };
 
