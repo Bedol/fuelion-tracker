@@ -145,6 +145,7 @@
 			"validation": {
 				"brandRequired": "Brand is required",
 				"modelRequired": "Model is required",
+				"fuelTypeRequired": "Fuel type is required",
 				"productionYearRequired": "Production year is required",
 				"productionYearInvalid": "Production year must be a valid number",
 				"productionYearRange": "Production year must be between 1900 and next year",

@@ -83,6 +83,10 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 				errors.model_name = t('vehicles.form.validation.modelRequired');
 			}
 
+			if (!values.fuel_type.trim()) {
+				errors.fuel_type = t('vehicles.form.validation.fuelTypeRequired');
+			}
+
 			if (
 				values.production_year === '' ||
 				values.production_year === null ||
@@ -137,6 +141,9 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 	const hasProductionYearError = Boolean(
 		formik.touched.production_year && formik.errors.production_year
 	);
+	const hasFuelTypeError = Boolean(
+		formik.touched.fuel_type && formik.errors.fuel_type
+	);
 	const hasEngineCapacityError = Boolean(
 		formik.touched.engine_capacity && formik.errors.engine_capacity
 	);
@@ -183,6 +190,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							value={formik.values.brand_name}
 							placeholder={t('vehicles.form.placeholders.brandExample')}
 							borderColor={hasBrandError ? 'red.500' : undefined}
+							aria-invalid={hasBrandError || undefined}
 							_focusVisible={
 								hasBrandError ? { borderColor: 'red.500' } : undefined
 							}
@@ -215,6 +223,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							value={formik.values.model_name}
 							placeholder={t('vehicles.form.placeholders.modelExample')}
 							borderColor={hasModelError ? 'red.500' : undefined}
+							aria-invalid={hasModelError || undefined}
 							_focusVisible={
 								hasModelError ? { borderColor: 'red.500' } : undefined
 							}
@@ -247,7 +256,9 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							value={formik.values.production_year}
 							min={1900}
 							max={currentYear + 1}
+							step={1}
 							borderColor={hasProductionYearError ? 'red.500' : undefined}
+							aria-invalid={hasProductionYearError || undefined}
 							_focusVisible={
 								hasProductionYearError ? { borderColor: 'red.500' } : undefined
 							}
@@ -279,6 +290,11 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 								value={formik.values.fuel_type}
+								borderColor={hasFuelTypeError ? 'red.500' : undefined}
+								aria-invalid={hasFuelTypeError || undefined}
+								_focusVisible={
+									hasFuelTypeError ? { borderColor: 'red.500' } : undefined
+								}
 								required
 							>
 								{fuelTypes.map((option) => (
@@ -289,6 +305,11 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 							</NativeSelect.Field>
 							<NativeSelect.Indicator />
 						</NativeSelect.Root>
+						{formik.touched.fuel_type && formik.errors.fuel_type && (
+							<Text color='red.500' fontSize='xs' mt='1'>
+								{formik.errors.fuel_type}
+							</Text>
+						)}
 					</Box>
 
 					<Box mb='4'>
@@ -358,10 +379,13 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										onChange={formik.handleChange}
 										onBlur={formik.handleBlur}
 										value={formik.values.engine_capacity || ''}
+										min={1}
+										step={1}
 										placeholder={t(
 											'vehicles.form.placeholders.engineCapacityExample'
 										)}
 										borderColor={hasEngineCapacityError ? 'red.500' : undefined}
+										aria-invalid={hasEngineCapacityError || undefined}
 										_focusVisible={
 											hasEngineCapacityError
 												? { borderColor: 'red.500' }
@@ -394,10 +418,13 @@ const VehicleForm: React.FC<VehicleFormProps> = ({
 										onChange={formik.handleChange}
 										onBlur={formik.handleBlur}
 										value={formik.values.engine_power || ''}
+										min={1}
+										step={1}
 										placeholder={t(
 											'vehicles.form.placeholders.enginePowerExample'
 										)}
 										borderColor={hasEnginePowerError ? 'red.500' : undefined}
+										aria-invalid={hasEnginePowerError || undefined}
 										_focusVisible={
 											hasEnginePowerError
 												? { borderColor: 'red.500' }
