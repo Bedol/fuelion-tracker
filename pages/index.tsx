@@ -106,7 +106,19 @@ const HomePage = () => {
 					<CardRoot variant='outline' order={1}>
 						<CardBody>
 							<Stack gap='4'>
-								<Heading size='md'>{t('dashboard.vehiclesTitle')}</Heading>
+								<Stack
+									direction={{ base: 'column', sm: 'row' }}
+									justify='space-between'
+									align={{ base: 'flex-start', sm: 'center' }}
+									gap='3'
+								>
+									<Heading size='md'>{t('dashboard.vehiclesTitle')}</Heading>
+									<NextLink href='/vehicles/new' passHref legacyBehavior>
+										<Button as='a' colorPalette='blue' size='sm'>
+											{t('dashboard.emptyVehiclesCta')}
+										</Button>
+									</NextLink>
+								</Stack>
 								{hasVehicles ? (
 									<SimpleGrid columns={{ base: 1, lg: 2 }} gap='4'>
 										{vehicles.map((vehicle) => (
@@ -135,11 +147,6 @@ const HomePage = () => {
 										<Text color='gray.500' mb='6'>
 											{t('dashboard.emptyVehiclesDescription')}
 										</Text>
-										<NextLink href='/vehicles/new' passHref legacyBehavior>
-											<Button as='a' colorPalette='blue'>
-												{t('dashboard.emptyVehiclesCta')}
-											</Button>
-										</NextLink>
 									</Box>
 								)}
 							</Stack>
