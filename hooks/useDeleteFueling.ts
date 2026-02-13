@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toaster } from '../components/ui/toaster';
+import { useLocale } from '../contexts/LocaleContext';
 
 export const useDeleteFueling = () => {
 	const queryClient = useQueryClient();
+	const { t } = useLocale();
 
 	const getErrorMessage = async (response: Response, fallback: string) => {
 		const errorData = await response.json().catch(() => null);
@@ -31,7 +33,7 @@ export const useDeleteFueling = () => {
 			if (!response.ok) {
 				const message = await getErrorMessage(
 					response,
-					'Failed to delete fueling'
+					t('fuelings.deleteModal.errors.deleteFailed')
 				);
 				throw new Error(message);
 			}
@@ -42,8 +44,8 @@ export const useDeleteFueling = () => {
 		onSuccess: (_, variables) => {
 			toaster.create({
 				type: 'success',
-				title: 'Fueling deleted',
-				description: 'Record removed.',
+				title: t('fuelings.toasts.deleteSuccessTitle'),
+				description: t('fuelings.toasts.deleteSuccessDescription'),
 			});
 
 			// Invalidate queries to refresh data
@@ -60,8 +62,9 @@ export const useDeleteFueling = () => {
 		onError: (error: Error) => {
 			toaster.create({
 				type: 'error',
-				title: 'Failed to delete',
-				description: error.message || 'Please try again.',
+				title: t('fuelings.toasts.deleteErrorTitle'),
+				description:
+					error.message || t('fuelings.toasts.deleteErrorDescription'),
 			});
 		},
 	});

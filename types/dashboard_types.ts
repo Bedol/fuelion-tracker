@@ -15,6 +15,7 @@ export type DashboardActivityItem = {
 	vehicleId: number;
 	vehicleLabel: string;
 	registrationNumber: string | null;
+	currency: string;
 	date: string | null;
 	cost: number;
 	quantity: number;

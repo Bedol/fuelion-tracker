@@ -1,49 +1,69 @@
-import { Vehicle } from '@prisma/client';
-import { Button } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import {
+	Box,
+	Button,
+	CardBody,
+	CardRoot,
+	Heading,
+	SimpleGrid,
+	Stack,
+	Text,
+} from '@chakra-ui/react';
+import type { Vehicle } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
+import NextLink from 'next/link';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import FetchDataErrorAlert from '../../components/errors/FetchDataErrorAlert';
 import Loading from '../../components/Loading';
 import VehicleCard from '../../components/VehicleCard';
+import { useLocale } from '../../contexts/LocaleContext';
 
 const EmptyState = () => {
-	const router = useRouter();
+	const { t } = useLocale();
+
 	return (
-		<div className='flex flex-col items-center justify-center min-h-[400px] px-4'>
-			<div className='text-6xl mb-6'>🚗</div>
-			<h2 className='text-2xl font-bold text-gray-900 mb-3'>
-				Add your first vehicle
-			</h2>
-			<p className='text-gray-600 text-center mb-8 max-w-md'>
-				Start tracking fuel expenses by adding your vehicle. Keep all your car
-				costs in one place.
-			</p>
-			<Button
-				colorPalette='blue'
-				size='lg'
-				onClick={() => router.push('/vehicles/new')}
-				cursor='pointer'
-			>
-				Add Vehicle
-			</Button>
-		</div>
+		<CardRoot variant='outline'>
+			<CardBody>
+				<Box textAlign='center' py={{ base: '10', md: '14' }} px='4'>
+					<Text fontSize='5xl' mb='4'>
+						🚗
+					</Text>
+					<Heading size='md' mb='2'>
+						{t('dashboard.emptyVehiclesTitle')}
+					</Heading>
+					<Text color='gray.500' maxW='lg' mx='auto' mb='6'>
+						{t('dashboard.emptyVehiclesDescription')}
+					</Text>
+					<NextLink href='/vehicles/new' passHref legacyBehavior>
+						<Button as='a' colorPalette='blue'>
+							{t('dashboard.emptyVehiclesCta')}
+						</Button>
+					</NextLink>
+				</Box>
+			</CardBody>
+		</CardRoot>
 	);
 };
 
 const AllVehicles = () => {
 	const router = useRouter();
+	const { t } = useLocale();
 	const { status } = useSession({
 		required: true,
 		onUnauthenticated() {
 			router.push('/auth/signin');
 		},
 	});
-	const { isPending, isError, data } = useQuery({
+	const { isPending, isError, data } = useQuery<Vehicle[]>({
 		queryKey: ['vehicles'],
 		queryFn: async () => {
 			const result = await fetch('/api/vehicles');
-			return result.json();
+
+			if (!result.ok) {
+				throw new Error('Failed to fetch vehicles');
+			}
+
+			return result.json() as Promise<Vehicle[]>;
 		},
 		enabled: status === 'authenticated',
 	});
@@ -53,9 +73,7 @@ const AllVehicles = () => {
 	if (isPending) return <Loading />;
 
 	if (isError)
-		return (
-			<FetchDataErrorAlert errorMessage='An error occurred while fetching vehicles.' />
-		);
+		return <FetchDataErrorAlert errorMessage={t('errors.generic')} />;
 
 	// Empty state when no vehicles exist
 	if (!data || data.length === 0) {
@@ -63,23 +81,50 @@ const AllVehicles = () => {
 	}
 
 	return (
-		<div>
-			<div className='flex items-center justify-between mb-6'>
-				<h1 className='text-2xl font-bold text-gray-900'>My Vehicles</h1>
-				<Button
-					colorPalette='blue'
-					onClick={() => router.push('/vehicles/new')}
-					cursor='pointer'
+		<Box>
+			<Stack gap={{ base: '6', md: '8' }}>
+				<Stack
+					direction={{ base: 'column', md: 'row' }}
+					justify='space-between'
+					align={{ base: 'flex-start', md: 'center' }}
+					gap='3'
 				>
-					Add Vehicle
-				</Button>
-			</div>
-			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-				{data.map((vehicle: Vehicle) => (
-					<VehicleCard key={vehicle.id} vehicle={vehicle} />
-				))}
-			</div>
-		</div>
+					<Stack gap='2'>
+						<Heading size='xl'>{t('nav.vehicles')}</Heading>
+						<Text color='gray.600'>{t('vehicles.list.subtitle')}</Text>
+					</Stack>
+					<NextLink href='/vehicles/new' passHref legacyBehavior>
+						<Button as='a' colorPalette='blue'>
+							{t('dashboard.emptyVehiclesCta')}
+						</Button>
+					</NextLink>
+				</Stack>
+
+				<CardRoot variant='outline'>
+					<CardBody>
+						<Stack gap='5'>
+							<Stack
+								direction={{ base: 'column', sm: 'row' }}
+								justify='space-between'
+								align={{ base: 'flex-start', sm: 'center' }}
+								gap='2'
+							>
+								<Heading size='md'>{t('vehicles.list.yourGarage')}</Heading>
+								<Text color='gray.500' fontSize='sm'>
+									{data.length} {t('vehicles.list.countLabel')}
+								</Text>
+							</Stack>
+
+							<SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} gap='4'>
+								{data.map((vehicle) => (
+									<VehicleCard key={vehicle.id} vehicle={vehicle} />
+								))}
+							</SimpleGrid>
+						</Stack>
+					</CardBody>
+				</CardRoot>
+			</Stack>
+		</Box>
 	);
 };
 

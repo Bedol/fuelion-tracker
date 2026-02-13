@@ -8,8 +8,8 @@ import {
 	Stack,
 	Text,
 } from '@chakra-ui/react';
-import { format, parseISO } from 'date-fns';
 import NextLink from 'next/link';
+import { useLocale } from '../../contexts/LocaleContext';
 import type { DashboardVehicleSummary } from '../../types/dashboard_types';
 
 type VehicleSummaryCardProps = {
@@ -28,15 +28,23 @@ const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({
 	vehicle,
 	labels,
 }) => {
-	const currencyFormatter = new Intl.NumberFormat('pl-PL', {
+	const { locale, t } = useLocale();
+	const localeCode = locale === 'pl' ? 'pl-PL' : 'en-US';
+
+	const currencyFormatter = new Intl.NumberFormat(localeCode, {
 		style: 'currency',
 		currency: vehicle.currency,
 	});
-	const numberFormatter = new Intl.NumberFormat('pl-PL', {
+	const numberFormatter = new Intl.NumberFormat(localeCode, {
 		minimumFractionDigits: 1,
 		maximumFractionDigits: 1,
 	});
-	const distanceFormatter = new Intl.NumberFormat('pl-PL');
+	const distanceFormatter = new Intl.NumberFormat(localeCode);
+
+	const translatedFuelType = t(`vehicles.fuelTypes.${vehicle.fuelType}`);
+	const fuelTypeLabel = translatedFuelType.startsWith('vehicles.fuelTypes.')
+		? vehicle.fuelType
+		: translatedFuelType;
 
 	const formattedConsumption = `${numberFormatter.format(
 		vehicle.averageConsumption
@@ -45,9 +53,14 @@ const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({
 		vehicle.totalDistance
 	)} km`;
 	const formattedLastFuelingDate = vehicle.lastFuelingDate
-		? format(parseISO(vehicle.lastFuelingDate), 'dd MMM yyyy')
+		? new Date(vehicle.lastFuelingDate).toLocaleDateString(localeCode, {
+				year: 'numeric',
+				month: 'short',
+				day: 'numeric',
+			})
 		: '--';
-	const registrationLabel = vehicle.registrationNumber ?? 'No registration';
+	const registrationLabel =
+		vehicle.registrationNumber ?? t('dashboard.noRegistration');
 
 	return (
 		<CardRoot variant='outline'>
@@ -63,7 +76,7 @@ const VehicleSummaryCard: React.FC<VehicleSummaryCardProps> = ({
 					</Stack>
 
 					<Text color='gray.600' fontSize='sm'>
-						Fuel type: {vehicle.fuelType}
+						{t('dashboard.fuelTypeLabel')}: {fuelTypeLabel}
 					</Text>
 
 					<SimpleGrid columns={{ base: 1, md: 2 }} gap='4'>

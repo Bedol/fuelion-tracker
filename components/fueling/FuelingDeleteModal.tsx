@@ -1,4 +1,5 @@
 import { Button, Dialog, Portal, Text } from '@chakra-ui/react';
+import { useLocale } from '../../contexts/LocaleContext';
 import { useDeleteFueling } from '../../hooks';
 
 interface FuelingDeleteModalProps {
@@ -22,6 +23,7 @@ const FuelingDeleteModal: React.FC<FuelingDeleteModalProps> = ({
 	onDeleteSuccess,
 	vehicleId,
 }) => {
+	const { locale, t } = useLocale();
 	const deleteMutation = useDeleteFueling();
 
 	const handleDelete = () => {
@@ -38,7 +40,8 @@ const FuelingDeleteModal: React.FC<FuelingDeleteModalProps> = ({
 		);
 	};
 
-	const formattedDate = new Date(fueling.date).toLocaleDateString('en-US', {
+	const localeCode = locale === 'pl' ? 'pl-PL' : 'en-US';
+	const formattedDate = new Date(fueling.date).toLocaleDateString(localeCode, {
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric',
@@ -58,32 +61,31 @@ const FuelingDeleteModal: React.FC<FuelingDeleteModalProps> = ({
 						{/* @ts-ignore */}
 						<Dialog.Header>
 							{/* @ts-ignore */}
-							<Dialog.Title>Delete Fueling Record?</Dialog.Title>
+							<Dialog.Title>{t('fuelings.deleteModal.title')}</Dialog.Title>
 						</Dialog.Header>
 						<Dialog.Body>
 							<Text mb='4'>
-								Are you sure you want to delete the fueling record from{' '}
+								{t('fuelings.deleteModal.confirmPrefix')}{' '}
 								<strong>
 									{formattedDate} ({fueling.cost.toFixed(2)} {currency})
 								</strong>
 								?
 							</Text>
 							<Text color='red.600' fontSize='sm'>
-								This action cannot be undone. Vehicle statistics will be
-								recalculated.
+								{t('fuelings.deleteModal.warning')}
 							</Text>
 						</Dialog.Body>
 						<Dialog.Footer>
 							<Button variant='outline' onClick={onClose}>
-								Cancel
+								{t('fuelings.deleteModal.cancel')}
 							</Button>
 							<Button
 								colorPalette='red'
 								onClick={handleDelete}
 								loading={deleteMutation.isPending}
-								loadingText='Deleting...'
+								loadingText={t('fuelings.deleteModal.deleting')}
 							>
-								Delete
+								{t('fuelings.deleteModal.confirm')}
 							</Button>
 						</Dialog.Footer>
 						<Dialog.CloseTrigger />

@@ -1,48 +1,49 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import { Vehicle } from '@prisma/client';
+import {
+	Badge,
+	Box,
+	CardBody,
+	CardRoot,
+	Heading,
+	Stack,
+	Text,
+} from '@chakra-ui/react';
+import type { Vehicle } from '@prisma/client';
+import NextLink from 'next/link';
+import { useLocale } from '../contexts/LocaleContext';
+import { fuelTypes } from '../types/vehicle_types';
 
 type VehicleCardProps = {
 	vehicle: Vehicle;
 };
 
+type FuelTypeColorPalette = 'orange' | 'gray' | 'blue' | 'green' | 'teal';
+
 type FuelTypeConfig = {
 	icon: string;
-	label: string;
-	bgColor: string;
-	textColor: string;
+	colorPalette: FuelTypeColorPalette;
 };
 
 const fuelTypeMap: Record<string, FuelTypeConfig> = {
 	gasoline: {
 		icon: '⛽',
-		label: 'Gasoline',
-		bgColor: 'bg-red-100',
-		textColor: 'text-red-800',
+		colorPalette: 'orange',
 	},
 	diesel: {
 		icon: '🛢️',
-		label: 'Diesel',
-		bgColor: 'bg-gray-100',
-		textColor: 'text-gray-800',
+		colorPalette: 'gray',
 	},
 	lpg: {
 		icon: '💨',
-		label: 'LPG',
-		bgColor: 'bg-blue-100',
-		textColor: 'text-blue-800',
+		colorPalette: 'blue',
 	},
 	electric: {
 		icon: '⚡',
-		label: 'Electric',
-		bgColor: 'bg-green-100',
-		textColor: 'text-green-800',
+		colorPalette: 'green',
 	},
 	hybrid: {
 		icon: '🔋',
-		label: 'Hybrid',
-		bgColor: 'bg-teal-100',
-		textColor: 'text-teal-800',
+		colorPalette: 'teal',
 	},
 };
 
@@ -51,64 +52,81 @@ const getFuelTypeDisplay = (fuelType: string): FuelTypeConfig => {
 	return (
 		fuelTypeMap[normalizedType] || {
 			icon: '⛽',
-			label: fuelType,
-			bgColor: 'bg-gray-100',
-			textColor: 'text-gray-800',
+			colorPalette: 'gray',
 		}
 	);
 };
 
 const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
-	const router = useRouter();
+	const { t } = useLocale();
+	const normalizedFuelType = vehicle.fuel_type.toLowerCase().trim();
 	const fuelTypeDisplay = getFuelTypeDisplay(vehicle.fuel_type);
-
-	const handleCardClick = () => {
-		router.push(`/vehicles/${vehicle.id}`);
-	};
+	const translatedFuelType = t(`vehicles.fuelTypes.${normalizedFuelType}`);
+	const mappedFuelType = fuelTypes.find(
+		(item) => item.value === normalizedFuelType
+	);
+	const fuelTypeLabel = translatedFuelType.startsWith('vehicles.fuelTypes.')
+		? mappedFuelType?.name || vehicle.fuel_type
+		: translatedFuelType;
+	const registrationLabel =
+		vehicle.registration_number || t('vehicles.detail.values.notRegistered');
 
 	return (
-		<div
-			className='p-5 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg hover:cursor-pointer transition-all duration-200 hover:border-blue-300'
-			onClick={handleCardClick}
-			role='button'
-			tabIndex={0}
-			onKeyDown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
-					handleCardClick();
-				}
-			}}
-			aria-label={`${vehicle.brand_name} ${vehicle.model_name} ${vehicle.production_year}`}
-		>
-			{/* Fuel Type Badge */}
-			<div className='mb-4'>
-				<span
-					className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${fuelTypeDisplay.bgColor} ${fuelTypeDisplay.textColor}`}
+		<NextLink href={`/vehicles/${vehicle.id}`} passHref legacyBehavior>
+			<Box
+				as='a'
+				display='block'
+				borderRadius='lg'
+				_focusVisible={{
+					outline: '2px solid',
+					outlineColor: 'blue.400',
+					outlineOffset: '2px',
+				}}
+			>
+				<CardRoot
+					variant='outline'
+					transition='all 0.2s ease'
+					_hover={{
+						borderColor: 'blue.300',
+						shadow: 'md',
+						transform: 'translateY(-1px)',
+					}}
 				>
-					<span className='text-base'>{fuelTypeDisplay.icon}</span>
-					{fuelTypeDisplay.label}
-				</span>
-			</div>
+					<CardBody>
+						<Stack gap='4'>
+							<Stack direction='row' justify='space-between' align='flex-start'>
+								<Badge
+									variant='subtle'
+									colorPalette={fuelTypeDisplay.colorPalette}
+								>
+									{fuelTypeDisplay.icon} {fuelTypeLabel}
+								</Badge>
+								<Text color='gray.500' fontSize='sm'>
+									{vehicle.production_year}
+								</Text>
+							</Stack>
 
-			{/* Vehicle Info */}
-			<div className='space-y-2'>
-				<h2 className='text-xl font-bold text-gray-900 leading-tight'>
-					{vehicle.brand_name} {vehicle.model_name}
-				</h2>
+							<Stack gap='1'>
+								<Heading size='md'>
+									{vehicle.brand_name} {vehicle.model_name}
+								</Heading>
+								<Text
+									fontSize='sm'
+									color={vehicle.registration_number ? 'gray.600' : 'gray.400'}
+									fontStyle={vehicle.registration_number ? 'normal' : 'italic'}
+								>
+									{registrationLabel}
+								</Text>
+							</Stack>
 
-				<div className='flex flex-col gap-1 text-sm text-gray-600'>
-					<span className='font-medium'>{vehicle.production_year}</span>
-					<span
-						className={
-							vehicle.registration_number
-								? 'text-gray-700 font-semibold'
-								: 'text-gray-400 italic'
-						}
-					>
-						{vehicle.registration_number || 'No plates'}
-					</span>
-				</div>
-			</div>
-		</div>
+							<Text fontSize='sm' color='blue.600' fontWeight='medium'>
+								{t('dashboard.viewVehicle')}
+							</Text>
+						</Stack>
+					</CardBody>
+				</CardRoot>
+			</Box>
+		</NextLink>
 	);
 };
 
