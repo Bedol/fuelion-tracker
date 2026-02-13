@@ -1,5 +1,6 @@
 import { Button, Dialog, Portal, Text } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useLocale } from '../../contexts/LocaleContext';
 import { toaster } from '../ui/toaster';
 
 type DeleteVehicleModalProps = {
@@ -20,6 +21,9 @@ const DeleteVehicleModal: React.FC<DeleteVehicleModalProps> = ({
 	vehicle,
 	onDeleteSuccess,
 }) => {
+	const { t } = useLocale();
+	const queryClient = useQueryClient();
+
 	const deleteMutation = useMutation({
 		mutationFn: async () => {
 			const resp = await fetch(`/api/vehicles/${vehicle.id}`, {
@@ -27,14 +31,20 @@ const DeleteVehicleModal: React.FC<DeleteVehicleModalProps> = ({
 			});
 			if (!resp.ok) {
 				const errorData = await resp.json().catch(() => ({}));
-				throw new Error(errorData.message || 'Failed to delete vehicle');
+				throw new Error(
+					errorData.message || t('vehicles.deleteModal.errors.deleteFailed')
+				);
 			}
 			return resp.json();
 		},
 		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+			queryClient.invalidateQueries({ queryKey: ['dashboard'] });
 			toaster.create({
-				title: 'Vehicle deleted successfully',
-				description: `${vehicle.brand_name} ${vehicle.model_name} has been removed.`,
+				title: t('vehicles.deleteModal.toasts.successTitle'),
+				description: `${vehicle.brand_name} ${vehicle.model_name} ${t(
+					'vehicles.deleteModal.toasts.successDescriptionSuffix'
+				)}`,
 				type: 'success',
 			});
 			onClose();
@@ -42,8 +52,9 @@ const DeleteVehicleModal: React.FC<DeleteVehicleModalProps> = ({
 		},
 		onError: (error: Error) => {
 			toaster.create({
-				title: 'Failed to delete vehicle',
-				description: error.message || 'Please try again later.',
+				title: t('vehicles.deleteModal.toasts.errorTitle'),
+				description:
+					error.message || t('vehicles.deleteModal.toasts.errorDescription'),
 				type: 'error',
 			});
 		},
@@ -67,11 +78,11 @@ const DeleteVehicleModal: React.FC<DeleteVehicleModalProps> = ({
 						{/* @ts-ignore */}
 						<Dialog.Header>
 							{/* @ts-ignore */}
-							<Dialog.Title>Delete Vehicle?</Dialog.Title>
+							<Dialog.Title>{t('vehicles.deleteModal.title')}</Dialog.Title>
 						</Dialog.Header>
 						<Dialog.Body>
 							<Text mb='4'>
-								Are you sure you want to delete{' '}
+								{t('vehicles.deleteModal.confirmPrefix')}{' '}
 								<strong>
 									{vehicle.brand_name} {vehicle.model_name} (
 									{vehicle.production_year})
@@ -79,21 +90,20 @@ const DeleteVehicleModal: React.FC<DeleteVehicleModalProps> = ({
 								?
 							</Text>
 							<Text color='red.600' fontSize='sm'>
-								This vehicle and all its fueling records will be permanently
-								deleted. This action cannot be undone.
+								{t('vehicles.deleteModal.warning')}
 							</Text>
 						</Dialog.Body>
 						<Dialog.Footer>
 							<Button variant='outline' onClick={onClose}>
-								Cancel
+								{t('vehicles.deleteModal.cancel')}
 							</Button>
 							<Button
 								colorPalette='red'
 								onClick={handleDelete}
 								loading={deleteMutation.isPending}
-								loadingText='Deleting...'
+								loadingText={t('vehicles.deleteModal.deleting')}
 							>
-								Delete Vehicle
+								{t('vehicles.deleteModal.confirm')}
 							</Button>
 						</Dialog.Footer>
 						<Dialog.CloseTrigger />

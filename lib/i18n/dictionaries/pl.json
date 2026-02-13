@@ -25,18 +25,276 @@
 	"dashboard": {
 		"title": "Twoje podsumowanie",
 		"subtitle": "Szybki podgląd pojazdów i ostatnich tankowań.",
+		"refreshFailed": "Nie udało się odświeżyć pulpitu",
 		"vehiclesTitle": "Pojazdy",
 		"activityTitle": "Ostatnia aktywność",
+		"fuelTypeLabel": "Rodzaj paliwa",
+		"noRegistration": "Brak rejestracji",
 		"totalSpent": "Suma wydatków",
 		"averageConsumption": "Średnie spalanie",
 		"totalDistance": "Łączny dystans",
 		"lastFueling": "Ostatnie tankowanie",
 		"viewVehicle": "Zobacz pojazd",
 		"quickAdd": "Szybkie tankowanie",
+		"loadMoreVehicles": "Pokaż kolejne 2 pojazdy",
+		"viewAllVehicles": "Lista pojazdów",
 		"emptyVehiclesTitle": "Brak pojazdów",
 		"emptyVehiclesDescription": "Dodaj pierwszy pojazd, aby zacząć śledzić koszty.",
 		"emptyVehiclesCta": "Dodaj pojazd",
 		"emptyActivityTitle": "Brak aktywności",
 		"emptyActivityDescription": "Dodaj tankowanie, aby zobaczyć je tutaj."
+	},
+	"vehicles": {
+		"last10Fuelings": "Ostatnie 10 tankowań",
+		"list": {
+			"subtitle": "Zarządzaj pojazdami i szybko przechodź do szczegółów.",
+			"yourGarage": "Twoja flota",
+			"countLabel": "pojazdów"
+		},
+		"detail": {
+			"errors": {
+				"loadVehicleDetails": "Nie udało się załadować szczegółów pojazdu.",
+				"loadRecentFuelings": "Nie udało się załadować ostatnich tankowań."
+			},
+			"actions": {
+				"viewStatistics": "Zobacz statystyki",
+				"editVehicle": "Edytuj pojazd",
+				"deleteVehicle": "Usuń pojazd",
+				"addFueling": "Dodaj tankowanie",
+				"viewAllFuelings": "Zobacz wszystkie tankowania"
+			},
+			"sections": {
+				"basicInformation": "Podstawowe informacje",
+				"technicalSpecifications": "Specyfikacja techniczna",
+				"vehicleStatus": "Stan pojazdu"
+			},
+			"fields": {
+				"brand": "Marka",
+				"model": "Model",
+				"productionYear": "Rok produkcji",
+				"fuelType": "Rodzaj paliwa",
+				"registration": "Rejestracja",
+				"engineCapacity": "Pojemność silnika",
+				"enginePower": "Moc silnika",
+				"transmission": "Skrzynia biegów",
+				"currentMileage": "Aktualny przebieg",
+				"currency": "Waluta",
+				"addedOn": "Dodano",
+				"lastUpdated": "Ostatnia aktualizacja"
+			},
+			"values": {
+				"notRegistered": "Brak rejestracji",
+				"manual": "Manualna",
+				"automatic": "Automatyczna"
+			},
+			"messages": {
+				"loadingRecentFuelings": "Ładowanie ostatnich tankowań...",
+				"emptyRecentFuelings": "Brak wpisów tankowań. Dodaj pierwsze tankowanie, aby rozpocząć śledzenie."
+			}
+		},
+		"fuelTypes": {
+			"gasoline": "Benzyna",
+			"diesel": "Diesel",
+			"lpg": "LPG",
+			"electric": "Elektryczny",
+			"hybrid": "Hybryda"
+		},
+		"form": {
+			"titles": {
+				"addNewVehicle": "Dodaj nowy pojazd",
+				"editVehicle": "Edytuj pojazd"
+			},
+			"sections": {
+				"basicInformation": "Podstawowe informacje",
+				"technicalSpecifications": "Specyfikacja techniczna"
+			},
+			"fields": {
+				"brand": "Marka",
+				"model": "Model",
+				"productionYear": "Rok produkcji",
+				"fuelType": "Rodzaj paliwa",
+				"registrationNumberOptional": "Numer rejestracyjny (opcjonalnie)",
+				"engineCapacityOptional": "Pojemność silnika (cc, opcjonalnie)",
+				"enginePowerOptional": "Moc silnika (opcjonalnie)",
+				"powerUnitOptional": "Jednostka mocy (opcjonalnie)",
+				"transmissionOptional": "Skrzynia biegów (opcjonalnie)"
+			},
+			"placeholders": {
+				"brandExample": "np. Toyota",
+				"modelExample": "np. Corolla",
+				"registrationExample": "np. ABC 1234",
+				"engineCapacityExample": "np. 2000",
+				"enginePowerExample": "np. 150",
+				"selectUnit": "Wybierz jednostkę...",
+				"selectTransmission": "Wybierz skrzynię..."
+			},
+			"technicalToggle": {
+				"show": "+ Dodaj dane techniczne",
+				"hide": "- Ukryj dane techniczne"
+			},
+			"options": {
+				"powerUnitHp": "Konie mechaniczne (HP)",
+				"powerUnitKw": "Kilowaty (kW)"
+			},
+			"actions": {
+				"createVehicle": "Utwórz pojazd",
+				"saveChanges": "Zapisz zmiany",
+				"cancel": "Anuluj",
+				"submitting": "Zapisywanie"
+			},
+			"errors": {
+				"generic": "Wystąpił błąd.",
+				"loadVehicleData": "Wystąpił błąd podczas pobierania danych pojazdu.",
+				"userNotAuthenticated": "Użytkownik nie jest zalogowany",
+				"createFailed": "Nie udało się utworzyć pojazdu",
+				"updateFailed": "Nie udało się zaktualizować pojazdu"
+			},
+			"validation": {
+				"brandRequired": "Marka jest wymagana",
+				"modelRequired": "Model jest wymagany",
+				"fuelTypeRequired": "Rodzaj paliwa jest wymagany",
+				"productionYearRequired": "Rok produkcji jest wymagany",
+				"productionYearInvalid": "Rok produkcji musi być poprawną liczbą",
+				"productionYearRange": "Rok produkcji musi być między 1900 a przyszłym rokiem",
+				"engineCapacityInvalid": "Pojemność silnika musi być dodatnią liczbą całkowitą",
+				"enginePowerInvalid": "Moc silnika musi być dodatnią liczbą całkowitą"
+			},
+			"toasts": {
+				"createSuccess": "Pojazd został utworzony",
+				"updateSuccess": "Pojazd został zaktualizowany",
+				"createError": "Nie udało się utworzyć pojazdu",
+				"updateError": "Nie udało się zaktualizować pojazdu"
+			}
+		},
+		"deleteModal": {
+			"title": "Usunąć pojazd?",
+			"confirmPrefix": "Czy na pewno chcesz usunąć",
+			"warning": "Ten pojazd oraz wszystkie jego wpisy tankowań zostaną trwale usunięte. Tej operacji nie można cofnąć.",
+			"cancel": "Anuluj",
+			"confirm": "Usuń pojazd",
+			"deleting": "Usuwanie...",
+			"errors": {
+				"deleteFailed": "Nie udało się usunąć pojazdu"
+			},
+			"toasts": {
+				"successTitle": "Pojazd został usunięty",
+				"successDescriptionSuffix": "został usunięty.",
+				"errorTitle": "Nie udało się usunąć pojazdu",
+				"errorDescription": "Spróbuj ponownie później."
+			}
+		}
+	},
+	"fuelings": {
+		"errors": {
+			"loadVehicleDetails": "Nie udało się załadować szczegółów pojazdu.",
+			"loadFuelings": "Nie udało się załadować tankowań"
+		},
+		"actions": {
+			"addFueling": "Dodaj tankowanie",
+			"addFirstFueling": "Dodaj pierwsze tankowanie",
+			"backToVehicle": "Powrót do pojazdu",
+			"editFueling": "Edytuj tankowanie",
+			"deleteFueling": "Usuń tankowanie"
+		},
+		"form": {
+			"titles": {
+				"addFueling": "Dodaj tankowanie",
+				"editFueling": "Edytuj tankowanie"
+			},
+			"sections": {
+				"fuelingDetails": "Szczegóły tankowania",
+				"tripDetails": "Dane przejazdu"
+			},
+			"fields": {
+				"totalCost": "Całkowity koszt",
+				"quantity": "Ilość paliwa (L)",
+				"costPerUnit": "Cena za litr",
+				"fuelType": "Rodzaj paliwa",
+				"mileage": "Przebieg",
+				"date": "Data",
+				"tankType": "Typ tankowania"
+			},
+			"tankType": {
+				"full": "Pełny bak",
+				"partial": "Niepełny bak"
+			},
+			"hints": {
+				"autoCalculated": "wyliczane automatycznie",
+				"lastRecorded": "Ostatnio zapisany:",
+				"fullTankSelected": "Pełne tankowanie - uwzględniane w statystykach spalania.",
+				"partialTankSelected": "Niepełne tankowanie - przydatne do śledzenia wydatków."
+			},
+			"validation": {
+				"costGreaterThanZero": "Całkowity koszt musi być większy od 0",
+				"quantityGreaterThanZero": "Ilość paliwa musi być większa od 0",
+				"mileageGreaterThanZero": "Przebieg musi być większy od 0",
+				"mileageAboveLastPrefix": "Przebieg musi być większy niż ostatni zapis",
+				"dateRequired": "Data jest wymagana",
+				"fuelTypeRequired": "Rodzaj paliwa jest wymagany"
+			},
+			"actions": {
+				"addFueling": "Dodaj tankowanie",
+				"saveChanges": "Zapisz zmiany",
+				"cancel": "Anuluj",
+				"adding": "Dodawanie...",
+				"saving": "Zapisywanie..."
+			}
+		},
+		"list": {
+			"title": "Historia tankowań",
+			"recordsLabel": "wpisów",
+			"emptyTitle": "Brak tankowań",
+			"emptyDescription": "Dodaj pierwsze tankowanie, aby zacząć śledzić wydatki na paliwo.",
+			"loadingMore": "Ładowanie kolejnych wpisów...",
+			"scrollForMore": "Przewiń, aby wczytać więcej",
+			"endOfHistory": "- Koniec historii -"
+		},
+		"filters": {
+			"dateFrom": "Data od",
+			"dateTo": "Data do",
+			"tankType": "Typ tankowania",
+			"fuelType": "Rodzaj paliwa",
+			"clear": "Wyczyść filtry",
+			"emptyTitle": "Brak wpisów dla wybranych filtrów",
+			"emptyDescription": "Zmień filtry albo wyczyść je, aby zobaczyć wszystkie wpisy.",
+			"options": {
+				"all": "Wszystkie",
+				"fullTank": "Pełny bak",
+				"partialTank": "Niepełny bak"
+			}
+		},
+		"summary": {
+			"title": "Podsumowanie widocznych wpisów",
+			"fuelings": "Tankowania",
+			"totalCost": "Suma kosztów",
+			"avgPricePerLiter": "Średnia cena za litr",
+			"perLiterSuffix": "/l"
+		},
+		"density": {
+			"comfortable": "Wygodna",
+			"compact": "Kompaktowa"
+		},
+		"item": {
+			"partialTank": "Niepełny bak",
+			"fullTank": "Pełny bak",
+			"odometer": "Przebieg"
+		},
+		"deleteModal": {
+			"title": "Usunąć wpis tankowania?",
+			"confirmPrefix": "Czy na pewno chcesz usunąć wpis tankowania z dnia",
+			"warning": "Tej operacji nie można cofnąć. Statystyki pojazdu zostaną przeliczone.",
+			"cancel": "Anuluj",
+			"confirm": "Usuń",
+			"deleting": "Usuwanie...",
+			"errors": {
+				"deleteFailed": "Nie udało się usunąć tankowania"
+			}
+		},
+		"toasts": {
+			"deleteSuccessTitle": "Tankowanie usunięte",
+			"deleteSuccessDescription": "Wpis został usunięty.",
+			"deleteErrorTitle": "Nie udało się usunąć",
+			"deleteErrorDescription": "Spróbuj ponownie."
+		}
 	}
 }
