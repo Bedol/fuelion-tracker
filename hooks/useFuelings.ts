@@ -3,6 +3,19 @@ import { FuelingData } from '../types/fueling_types';
 
 export const FUELINGS_PER_PAGE = 20;
 
+const fuelTypeById: Record<number, string> = {
+	1: 'gasoline',
+	2: 'diesel',
+	3: 'lpg',
+	4: 'electric',
+	5: 'hybrid',
+};
+
+type FuelingApiItem = FuelingData & {
+	fuel_type_id?: number;
+	fuel_type?: string | null;
+};
+
 export const useFuelings = (vehicleId: number) => {
 	return useInfiniteQuery({
 		queryKey: ['fuelings', vehicleId],
@@ -13,7 +26,21 @@ export const useFuelings = (vehicleId: number) => {
 			if (!response.ok) {
 				throw new Error('Failed to fetch fuelings');
 			}
-			return response.json() as Promise<FuelingData[]>;
+
+			const rawData = (await response.json()) as FuelingApiItem[];
+
+			return rawData.map((fueling) => {
+				const normalizedFuelType =
+					typeof fueling.fuel_type === 'string' &&
+					fueling.fuel_type.trim() !== ''
+						? fueling.fuel_type
+						: fuelTypeById[fueling.fuel_type_id || 0] || 'gasoline';
+
+				return {
+					...fueling,
+					fuel_type: normalizedFuelType,
+				} as FuelingData;
+			});
 		},
 		getNextPageParam: (lastPage, allPages) => {
 			if (lastPage.length === FUELINGS_PER_PAGE) {
