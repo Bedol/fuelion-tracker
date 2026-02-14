@@ -8,6 +8,19 @@ import { FuelingData } from '../../../../../types';
 import FetchDataErrorAlert from '../../../../../components/errors/FetchDataErrorAlert';
 import Loading from '../../../../../components/Loading';
 
+const fuelTypeById: Record<number, string> = {
+	1: 'gasoline',
+	2: 'diesel',
+	3: 'lpg',
+	4: 'electric',
+	5: 'hybrid',
+};
+
+type FuelingApiItem = FuelingData & {
+	fuel_type_id?: number;
+	fuel_type?: string | null;
+};
+
 const EditFuelingPage: React.FC = () => {
 	const router = useRouter();
 	const { id, fuelingId } = router.query;
@@ -45,7 +58,18 @@ const EditFuelingPage: React.FC = () => {
 			if (!response.ok) {
 				throw new Error('Failed to fetch fueling');
 			}
-			return response.json() as Promise<FuelingData>;
+
+			const rawData = (await response.json()) as FuelingApiItem;
+
+			const normalizedFuelType =
+				typeof rawData.fuel_type === 'string' && rawData.fuel_type.trim() !== ''
+					? rawData.fuel_type
+					: fuelTypeById[rawData.fuel_type_id || 0] || 'gasoline';
+
+			return {
+				...rawData,
+				fuel_type: normalizedFuelType,
+			} as FuelingData;
 		},
 		enabled: !!fuelingIdNum,
 	});
