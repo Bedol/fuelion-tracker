@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/Bedol/fuelion-tracker/compare/v1.2.0...v1.2.1) (2026-02-14)
+
+
+### Bug Fixes
+
+* **ci:** use npm ci in release workflow ([02d45de](https://github.com/Bedol/fuelion-tracker/commit/02d45deff268dea7add6f321b1ac2b4e2de8cb1b))
+* **deps-dev:** downgrade @eslint/js to 9.39.2 ([f516619](https://github.com/Bedol/fuelion-tracker/commit/f516619d756a39ca4024dc2d75b4c75eff8626da))
+* **fuelings:** normalize fuel_type when loading fueling for edit ([083cc13](https://github.com/Bedol/fuelion-tracker/commit/083cc13b990f766fb120ba92834104b5313219a0))
+
 ## [1.2.1-develop.1](https://github.com/Bedol/fuelion-tracker/compare/v1.2.0...v1.2.1-develop.1) (2026-02-14)
 
 
