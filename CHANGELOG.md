@@ -1,3 +1,10 @@
+## [1.2.1-develop.2](https://github.com/Bedol/fuelion-tracker/compare/v1.2.1-develop.1...v1.2.1-develop.2) (2026-04-24)
+
+
+### Bug Fixes
+
+* **deps:** downgrade eslint to v9 to resolve plugin compatibility ([c987bb6](https://github.com/Bedol/fuelion-tracker/commit/c987bb609627f730888a45f3d5f38c294afe606a))
+
 ## [1.2.1](https://github.com/Bedol/fuelion-tracker/compare/v1.2.0...v1.2.1) (2026-02-14)
 
 
