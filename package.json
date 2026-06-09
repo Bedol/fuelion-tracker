@@ -54,7 +54,7 @@
 		"eslint": "^9.23.0",
 		"eslint-config-next": "^16.1.6",
 		"eslint-plugin-react": "^7.37.5",
-		"globals": "^17.4.0",
+		"globals": "^17.6.0",
 		"lint-staged": "^16.4.0",
 		"postcss": "^8.5.8",
 		"prettier": "^3.8.3",
